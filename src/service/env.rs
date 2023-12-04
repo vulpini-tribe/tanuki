@@ -11,9 +11,18 @@ pub struct EnvConfig {
 }
 
 impl EnvConfig {
+    fn get_platform_relationships() -> () {
+        let relationships = env::var("PLATFORM_RELATIONSHIPS").unwrap_or_default();
+
+        println!("PLATFORM_RELATIONSHIPS: {}", relationships);
+    }
+
     pub fn new() -> EnvConfig {
         dotenv().ok();
         log::info!("[+] Reading ENV configuration.");
+
+        EnvConfig::get_platform_relationships();
+        // PLATFORM_RELATIONSHIPS
 
         EnvConfig {
             hostname: env::var("HOSTNAME").expect("HOSTNAME must be set"),
