@@ -2178,6 +2178,7 @@ dependencies = [
  "actix-service",
  "actix-web",
  "awc",
+ "base64",
  "chrono",
  "deadpool-postgres",
  "diesel",
