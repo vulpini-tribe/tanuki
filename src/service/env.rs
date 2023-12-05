@@ -19,7 +19,6 @@ impl EnvConfig {
         match relationships {
             Ok(relationships) => {
                 let relationships = base64::decode(relationships).unwrap();
-                let relationships = String::from_utf8(relationships).unwrap();
 
                 Ok(json!(relationships))
             }

@@ -1,9 +1,10 @@
+pub mod handlers;
 pub mod service;
-extern crate diesel;
 
-use actix_web;
-use actix_web::{web, App, HttpServer};
 use log;
+extern crate diesel;
+use actix_web::{self, web, App, HttpServer};
+use handlers::{dishes, history, measurements, tags, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -30,7 +31,11 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(data_providers))
             .service(
                 web::scope("/api")
-                    .service(web::resource("").route(web::get().to(|| async { "Hello world!" }))),
+                    .service(users::_routes::get_routes())
+                    .service(tags::_routes::get_routes())
+                    .service(measurements::_routes::get_routes())
+                    .service(dishes::_routes::get_routes())
+                    .service(history::_routes::get_routes()),
             )
     })
     .bind((env_config.hostname, env_config.port))?
