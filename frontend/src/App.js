@@ -1,8 +1,8 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 
-import './App.css';
 import logo from './logo.svg';
+import './App.css';
 
 const queryClient = new QueryClient()
 
@@ -22,16 +22,10 @@ const Test = () => {
   console.log(data);
 
   return (
-    <>
-      <header className="App-header">
-        <h1>Femboy Party</h1>
-      </header>
-
-      <main>
-        <img src={logo} className="App-logo" alt="logo" />
-      </main>
-    </>
-
+    <header className="App-header">
+      <h1>Femboy Party</h1>
+      <img src={logo} className="App-logo" alt="logo" />
+    </header>
   )
 }
 
