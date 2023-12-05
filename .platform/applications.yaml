@@ -1,0 +1,56 @@
+tanuki-backend:
+  type: "rust:1"
+  mounts:
+    "web/uploads":
+      source: local
+      source_path: uploads
+  disk: 2048
+  relationships:
+      postgresdatabase: "dbpostgres:postgresql"
+      rediscache: "cacheredis:redis"
+  hooks:
+      build: |
+        cargo build --release
+  web:
+    commands:
+      start: |
+        ./target/release/tanuki
+  source:
+    root: "tanuki-backend"
+
+tanuki-frontend:
+  type: nodejs:lts
+  disk: 1024
+  mounts:
+    '/build': 'local:files/build'
+  web:
+    locations:
+      "/":
+        root: "build"
+        passthru: "/tanuki-frontend/build/index.html"
+        index:
+          - "index.html"
+        expires: 300s
+        scripts: true
+        allow: true
+        rules:
+          .(css|js|gif|jpe?g|png|ttf|eot|woff2?|otf|html|ico|svg?)$:
+            allow: true
+          ^/admin/robots.txt$:
+            allow: true
+          ^/admin/manifest.json$:
+            allow: true
+          ^/admin/_next:
+            allow: true
+          ^/admin/sitemap:
+            allow: true
+        headers:
+          Access-Control-Allow-Origin: "*"
+  hooks:
+    build: |
+      set -eu
+      corepack yarn install --immutable --force
+    post_deploy: |
+      corepack yarn run build
+  source:
+    root: tanuki-frontend

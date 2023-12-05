@@ -1,8 +1,28 @@
-# Each route describes how an incoming URL is going to be processed by Platform.sh.
-"https://www.{default}/":
+# API
+"https://www.{default}/api":
     type: upstream
-    upstream: "tanuki:http"
+    upstream: "tanuki-backend:http"
+    id: "tanuki-backend"
 
-"https://{default}/":
+"https://{default}/api":
     type: redirect
-    to: "https://www.{default}/"
+    to: "https://www.{default}/api"
+
+
+# tanuki-frontend
+"https://{default}/":
+  type: upstream
+  # the first part should be your project name
+  upstream: "tanuki-frontend:http"
+  id: "tanuki-frontend"
+  cache:
+    cookies: ['*']
+    default_ttl: 0
+    enabled: true
+    headers: [Accept, Accept-Language]
+  ssi:
+    enabled: false
+
+"http://{default}/":
+    type: redirect
+    to: "https://{default}/"
