@@ -1,0 +1,42 @@
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 300;
+	src: url('@fonts/OpenSans/latin_cyrillic-300.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: url('@fonts/OpenSans/latin_cyrillic-400.woff2') format('woff2');
+}
+
+/* Open Sans does not have a 500-weight version */
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 500;
+	src: url('@fonts/OpenSans/latin_cyrillic-600.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	src: url('@fonts/OpenSans/latin_cyrillic-600.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	src: url('@fonts/OpenSans/latin_cyrillic-700.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 800;
+	src: url('@fonts/OpenSans/latin_cyrillic-800.woff2') format('woff2');
+}

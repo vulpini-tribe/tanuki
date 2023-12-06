@@ -1,13 +1,9 @@
 tanuki-frontend:
   type: nodejs:20
-  # disk: 1024
-  # mounts:
-  #   '/.cache': { source: local, source_path: "tanuki-frontend/cache" }
-  #   '/.config': { source: local, source_path: "tanuki-frontend/config" }
   web:
     locations:
       "/app":
-        root: "build"
+        root: "dist"
         passthru: true
         index:
           - "index.html"

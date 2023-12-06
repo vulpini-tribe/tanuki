@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "NodeNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "downlevelIteration": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "sourceMap": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["./src/*"],
+
+      "@api": ["./src/core/api/index"],
+      "@api/*": ["./src/core/api/*"],
+
+      "@core": ["./src/core"],
+      "@core/*": ["./src/core/*"],
+
+      "@routes": ["./src/core/routes"],
+
+      "@ui": ["./src/ui/index"],
+      "@ui/*": ["./src/ui/*"],
+
+      "@features": ["./src/features/index"],
+      "@features/*": ["./src/features/*"],
+
+      "@utils": ["./src/utils/index"],
+      "@utils/*": ["./src/utils/*"],
+
+      "@hooks": ["./src/utils/hooks/index"],
+      "@hooks/*": ["./src/utils/hooks/*"],
+
+      "@pages": ["./src/pages/index"],
+      "@pages/*": ["./src/pages/*"],
+
+      "@icons": ["./src/assets/icons/index"],
+
+      "@images": ["./src/assets/images/index"],
+      "@images/*": ["./src/assets/images/*"],
+
+      "@assets": ["./src/assets/index"],
+      "@assets/*": ["./src/assets/*"],
+
+      "@fonts/*": ["./src/assets/fonts/*"],
+
+      "@yup": ["./src/utils/yup/index"],
+      "@yup/*": ["./src/utils/yup/*"]
+    }
+  },
+
+  "include": ["src"]
+}

@@ -4,12 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
+/.yarn-cache
 
 # testing
 /coverage
 
 # production
-/build
+build
+dist
 
 # misc
 .DS_Store
@@ -21,3 +23,20 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# editors
+/*.sublime-workspace
+.vscode/
+/.idea/*
+
+# Environment variable
+.env*
+
+# yarn 2+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
