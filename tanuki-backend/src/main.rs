@@ -29,14 +29,11 @@ async fn main() -> std::io::Result<()> {
             .wrap(middlewares.compress)
             .wrap(middlewares.logger)
             .app_data(web::Data::new(data_providers))
-            .service(
-                web::scope("/api")
-                    .service(users::_routes::get_routes())
-                    .service(tags::_routes::get_routes())
-                    .service(measurements::_routes::get_routes())
-                    .service(dishes::_routes::get_routes())
-                    .service(history::_routes::get_routes()),
-            )
+            .service(users::_routes::get_routes())
+            .service(tags::_routes::get_routes())
+            .service(measurements::_routes::get_routes())
+            .service(dishes::_routes::get_routes())
+            .service(history::_routes::get_routes())
     })
     .bind((env_config.hostname, env_config.port))?
     .workers(2)

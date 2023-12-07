@@ -14,11 +14,13 @@ import MainRoot, { Header, BlackSun } from './Root.styles';
 import '@core/styles/fonts.css';
 
 const queryClient = new QueryClient();
+// @ts-ignore
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const AuthManager = () => {
 	const { isPending, error, data } = useQuery({
 		queryKey: ['/api/dishes'],
-		queryFn: () => fetch(`/api/dishes`).then((res) => res.json())
+		queryFn: () => fetch(`${apiUrl}/dishes`).then((res) => res.json())
 	});
 
 	if (isPending) return 'Loading...';
