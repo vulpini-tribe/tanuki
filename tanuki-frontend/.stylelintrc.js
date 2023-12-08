@@ -13,10 +13,7 @@ module.exports = {
     'selector-type-no-unknown': null,
     'declaration-colon-newline-after': null,
     'value-keyword-case': [
-      'lower',
-      {
-        ignoreKeywords: ['dummyValue']
-      }
+      'lower', { ignoreKeywords: ['dummyValue'] }
     ],
     'alpha-value-notation': 'number',
     // https://github.com/hudochenkov/postcss-styled-syntax/issues/3

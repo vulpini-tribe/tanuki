@@ -1,5 +1,4 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { ImagePreview, EmptyImagePreview } from '@ui/ImageLoader/ImageLoader.styles';
 import { SubText } from '@ui';
 
 export const DisableScroll = createGlobalStyle`
@@ -27,11 +26,6 @@ export const RightStrap = styled.div`
 	min-width: 420px;
 
 	background-color: var(--white);
-
-	& ${ImagePreview}, & ${EmptyImagePreview} {
-		width: 160px;
-		height: 92px;
-	}
 
 	${SubText}:last-of-type {
 		margin-bottom: 4px;

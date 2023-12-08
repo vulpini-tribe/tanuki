@@ -20,7 +20,7 @@ type Config = {
 
 const prohibitedTags = ['INPUT', 'TEXTAREA'];
 
-const useKey = (key: Key, action: Function, config: Config = {}) => {
+const useKey = (key: Key, action: () => void, config: Config = {}) => {
 	const actionRef = useRef(action);
 	const keyCode = useMemo(() => KEY_CODES[key], [key]);
 
