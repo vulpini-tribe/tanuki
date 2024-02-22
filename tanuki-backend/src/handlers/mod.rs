@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod dishes;
 pub mod history;
 pub mod measurements;

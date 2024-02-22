@@ -4,7 +4,7 @@ pub mod service;
 use log;
 extern crate diesel;
 use actix_web::{self, web, App, HttpServer};
-use handlers::{dishes, history, measurements, tags, users};
+use handlers::{auth, dishes, history, measurements, tags, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -34,6 +34,7 @@ async fn main() -> std::io::Result<()> {
             .service(measurements::_routes::get_routes())
             .service(dishes::_routes::get_routes())
             .service(history::_routes::get_routes())
+            .service(auth::_routes::get_routes())
     })
     .bind((env_config.hostname, env_config.port))?
     .workers(2)
