@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { MainContent } from './Authorized.styles';
 
+// @ts-ignore
 const Index = React.lazy(() => import('@pages/Index'));
 
 const Authorized = () => {

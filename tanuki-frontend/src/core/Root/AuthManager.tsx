@@ -2,10 +2,11 @@ import React from 'react';
 
 import Restricted from './Restricted';
 import Authorized from './Authorized';
-import NotAuthorized from './NotAuthorized';
+// @ts-ignore
+const Authorization = React.lazy(() => import('@pages/Authorization'));
 
 const AuthManager = () => {
-	const isAuthorized = true;
+	const isAuthorized = false;
 	const isAccessRestricted = false;
 
 	switch (true) {
@@ -16,7 +17,7 @@ const AuthManager = () => {
 			return <Authorized />;
 
 		default:
-			return <NotAuthorized />;
+			return <Authorization />;
 	}
 };
 

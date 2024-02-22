@@ -17,10 +17,10 @@ import 'react-toastify/dist/ReactToastify.min.css';
 // const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 // const AuthManager = () => {
-// 	const { isPending, error, data } = useQuery({
-// 		queryKey: ['/api/dishes'],
-// 		queryFn: () => fetch(`${apiUrl}/dishes`).then((res) => res.json())
-// 	});
+// const { isPending, error, data } = useQuery({
+// 	queryKey: ['/api/dishes'],
+// 	queryFn: () => fetch(`${apiUrl}/dishes`).then((res) => res.json())
+// });
 
 // 	if (isPending) return 'Loading...';
 
