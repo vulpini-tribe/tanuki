@@ -56,7 +56,11 @@
       "@fonts/*": ["./src/assets/fonts/*"],
 
       "@yup": ["./src/utils/yup/index"],
-      "@yup/*": ["./src/utils/yup/*"]
+      "@yup/*": ["./src/utils/yup/*"],
+
+      "@validations": ["./src/utils/validations/index"],
+      "@validations/*": ["./src/utils/validations/*"],
+
     }
   },
 

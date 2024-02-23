@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import ROUTES from '@routes';
+// import useFormHook from './useFormHook';
+// import useSignInReq from './useSignInReq';
 
-import * as Form from '@radix-ui/react-form';
-import * as Label from '@radix-ui/react-label';
-
+import validateEmail from '@validations/email';
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import { Grid, TextField, IconButton, Box, Flex, Button } from '@radix-ui/themes';
+import { Grid, TextField, IconButton, Box, Flex, Button, Text } from '@radix-ui/themes';
 
 const SignInPage = () => {
+	// const form = useFormHook();
+	// const request = useSignInReq(form.setError);
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const togglePasswordVisibility = () => {
@@ -17,63 +19,55 @@ const SignInPage = () => {
 	};
 
 	return (
-		<Form.Root asChild>
-			<Flex direction="column" style={{ width: '75%', maxWidth: 500 }}>
-				<Box mt="8">
-					<Form.Field name="email">
-						<Form.Label asChild>
-							<Label.Root htmlFor="email">E-Mail</Label.Root>
-						</Form.Label>
+		<Flex direction="column" style={{ width: '75%', maxWidth: 500 }}>
+			<form method="post">
+				{/* E-Mail | Start */}
+				<Grid flow="row" rows="min-content" gap="2">
+					<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+						E-Mail
+					</Text>
 
-						<Form.Control asChild>
-							<TextField.Input id="email" placeholder="user@tanuki.health" size="3" radius="small" />
-						</Form.Control>
+					<TextField.Input id="email" type="email" required placeholder="example@foo.bar" radius="small" size="3" />
+				</Grid>
+				{/* E-Mail | End */}
 
-						{/* <Form.Message>Not valid</Form.Message> */}
-						{/* <Form.ValidityState /> */}
-					</Form.Field>
-				</Box>
+				{/* Password | Start */}
+				<Grid flow="row" rows="min-content" gap="2" mt="3">
+					<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+						Password
+					</Text>
 
-				<Box mt="2">
-					<Form.Field name="password">
-						<Form.Label asChild>
-							<Label.Root htmlFor="password">Password</Label.Root>
-						</Form.Label>
-
-						<Form.Control asChild>
-							<TextField.Root>
-								<TextField.Input
-									id="password"
-									placeholder="p@5sw0rd"
-									type={isPasswordVisible ? 'text' : 'password'}
-									size="3"
-									radius="small"
-								/>
-								<TextField.Slot>
-									<IconButton type="button" variant="ghost" onClick={togglePasswordVisibility}>
-										{isPasswordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
-									</IconButton>
-								</TextField.Slot>
-							</TextField.Root>
-						</Form.Control>
-						{/* <Form.Message>Not valid</Form.Message> */}
-						{/* <Form.ValidityState /> */}
-					</Form.Field>
-				</Box>
+					<TextField.Root>
+						<TextField.Input
+							id="password"
+							required
+							placeholder="••••••"
+							autoComplete="current-password"
+							type={isPasswordVisible ? 'text' : 'password'}
+							radius="small"
+							size="3"
+						/>
+						<TextField.Slot>
+							<IconButton type="button" variant="ghost" onClick={togglePasswordVisibility}>
+								{isPasswordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
+							</IconButton>
+						</TextField.Slot>
+					</TextField.Root>
+				</Grid>
+				{/* Password | End */}
 
 				<Grid flow="column" columns="1fr 2fr" gap="5" mt="5" align="center">
-					<Form.Submit asChild>
-						<Button type="submit" radius="small" variant="solid">
-							Login
-						</Button>
-					</Form.Submit>
+					<input type="hidden" />
+					<Button type="submit" radius="small" variant="solid">
+						Login
+					</Button>
 
 					<Button asChild radius="small" variant="ghost">
 						<NavLink to={ROUTES.AUTH.RESET_PASSWORD}>Restore password</NavLink>
 					</Button>
 				</Grid>
-			</Flex>
-		</Form.Root>
+			</form>
+		</Flex>
 	);
 };
 

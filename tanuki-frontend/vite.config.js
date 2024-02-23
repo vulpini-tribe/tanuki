@@ -40,7 +40,8 @@ const config = ({ mode }) => {
 				'@images': fileURLToPath(new URL('./src/assets/images', import.meta.url)),
 				'@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
 				'@fonts': fileURLToPath(new URL('./src/assets/fonts', import.meta.url)),
-				'@yup': fileURLToPath(new URL('./src/utils/yup', import.meta.url))
+				'@yup': fileURLToPath(new URL('./src/utils/yup', import.meta.url)),
+				'@validations': fileURLToPath(new URL('./src/utils/validations', import.meta.url))
 			}
 		},
 		server: {
