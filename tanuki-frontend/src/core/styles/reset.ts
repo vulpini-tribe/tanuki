@@ -16,9 +16,9 @@ const Reset = createGlobalStyle`
 	time, mark, audio, video {
 		margin: 0;
 		padding: 0;
-		border: 0;
 		font: inherit;
 		vertical-align: baseline;
+		border: 0;
 	}
 
 	article, aside, details, figcaption, figure,
@@ -29,12 +29,9 @@ const Reset = createGlobalStyle`
 	* {
 		box-sizing: inherit;
 		${'' /* -webkit-appearance: none; */}
-
 		-moz-osx-font-smoothing: grayscale;
 		-webkit-font-smoothing: antialiased;
-
 		-webkit-tap-highlight-color: transparent;
-
 		backface-visibility: hidden;
 
 		&::before, &::after {
@@ -43,20 +40,20 @@ const Reset = createGlobalStyle`
 	}
 
 	html, body {
-		min-height: 100%;
-		height: 100%;
 		width: 100%;
+		height: 100%;
+		min-height: 100%;
 	}
 
 	html {
-		font-family: sans-serif;
 		box-sizing: border-box;
+		font-family: sans-serif;
 		text-size-adjust: 100%;
 	}
 
 	body {
-		line-height: 1;
 		font-family: inherit;
+		line-height: 1;
 	}
 
 	ol, ul {
@@ -92,13 +89,13 @@ const Reset = createGlobalStyle`
 	}
 
 	a {
-		background-color: transparent;
 		text-decoration: none;
+		background-color: transparent;
 		text-decoration-skip-ink: auto;
 
 		&:hover, &:active, &:visited {
-			outline-width: 0;
 			text-decoration: none;
+			outline-width: 0;
 		}
 	}
 
@@ -116,8 +113,8 @@ const Reset = createGlobalStyle`
 	[type='button']::-moz-focus-inner,
 	[type='reset']::-moz-focus-inner,
 	[type='submit']::-moz-focus-inner {
-		border-style: none;
 		padding: 0;
+		border-style: none;
 	}
 
 	::-webkit-input-placeholder {

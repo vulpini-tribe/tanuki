@@ -16,7 +16,9 @@ const ROUTES = {
 		ROOT: INDEX
 	},
 	FORBIDDEN: '/403',
-	NOT_FOUND: '/404'
+	NOT_FOUND: '/404',
+	CALLBACK: '/callback',
+	CREDITS: '/credits'
 };
 
 export const createRoute = (route: string, params: object, search?: string) => {
