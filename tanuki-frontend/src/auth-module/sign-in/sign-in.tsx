@@ -7,7 +7,7 @@ import * as Form from '@radix-ui/react-form';
 import * as Label from '@radix-ui/react-label';
 
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import { Grid, TextField, IconButton, Heading, Box, Flex, Link, Button } from '@radix-ui/themes';
+import { Grid, TextField, IconButton, Box, Flex, Button } from '@radix-ui/themes';
 
 const SignInPage = () => {
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -18,7 +18,7 @@ const SignInPage = () => {
 
 	return (
 		<Form.Root asChild>
-			<Flex direction="column" style={{ maxWidth: 400 }}>
+			<Flex direction="column" style={{ width: '75%', maxWidth: 500 }}>
 				<Box mt="8">
 					<Form.Field name="email">
 						<Form.Label asChild>
@@ -26,7 +26,7 @@ const SignInPage = () => {
 						</Form.Label>
 
 						<Form.Control asChild>
-							<TextField.Input id="email" placeholder="Search the docs…" size="2" radius="small" />
+							<TextField.Input id="email" placeholder="user@tanuki.health" size="3" radius="small" />
 						</Form.Control>
 
 						{/* <Form.Message>Not valid</Form.Message> */}
@@ -42,7 +42,13 @@ const SignInPage = () => {
 
 						<Form.Control asChild>
 							<TextField.Root>
-								<TextField.Input id="password" placeholder="Password" type="password" size="2" radius="small" />
+								<TextField.Input
+									id="password"
+									placeholder="p@5sw0rd"
+									type={isPasswordVisible ? 'text' : 'password'}
+									size="3"
+									radius="small"
+								/>
 								<TextField.Slot>
 									<IconButton type="button" variant="ghost" onClick={togglePasswordVisibility}>
 										{isPasswordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
@@ -63,7 +69,7 @@ const SignInPage = () => {
 					</Form.Submit>
 
 					<Button asChild radius="small" variant="ghost">
-						<NavLink to={ROUTES.AUTH.SIGN_UP}>Create account</NavLink>
+						<NavLink to={ROUTES.AUTH.RESET_PASSWORD}>Restore password</NavLink>
 					</Button>
 				</Grid>
 			</Flex>

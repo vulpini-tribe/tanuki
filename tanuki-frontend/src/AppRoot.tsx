@@ -2,14 +2,13 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
 
-import { Theme, Container } from '@radix-ui/themes';
+import { Theme } from '@radix-ui/themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// import { FemboySun } from '@images';
 import AuthModule from './auth-module';
 import ContentModule from './content-module';
 
-import { ResetStyles, GeneralStyles } from '@core/styles';
+import { ResetStyles } from '@core/styles';
 
 // Prevent multiple fonts loading
 // import '@core/styles/fonts.css';

@@ -9,8 +9,8 @@ const ROUTES = {
 		NEW_PASSWORD: `${AUTH}/new-password`,
 		SIGN_OUT: `${AUTH}/sign_out`,
 		SIGN_IN: `${AUTH}/sign_in`,
-		SIGN_UP: `${AUTH}/sign_up`,
-		SIGN_2FA: `${AUTH}/sign_2fa`
+		SIGN_UP: `${AUTH}/sign_up`
+		// SIGN_2FA: `${AUTH}/sign_2fa`
 	},
 	INDEX: {
 		ROOT: INDEX
