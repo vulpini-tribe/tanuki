@@ -5,32 +5,21 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 import type { SharedProps } from '../shared.d';
 
-const PersonalTab = (props: SharedProps) => {
-	const form = { errors: {} };
-
+const PersonalTab = ({ form }: SharedProps) => {
 	return (
 		<Grid mt="5" flow="row" gap="3">
 			{/* Name | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
-				<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+				<Text as="label" htmlFor="name" size="2" highContrast color="gray">
 					Name
 				</Text>
 
-				<TextField.Root color={form.errors.email && 'ruby'}>
-					<TextField.Input
-						id="email"
-						type="email"
-						required
-						placeholder="example@foo.bar"
-						autoComplete="email"
-						{...form.email}
-						radius="small"
-						size="3"
-					/>
+				<TextField.Root color={form.errors.name && 'ruby'}>
+					<TextField.Input id="name" required placeholder="Keira" {...form.name} radius="small" size="3" />
 
-					{form.errors.email && (
+					{form.errors.name && (
 						<TextField.Slot>
-							<Tooltip content={<>{form.errors.email.message}</>}>
+							<Tooltip content={<>{form.errors.name.message}</>}>
 								<InfoCircledIcon color="var(--ruby-10)" />
 							</Tooltip>
 						</TextField.Slot>
@@ -41,25 +30,24 @@ const PersonalTab = (props: SharedProps) => {
 
 			{/* DOB | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
-				<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+				<Text as="label" htmlFor="dob" size="2" highContrast color="gray">
 					DOB
 				</Text>
 
-				<TextField.Root color={form.errors.email && 'ruby'}>
+				<TextField.Root color={form.errors.dob && 'ruby'}>
 					<TextField.Input
-						id="email"
-						type="email"
+						id="dob"
+						type="date"
 						required
-						placeholder="example@foo.bar"
-						autoComplete="email"
-						{...form.email}
+						placeholder="17.11.1995"
+						{...form.dob}
 						radius="small"
 						size="3"
 					/>
 
-					{form.errors.email && (
+					{form.errors.dob && (
 						<TextField.Slot>
-							<Tooltip content={<>{form.errors.email.message}</>}>
+							<Tooltip content={<>{form.errors.dob.message}</>}>
 								<InfoCircledIcon color="var(--ruby-10)" />
 							</Tooltip>
 						</TextField.Slot>
@@ -99,25 +87,25 @@ const PersonalTab = (props: SharedProps) => {
 
 			{/* Password | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
-				<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+				<Text as="label" htmlFor="password" size="2" highContrast color="gray">
 					Password
 				</Text>
 
-				<TextField.Root color={form.errors.email && 'ruby'}>
+				<TextField.Root color={form.errors.password && 'ruby'}>
 					<TextField.Input
-						id="email"
-						type="email"
+						id="password"
+						type="password"
 						required
-						placeholder="example@foo.bar"
-						autoComplete="email"
-						{...form.email}
+						placeholder="••••••"
+						autoComplete="password"
+						{...form.password}
 						radius="small"
 						size="3"
 					/>
 
-					{form.errors.email && (
+					{form.errors.password && (
 						<TextField.Slot>
-							<Tooltip content={<>{form.errors.email.message}</>}>
+							<Tooltip content={<>{form.errors.password.message}</>}>
 								<InfoCircledIcon color="var(--ruby-10)" />
 							</Tooltip>
 						</TextField.Slot>
@@ -128,25 +116,25 @@ const PersonalTab = (props: SharedProps) => {
 
 			{/* Repeat password | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
-				<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+				<Text as="label" htmlFor="password_repeat" size="2" highContrast color="gray">
 					Repeat password
 				</Text>
 
-				<TextField.Root color={form.errors.email && 'ruby'}>
+				<TextField.Root color={form.errors.password_repeat && 'ruby'}>
 					<TextField.Input
-						id="email"
-						type="email"
+						id="password_repeat"
+						type="password"
 						required
-						placeholder="example@foo.bar"
-						autoComplete="email"
-						{...form.email}
+						placeholder="••••••"
+						autoComplete="password_repeat"
+						{...form.password_repeat}
 						radius="small"
 						size="3"
 					/>
 
-					{form.errors.email && (
+					{form.errors.password_repeat && (
 						<TextField.Slot>
-							<Tooltip content={<>{form.errors.email.message}</>}>
+							<Tooltip content={<>{form.errors.password_repeat.message}</>}>
 								<InfoCircledIcon color="var(--ruby-10)" />
 							</Tooltip>
 						</TextField.Slot>
