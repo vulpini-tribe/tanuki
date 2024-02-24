@@ -7,7 +7,7 @@ import type { Props } from './TextEllipsis.d';
 
 const TextEllipsis = ({ width, children, ...restProps }: Props) => {
 	return (
-		<Tooltip fullContent={children}>
+		<Tooltip message={children}>
 			<Root $width={width} {...restProps}>
 				{children}
 			</Root>

@@ -16,7 +16,7 @@ const schema = yup.object().shape({
 });
 
 const useFormHook = () => {
-	const { register, handleSubmit, formState, trigger, setError, clearErrors } = useForm<FormFields>({
+	const { register, handleSubmit, formState, trigger, setError, clearErrors, getValues } = useForm<FormFields>({
 		resolver: yupResolver(schema)
 	});
 
@@ -29,6 +29,8 @@ const useFormHook = () => {
 		password: register('password'),
 		submit: handleSubmit,
 		setError,
+		getValues,
+		errors: formState.errors,
 		revalidate: () => {
 			const fields = Object.keys(formState.dirtyFields);
 

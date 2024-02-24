@@ -61,6 +61,7 @@
       "@validations": ["./src/utils/validations/index"],
       "@validations/*": ["./src/utils/validations/*"],
 
+      "@axios": ["./src/utils/axios"]
     }
   },
 

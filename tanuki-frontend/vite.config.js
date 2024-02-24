@@ -41,7 +41,8 @@ const config = ({ mode }) => {
 				'@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
 				'@fonts': fileURLToPath(new URL('./src/assets/fonts', import.meta.url)),
 				'@yup': fileURLToPath(new URL('./src/utils/yup', import.meta.url)),
-				'@validations': fileURLToPath(new URL('./src/utils/validations', import.meta.url))
+				'@validations': fileURLToPath(new URL('./src/utils/validations', import.meta.url)),
+				'@axios': fileURLToPath(new URL('./src/utils/axios', import.meta.url))
 			}
 		},
 		server: {

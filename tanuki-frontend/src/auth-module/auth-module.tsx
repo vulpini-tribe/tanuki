@@ -7,7 +7,6 @@ import ResetPassword from './reset-password';
 import SetPassword from './set-password';
 
 import ROUTES from '@routes';
-import * as Separator from '@radix-ui/react-separator';
 import Root, { LeafBackground, AuthNav, Content, HiddenBack } from './auth-module.styles';
 
 import { Grid, Box, Flex, Text, Button } from '@radix-ui/themes';
