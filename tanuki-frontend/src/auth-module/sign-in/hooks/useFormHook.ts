@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import yup from '@yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import type { FormFields, FormKeys } from './sign-in.d';
+import type { FormFields, FormKeys } from '../sign-in.d';
 
 const schema = yup.object().shape({
 	email: yup

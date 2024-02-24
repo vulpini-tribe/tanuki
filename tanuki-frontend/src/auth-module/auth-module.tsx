@@ -7,7 +7,7 @@ import ResetPassword from './reset-password';
 import SetPassword from './set-password';
 
 import ROUTES from '@routes';
-import Root, { LeafBackground, Content } from './auth-module.styles';
+import Root, { LeafBackground, Content, SignButtons } from './auth-module.styles';
 
 import { Grid, Flex, Button } from '@radix-ui/themes';
 
@@ -28,13 +28,15 @@ const AuthRoot = () => (
 					<img src={logoUrl2} alt="Sogaz" />
 				</Grid>
 
-				<Flex gap="6" height="max-content" align="center">
-					<Button asChild radius="small" variant="ghost" highContrast>
-						<NavLink to={ROUTES.AUTH.SIGN_IN}>Sign In</NavLink>
-					</Button>
-					<Button asChild radius="small" variant="outline" highContrast>
-						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign Up</NavLink>
-					</Button>
+				<Flex gap="6" height="max-content" align="center" justify="center" asChild>
+					<SignButtons>
+						<Button asChild radius="small" variant="ghost" highContrast>
+							<NavLink to={ROUTES.AUTH.SIGN_IN}>Sign In</NavLink>
+						</Button>
+						<Button asChild radius="small" variant="outline" highContrast>
+							<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign Up</NavLink>
+						</Button>
+					</SignButtons>
 				</Flex>
 			</Grid>
 

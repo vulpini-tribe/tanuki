@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import axios, { getErrCode } from '@axios';
 
-import type { FormFields } from './sign-in.d';
+import type { FormFields } from '../sign-in.d';
 import type { UseFormSetError, UseFormGetValues } from 'react-hook-form';
 
-const useSignInReq = (setError: UseFormSetError<FormFields>, getValues: UseFormGetValues<FormFields>) => {
+const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFormGetValues<FormFields>) => {
 	const { email, password } = getValues();
 
 	const { isFetching, error, refetch } = useQuery({
@@ -36,4 +36,4 @@ const useSignInReq = (setError: UseFormSetError<FormFields>, getValues: UseFormG
 	};
 };
 
-export default useSignInReq;
+export default useAuthRequest;

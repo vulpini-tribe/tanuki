@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const SignButtons = styled.div`
+	@media (width <= 500px) {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		padding: 30px;
+	}
+`;
+
 export const Content = styled.div`
 	position: absolute;
 	inset: 0;

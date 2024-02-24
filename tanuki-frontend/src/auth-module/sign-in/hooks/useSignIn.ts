@@ -1,11 +1,11 @@
 import useFormHook from './useFormHook';
-import useSignInReq from './useSignInReq';
+import useAuthRequest from './useAuthRequest';
 
 const useSignIn = () => {
 	const form = useFormHook();
-	const request = useSignInReq(form.setError, form.getValues);
+	const request = useAuthRequest(form.setError, form.getValues);
 
-	return { form ,request }
-}
+	return { form, request };
+};
 
 export default useSignIn;
