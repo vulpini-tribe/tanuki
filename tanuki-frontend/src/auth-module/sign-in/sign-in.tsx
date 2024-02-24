@@ -5,9 +5,7 @@ import ROUTES from '@routes';
 import useSignIn from './hooks/useSignIn';
 
 import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import { Grid, TextField, IconButton, Flex, Button, Text } from '@radix-ui/themes';
-
-import { Tooltip } from '@ui';
+import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip } from '@radix-ui/themes';
 
 const SignInPage = () => {
 	const { form, request } = useSignIn();
@@ -44,13 +42,13 @@ const SignInPage = () => {
 							size="3"
 						/>
 
-						<TextField.Slot>
-							{form.errors.email && (
-								<Tooltip message={form.errors.email.message}>
+						{form.errors.email && (
+							<TextField.Slot>
+								<Tooltip content={<>{form.errors.email.message}</>}>
 									<InfoCircledIcon color="var(--ruby-10)" />
 								</Tooltip>
-							)}
-						</TextField.Slot>
+							</TextField.Slot>
+						)}
 					</TextField.Root>
 				</Grid>
 				{/* E-Mail | End */}
@@ -78,13 +76,13 @@ const SignInPage = () => {
 							</IconButton>
 						</TextField.Slot>
 
-						<TextField.Slot>
-							{form.errors.password && (
-								<Tooltip message={form.errors.password.message}>
+						{form.errors.password && (
+							<TextField.Slot>
+								<Tooltip content={<>{form.errors.password.message}</>}>
 									<InfoCircledIcon color="var(--ruby-10)" />
 								</Tooltip>
-							)}
-						</TextField.Slot>
+							</TextField.Slot>
+						)}
 					</TextField.Root>
 				</Grid>
 				{/* Password | End */}

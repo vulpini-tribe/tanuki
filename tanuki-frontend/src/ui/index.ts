@@ -1,2 +1,1 @@
-export { default as Tooltip } from './Tooltip';
-export { default as TextEllipsis } from './TextEllipsis';
+export { default as ProgressBar } from './progress-bar';
