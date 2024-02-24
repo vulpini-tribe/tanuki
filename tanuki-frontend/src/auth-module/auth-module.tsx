@@ -7,9 +7,9 @@ import ResetPassword from './reset-password';
 import SetPassword from './set-password';
 
 import ROUTES from '@routes';
-import Root, { LeafBackground, AuthNav, Content, HiddenBack } from './auth-module.styles';
+import Root, { LeafBackground, Content } from './auth-module.styles';
 
-import { Grid, Box, Flex, Text, Button } from '@radix-ui/themes';
+import { Grid, Flex, Button } from '@radix-ui/themes';
 
 import logoUrl from '@assets/images/logo.svg';
 import logoUrl2 from '@assets/images/logo-2.svg';
