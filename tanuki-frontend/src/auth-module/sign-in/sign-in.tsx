@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import ROUTES from '@routes';
-import useSignIn from './useSignIn'
-
+import useSignIn from './hooks/useSignIn';
 
 import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { Grid, TextField, IconButton, Flex, Button, Text } from '@radix-ui/themes';
