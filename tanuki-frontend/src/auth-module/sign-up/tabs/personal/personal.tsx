@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Grid, TextField, Text, Tooltip } from '@radix-ui/themes';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 import type { SharedProps } from '../shared.d';
 
+const currentYear = new Date().getFullYear();
 const PersonalTab = ({ form }: SharedProps) => {
+	const values = form.getValues();
+
+	useEffect(() => {
+		const dob_tmp = new Date(currentYear - values.age, 0, 1);
+
+		form.setValue('dob', dob_tmp.toISOString().split('T')[0]);
+	}, []);
+
 	return (
 		<Grid flow="row" gap="3">
 			{/* Name | Start */}
@@ -35,15 +44,7 @@ const PersonalTab = ({ form }: SharedProps) => {
 				</Text>
 
 				<TextField.Root color={form.errors.dob && 'ruby'}>
-					<TextField.Input
-						id="dob"
-						type="date"
-						required
-						placeholder="17.11.1995"
-						{...form.dob}
-						radius="small"
-						size="3"
-					/>
+					<TextField.Input id="dob" type="date" required {...form.dob} radius="small" size="3" />
 
 					{form.errors.dob && (
 						<TextField.Slot>

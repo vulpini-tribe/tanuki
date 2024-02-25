@@ -80,7 +80,7 @@ const BaseTab = ({ setProgress, form }: SharedProps) => {
 				<TextField.Root color={form.errors.age && 'ruby'}>
 					<TextField.Input
 						id="age"
-						type="age"
+						type="number"
 						required
 						placeholder="27"
 						autoComplete="age"
@@ -106,12 +106,7 @@ const BaseTab = ({ setProgress, form }: SharedProps) => {
 					Hormonal Sex
 				</Text>
 
-				<Select
-					name="hormonal_sex"
-					control={form.control}
-					defaultValue={hormonal_sexes[0].value}
-					values={hormonal_sexes}
-				/>
+				<Select name="hormonal_sex" control={form.control} values={hormonal_sexes} />
 			</Grid>
 			{/* Hormonal Sex | End */}
 		</Grid>

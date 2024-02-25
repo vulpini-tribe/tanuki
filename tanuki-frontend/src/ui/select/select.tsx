@@ -1,46 +1,36 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import * as SelectPrim from '@radix-ui/react-select';
+import { Select } from '@radix-ui/themes';
 
 import type { Props } from './select.d';
 
-const Select = ({ name, placeholder, control, values = [] }: Props) => {
+const SelectC = ({ name, control, values = [] }: Props) => {
 	return (
 		<Controller
 			control={control}
 			name={name}
-			render={({ field: { ref, ...field } }) => {
-				const onChangeHd = (nextValue: string) => {
-					if (!nextValue) return;
+			render={({ field: { ref, ...field } }) => (
+				<Select.Root onValueChange={field.onChange} {...field}>
+					<Select.Trigger />
 
-					field.onChange(nextValue);
-				};
-
-				return (
-					<SelectPrim.Root onValueChange={onChangeHd} defaultValue={placeholder} {...field}>
-						<SelectPrim.Trigger>
-							<SelectPrim.Value>{field.value || placeholder}</SelectPrim.Value>
-						</SelectPrim.Trigger>
-
-						<SelectPrim.Content>
-							{values.map((value) => (
-								<SelectPrim.Item key={value.value} value={value.value}>
-									{value.label}
-								</SelectPrim.Item>
-							))}
-						</SelectPrim.Content>
-					</SelectPrim.Root>
-				);
-			}}
+					<Select.Content>
+						{values.map((value) => (
+							<Select.Item key={value.value} value={value.value}>
+								{value.label}
+							</Select.Item>
+						))}
+					</Select.Content>
+				</Select.Root>
+			)}
 		></Controller>
 	);
 };
 
-Select.defaultProps = {
+SelectC.defaultProps = {
 	placeholder: 'Select item',
 	values: [],
 	name: ''
 };
 
-export default Select;
+export default SelectC;

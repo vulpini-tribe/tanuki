@@ -12,23 +12,30 @@ const schema = yup.object().shape({
 	unit: yup.string().required(''),
 	hormonal_sex: yup.string().required(''),
 
-	activity_rate: yup.number().required(''),
-	goal: yup.number().required(''),
+	activity_rate: yup.string().required(''),
+	goal: yup.string().required(''),
 	per_week: yup.number().required(''),
 
 	name: yup.string().required('Name is required'),
-	dob: yup.date().required('Date of birth is required'),
+	dob: yup.string().required('Date of birth is required'), // 1999-02-14
 	email: yup.string().email('Invalid email').required('Email is required'),
 	password: yup.string().required('Password is required'),
 	password_repeat: yup.string().oneOf([yup.ref('password')], 'Passwords must match')
 });
 
+const now = new Date();
 const useFormHook = () => {
-	const { control, register, handleSubmit, formState, trigger, setError, clearErrors, getValues } = useForm<FormFields>(
-		{
-			resolver: yupResolver(schema)
-		}
-	);
+	const { control, register, handleSubmit, formState, trigger, setError, clearErrors, getValues, setValue } =
+		useForm<FormFields>({
+			resolver: yupResolver(schema),
+			defaultValues: {
+				hormonal_sex: 'female',
+				activity_rate: 'light',
+				goal: 'loss',
+				per_week: 200,
+				dob: now.toISOString().split('T')[0]
+			}
+		});
 
 	useEffect(() => {
 		clearErrors();
@@ -54,6 +61,7 @@ const useFormHook = () => {
 		submit: handleSubmit,
 		setError,
 		getValues,
+		setValue,
 		errors: formState.errors,
 		control,
 		revalidate: () => {
