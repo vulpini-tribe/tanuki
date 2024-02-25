@@ -22,7 +22,7 @@ const SignInPage = () => {
 	const isSubmitBtnDisabled = Boolean(form.errors.password || form.errors.email) || request.isFetching;
 
 	return (
-		<Flex direction="column" style={{ width: '75%', maxWidth: 500 }}>
+		<Flex direction="column" style={{ width: '100%' }}>
 			<form method="post" noValidate onSubmit={form.submit(onSubmit)} onChange={form.revalidate}>
 				{/* E-Mail | Start */}
 				<Grid flow="row" rows="min-content" gap="2">

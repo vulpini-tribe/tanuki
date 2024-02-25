@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 
+export const CentralWrap = styled.div`
+	min-height: 60%;
+	display: flex;
+	align-items: start;
+
+	width: 75%;
+	max-width: 600px;
+`;
+
 export const SignButtons = styled.div`
-	@media (width <= 500px) {
+	@media (width <= 600px) OR (height <= 600px) {
 		position: fixed;
 		right: 0;
 		bottom: 0;

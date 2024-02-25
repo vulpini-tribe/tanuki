@@ -7,7 +7,7 @@ import type { SharedProps } from '../shared.d';
 
 const GoalsTab = ({ form }: SharedProps) => {
 	return (
-		<Grid mt="5" flow="row" gap="3">
+		<Grid flow="row" gap="3">
 			{/* Activity Level | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
 				<Text as="label" htmlFor="activity_rate" size="2" highContrast color="gray">

@@ -7,7 +7,7 @@ import ResetPassword from './reset-password';
 import SetPassword from './set-password';
 
 import ROUTES from '@routes';
-import Root, { LeafBackground, Content, SignButtons } from './auth-module.styles';
+import Root, { LeafBackground, Content, SignButtons, CentralWrap } from './auth-module.styles';
 
 import { Grid, Flex, Button } from '@radix-ui/themes';
 
@@ -41,14 +41,16 @@ const AuthRoot = () => (
 			</Grid>
 
 			<Flex align="center" justify="center" style={{ height: 'calc(100% - 160px)' }}>
-				<Routes>
-					<Route path={ROUTES.AUTH.SIGN_IN} element={<SignInPage />} />
-					<Route path={ROUTES.AUTH.SIGN_UP} element={<SignUp />} />
-					<Route path={ROUTES.AUTH.RESET_PASSWORD} element={<ResetPassword />} />
-					<Route path={ROUTES.AUTH.NEW_PASSWORD} element={<SetPassword />} />
+				<CentralWrap>
+					<Routes>
+						<Route path={ROUTES.AUTH.SIGN_IN} element={<SignInPage />} />
+						<Route path={ROUTES.AUTH.SIGN_UP} element={<SignUp />} />
+						<Route path={ROUTES.AUTH.RESET_PASSWORD} element={<ResetPassword />} />
+						<Route path={ROUTES.AUTH.NEW_PASSWORD} element={<SetPassword />} />
 
-					<Route path="*" element={<Navigate to={ROUTES.AUTH.SIGN_IN} replace />} />
-				</Routes>
+						<Route path="*" element={<Navigate to={ROUTES.AUTH.SIGN_IN} replace />} />
+					</Routes>
+				</CentralWrap>
 			</Flex>
 		</Content>
 	</Root>

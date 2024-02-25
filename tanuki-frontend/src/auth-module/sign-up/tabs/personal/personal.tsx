@@ -7,7 +7,7 @@ import type { SharedProps } from '../shared.d';
 
 const PersonalTab = ({ form }: SharedProps) => {
 	return (
-		<Grid mt="5" flow="row" gap="3">
+		<Grid flow="row" gap="3">
 			{/* Name | Start */}
 			<Grid flow="row" rows="min-content" gap="2">
 				<Text as="label" htmlFor="name" size="2" highContrast color="gray">

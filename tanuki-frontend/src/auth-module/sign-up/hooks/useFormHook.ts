@@ -24,9 +24,11 @@ const schema = yup.object().shape({
 });
 
 const useFormHook = () => {
-	const { register, handleSubmit, formState, trigger, setError, clearErrors, getValues } = useForm<FormFields>({
-		resolver: yupResolver(schema)
-	});
+	const { control, register, handleSubmit, formState, trigger, setError, clearErrors, getValues } = useForm<FormFields>(
+		{
+			resolver: yupResolver(schema)
+		}
+	);
 
 	useEffect(() => {
 		clearErrors();
@@ -53,6 +55,7 @@ const useFormHook = () => {
 		setError,
 		getValues,
 		errors: formState.errors,
+		control,
 		revalidate: () => {
 			const fields = Object.keys(formState.dirtyFields);
 
