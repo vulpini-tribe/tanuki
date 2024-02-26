@@ -11,11 +11,11 @@ const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFor
 	const { email, password } = getValues();
 
 	const { isFetching, error, refetch } = useQuery({
-		queryKey: ['/api/auth', password, email],
+		queryKey: ['/api/auth/sign-in', password, email],
 		queryFn: () =>
 			axios({
 				method: 'post',
-				url: '/api/auth',
+				url: '/api/auth/sign-in',
 				data: { email, password }
 			}),
 		enabled: false,

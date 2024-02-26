@@ -54,20 +54,21 @@ pub enum UnitType {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RegisterRequest {
-    pub username: String,
-    pub password: String,
-    pub body_constitution: BodyConstitutions,
-    pub general_goal: UsageGoals,
-    pub birthday: DateTime<Utc>,
-    pub activity_level: ActivityLevels,
-    pub weight_loss: f32,
-    pub weight_goal: f32,
-    pub height: Option<i8>,
-    pub weight: Option<f32>,
-    pub hips: Option<i8>,
-    pub waist: Option<i8>,
-    pub chest: Option<i8>,
-    pub unit: Option<UnitType>,
+    weight: f32,
+    height: i8,
+    age: i32,
+    unit: UnitType,
+    hormonal_sex: BodyConstitutions,
+
+    activity_rate: ActivityLevels,
+    goal: UsageGoals,
+    per_week: i8,
+
+    name: String,
+    dob: DateTime<Utc>,
+    email: String,
+    password: String,
+    password_repeat: String,
 }
 
 pub struct RegisterResponse {

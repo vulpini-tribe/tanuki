@@ -11,11 +11,11 @@ const useSignUpRequest = (setError: UseFormSetError<FormFields>, getValues: UseF
 	const values = getValues();
 
 	const { isFetching, error, refetch } = useQuery({
-		queryKey: ['/api/register'],
+		queryKey: ['/api/auth/sign-up'],
 		queryFn: () =>
 			axios({
 				method: 'post',
-				url: '/api/register',
+				url: '/api/auth/sign-up',
 				data: values
 			}),
 		gcTime: 0,
