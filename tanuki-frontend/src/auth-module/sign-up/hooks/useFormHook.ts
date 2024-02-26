@@ -33,7 +33,8 @@ const useFormHook = () => {
 				activity_rate: 'light',
 				goal: 'loss',
 				per_week: 200,
-				dob: now.toISOString().split('T')[0]
+				dob: now.toISOString().split('T')[0],
+				unit: 'metric'
 			}
 		});
 
@@ -62,6 +63,7 @@ const useFormHook = () => {
 		setError,
 		getValues,
 		setValue,
+		isValid: formState.isValid,
 		errors: formState.errors,
 		control,
 		revalidate: () => {
