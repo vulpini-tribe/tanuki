@@ -2,7 +2,7 @@ use crate::service::data_providers::WebDataPool;
 use actix_web::{web, Error, HttpResponse};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::json;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum BodyConstitutions {

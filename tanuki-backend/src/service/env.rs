@@ -1,4 +1,4 @@
-use base64;
+// use base64;
 use dotenvy::dotenv;
 use log;
 use serde_json::{json, Value};
@@ -13,29 +13,29 @@ pub struct EnvConfig {
 }
 
 impl EnvConfig {
-    fn get_platform_relationships() -> Result<Value, env::VarError> {
-        let relationships = env::var("PLATFORM_RELATIONSHIPS");
+    // fn get_platform_relationships() -> Result<Value, env::VarError> {
+    //     let relationships = env::var("PLATFORM_RELATIONSHIPS");
 
-        match relationships {
-            Ok(relationships) => {
-                let relationships = base64::decode(relationships).unwrap();
+    //     match relationships {
+    //         Ok(relationships) => {
+    //             let relationships = base64::decode(relationships).unwrap();
 
-                Ok(json!(relationships))
-            }
-            Err(e) => {
-                log::info!("[+] PLATFORM_RELATIONSHIPS: {}", e);
+    //             Ok(json!(relationships))
+    //         }
+    //         Err(e) => {
+    //             log::info!("[+] PLATFORM_RELATIONSHIPS: {}", e);
 
-                Err(e)
-            }
-        }
-    }
+    //             Err(e)
+    //         }
+    //     }
+    // }
 
     pub fn new() -> EnvConfig {
         dotenv().ok();
         log::info!("[+] Reading ENV configuration.");
 
-        let platform_relationships = EnvConfig::get_platform_relationships();
-        println!("PLATFORM_RELATIONSHIPS {:#?}", platform_relationships);
+        // let platform_relationships = EnvConfig::get_platform_relationships();
+        // println!("PLATFORM_RELATIONSHIPS {:#?}", platform_relationships);
 
         EnvConfig {
             hostname: env::var("HOSTNAME").expect("HOSTNAME must be set"),
