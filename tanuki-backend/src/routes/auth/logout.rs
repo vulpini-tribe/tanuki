@@ -9,7 +9,7 @@ pub struct LogoutRequest {
 }
 
 pub struct LogoutResponse {
-    status: String,
+    // status: String,
 }
 
 pub async fn logout(
