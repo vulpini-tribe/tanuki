@@ -12,7 +12,7 @@ pub struct WebDataPool {
 
 impl WebDataPool {
     fn create_redis(redis_url: String) -> r2d2::Pool<RedisConnectionManager> {
-        let redis_url = parse_redis_url(&redis_url).unwrap();
+        // let redis_url = parse_redis_url(&redis_url).unwrap();
         let manager =
             RedisConnectionManager::new(redis_url).expect("Redis connection should be successful");
 

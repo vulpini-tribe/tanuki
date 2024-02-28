@@ -37,7 +37,7 @@ async fn main() -> std::io::Result<()> {
             .service(auth::_routes::get_routes())
     })
     .bind((env_config.hostname, env_config.port))?
-    .workers(2)
+    .workers(1)
     .run()
     .await
 }

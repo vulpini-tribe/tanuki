@@ -1,5 +1,7 @@
 use crate::service::data_providers::WebDataPool;
 use actix_web::{web, Error, HttpResponse};
+use redis::Commands;
+use redis::Value as RV;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -16,7 +18,7 @@ pub struct LoginResponse {
 
 pub async fn login(
     user: web::Form<LoginRequest>,
-    _dp: web::Data<WebDataPool>,
+    dp: web::Data<WebDataPool>,
 ) -> Result<HttpResponse, Error> {
     if user.username.is_empty() {
         return Ok(HttpResponse::BadRequest().body("username is required"));

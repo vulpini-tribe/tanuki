@@ -10,7 +10,7 @@ pub fn parse_redis_url(redis_url: &str) -> Result<ConnectionInfo, url::ParseErro
         None
     };
 
-    // let passwd = url.password().map(|p| p.to_string());
+    let passwd = url.password().map(|p| p.to_string());
     let host = url
         .host_str()
         .ok_or_else(|| url::ParseError::IdnaError)?
@@ -18,8 +18,8 @@ pub fn parse_redis_url(redis_url: &str) -> Result<ConnectionInfo, url::ParseErro
     let port = url.port().unwrap_or(6379);
 
     Ok(ConnectionInfo {
-        username: None,
-        passwd: username,
+        username: username,
+        passwd: passwd,
         addr: Box::<ConnectionAddr>::new(ConnectionAddr::Tcp(host, port)),
         db: 0,
     })

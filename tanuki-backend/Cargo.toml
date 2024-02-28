@@ -48,3 +48,4 @@ serde_json = "1.0.108"
 serde_json_path = "0.6.4"
 base64 = "0.21.5"
 actix-session = "0.8.0"
+redis = { version = "0.20.2", features = ["tls"] }
