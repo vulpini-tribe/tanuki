@@ -8,9 +8,9 @@ pub struct LogoutRequest {
     pub username: String,
 }
 
-pub struct LogoutResponse {
-    // status: String,
-}
+// pub struct LogoutResponse {
+// status: String,
+// }
 
 pub async fn logout(
     user: web::Form<LogoutRequest>,

@@ -1,5 +1,13 @@
 pub mod _routes;
-pub mod login;
-pub mod logout;
-pub mod refresh;
-pub mod register;
+
+mod login;
+pub use login::login;
+
+mod logout;
+pub use logout::logout;
+
+mod refresh;
+pub use refresh::refresh;
+
+mod register;
+pub use register::register;

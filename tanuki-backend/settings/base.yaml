@@ -1,6 +1,0 @@
-application:
-  port: 1337
-
-db:
-  # To Apply migrations value MIGRATION=MIGRATION
-  MIGRATION: "MIGRATION"

@@ -71,10 +71,10 @@ pub struct RegisterRequest {
     password_repeat: String,
 }
 
-pub struct RegisterResponse {
-    pub bearer_token: String,
-    pub refresh_token: String,
-}
+// pub struct RegisterResponse {
+//     pub bearer_token: String,
+//     pub refresh_token: String,
+// }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FormVal {

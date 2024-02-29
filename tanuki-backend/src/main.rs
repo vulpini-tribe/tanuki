@@ -4,29 +4,29 @@ pub mod service;
 use log;
 extern crate diesel;
 use actix_web::{self, web, App, HttpServer};
-use routes::{auth, health};
+use routes::{auth, health, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     service::service_logger::init_logger();
     log::info!("Main bootstrap tanuki server starts");
 
-    let settings = service::settings::SettingsConfig::new();
+    let env_config = service::env::EnvConfig::new();
 
-    let tel_subscriber = service::telemetry::get_subscriber(settings.debug.clone());
+    let tel_subscriber = service::telemetry::get_subscriber(env_config.with_debug);
     service::telemetry::init_subscriber(tel_subscriber);
 
     service::in_deploy_migrations::run_migrations(
-        settings.database_url.clone(),
-        settings.db.migration.clone(),
+        env_config.database_url.clone(),
+        env_config.with_migration,
     );
 
-    tracing::event!(target: "backend", tracing::Level::INFO, "Listening on {}://{}:{}", settings.application.protocol, settings.application.host, settings.application.port);
+    tracing::event!(target: "backend", tracing::Level::INFO, "Listening on http://{}:{}", env_config.hostname, env_config.port);
 
     HttpServer::new(move || {
         let data_providers = service::data_providers::WebDataPool::new(
-            settings.redis_url.clone(),
-            settings.database_url.clone(),
+            env_config.redis_url.clone(),
+            env_config.database_url.clone(),
         );
 
         let middlewares = service::middlewares::Middlewares::new();
@@ -38,9 +38,10 @@ async fn main() -> std::io::Result<()> {
             .wrap(middlewares.logger)
             .app_data(web::Data::new(data_providers))
             .service(auth::_routes::get_routes())
+            .service(users::_routes::get_routes())
             .service(health::_routes::get_routes())
     })
-    .bind((settings.application.host, settings.application.port))?
+    .bind((env_config.hostname, env_config.port))?
     .workers(1)
     .run()
     .await

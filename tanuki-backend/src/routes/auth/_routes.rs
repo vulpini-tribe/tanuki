@@ -1,7 +1,7 @@
-use super::login::login;
-use super::logout::logout;
-use super::refresh::refresh;
-use super::register::register;
+use super::login;
+use super::logout;
+use super::refresh;
+use super::register;
 
 use actix_web::{web, Scope};
 

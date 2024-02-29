@@ -1,8 +1,8 @@
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::{fmt, EnvFilter};
 
-pub fn get_subscriber(debug: bool) -> impl tracing::Subscriber {
-    let env_filter = if debug {
+pub fn get_subscriber(with_debug: bool) -> impl tracing::Subscriber {
+    let env_filter = if with_debug {
         "trace".to_string()
     } else {
         "info".to_string()
@@ -16,7 +16,7 @@ pub fn get_subscriber(debug: bool) -> impl tracing::Subscriber {
         .with(env_filter)
         .with(stdout_log);
 
-    let json_log = if !debug {
+    let json_log = if !with_debug {
         Some(fmt::layer().json())
     } else {
         None

@@ -1,6 +1,0 @@
-application:
-  protocol: http
-  host: "localhost"
-  base_url: "http://localhost"
-
-debug: false

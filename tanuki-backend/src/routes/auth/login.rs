@@ -9,10 +9,10 @@ pub struct LoginRequest {
     pub password: String,
 }
 
-pub struct LoginResponse {
-    pub bearer_token: String,
-    pub refresh_token: String,
-}
+// pub struct LoginResponse {
+//     pub bearer_token: String,
+//     pub refresh_token: String,
+// }
 
 pub async fn login(
     user: web::Form<LoginRequest>,
