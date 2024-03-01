@@ -32,12 +32,7 @@ diesel_migrations = "2.1.0"
 serde = { version = "1.0.193", features = ["serde_derive"] }
 serde_with = "3.4.0"
 env_logger = "0.10.1"
-uuid = { version = "1.6.1", features = [
-  "v4",
-  "fast-rng",
-  "serde",
-  "macro-diagnostics",
-] }
+uuid = { version = "1.6.1", features = ["v4", "fast-rng", "serde", "macro-diagnostics"] }
 chrono = { version = "0.4.31", features = ["serde"] }
 url = "2.5.0"
 log = { version = "0.4.20", features = ["std", "serde"] }
@@ -45,7 +40,7 @@ dotenvy = "0.15.7"
 r2d2 = "0.8.10"
 r2d2_redis = "0.14.0"
 serde_derive = "1.0.193"
-serde_json = "1.0.108"
+serde_json = { version = "1.0.108", features = ["raw_value"] }
 serde_json_path = "0.6.4"
 base64 = "0.21.5"
 actix-session = "0.8.0"
@@ -60,3 +55,9 @@ tracing-subscriber = { version = "0.3.18", features = [
   'tracing-log',
 ] }
 config = { version = "0.14.0", features = ["yaml"] }
+pasetors = "0.6.8"
+once_cell = "1.19.0"
+hex = "0.4.3"
+argon2 = "0.5.3"
+lettre = { version = "0.11.4", features = ["builder", "tokio1-native-tls"] }
+minijinja = "1.0.12"
