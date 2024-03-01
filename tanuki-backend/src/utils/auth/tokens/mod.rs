@@ -1,0 +1,5 @@
+mod issue_confirmation_token_paseto;
+pub use issue_confirmation_token_paseto::issue_confirmation_token_paseto;
+
+mod verify_confirmation_token_paseto;
+pub use verify_confirmation_token_paseto::verify_confirmation_token_paseto;

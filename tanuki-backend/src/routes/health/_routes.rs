@@ -1,10 +1,9 @@
 use super::heartbeat;
 
-use actix_web::{web, Scope};
+use actix_web::{web, Resource};
 
-pub fn get_routes() -> Scope {
-    let auth_routes =
-        web::scope("/heartbeat").service(web::resource("/").route(web::get().to(heartbeat)));
+pub fn get_routes() -> Resource {
+    let auth_routes = web::resource("/heartbeat").route(web::get().to(heartbeat));
 
     auth_routes
 }

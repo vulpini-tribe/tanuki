@@ -1,5 +1,7 @@
 pub mod routes;
 pub mod service;
+pub mod types;
+pub mod utils;
 
 use log;
 extern crate diesel;

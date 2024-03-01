@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["Alena Dzhukich <github@alena.red>"]
 edition = "2021"
 
+# [lib]
+# path = "src/lib.rs"
+
 [[bin]]
 edition = "2021"
 name = "tanuki"
@@ -32,7 +35,12 @@ diesel_migrations = "2.1.0"
 serde = { version = "1.0.193", features = ["serde_derive"] }
 serde_with = "3.4.0"
 env_logger = "0.10.1"
-uuid = { version = "1.6.1", features = ["v4", "fast-rng", "serde", "macro-diagnostics"] }
+uuid = { version = "1.6.1", features = [
+  "v4",
+  "fast-rng",
+  "serde",
+  "macro-diagnostics",
+] }
 chrono = { version = "0.4.31", features = ["serde"] }
 url = "2.5.0"
 log = { version = "0.4.20", features = ["std", "serde"] }
