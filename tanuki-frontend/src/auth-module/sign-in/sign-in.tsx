@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 import ROUTES from '@routes';
 import useSignIn from './hooks/useSignIn';
 
-import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading } from '@radix-ui/themes';
+import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading, Checkbox } from '@radix-ui/themes';
+import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 
 const SignInPage = () => {
 	const { form, request } = useSignIn();
@@ -34,6 +34,16 @@ const SignInPage = () => {
 					</Text>
 
 					<TextField.Root color={form.errors.email && 'ruby'}>
+						<TextField.Slot>
+							{form.errors.email ? (
+								<Tooltip content={<>{form.errors.email.message}</>}>
+									<InfoCircledIcon color="var(--ruby-10)" />
+								</Tooltip>
+							) : (
+								<PersonIcon />
+							)}
+						</TextField.Slot>
+
 						<TextField.Input
 							id="email"
 							type="email"
@@ -44,25 +54,27 @@ const SignInPage = () => {
 							radius="small"
 							size="3"
 						/>
-
-						{form.errors.email && (
-							<TextField.Slot>
-								<Tooltip content={<>{form.errors.email.message}</>}>
-									<InfoCircledIcon color="var(--ruby-10)" />
-								</Tooltip>
-							</TextField.Slot>
-						)}
 					</TextField.Root>
 				</Grid>
 				{/* E-Mail | End */}
 
 				{/* Password | Start */}
 				<Grid flow="row" rows="min-content" gap="2" mt="3">
-					<Text as="label" htmlFor="email" size="2" highContrast color="gray">
+					<Text as="label" htmlFor="password" size="2" highContrast color="gray">
 						Password
 					</Text>
 
 					<TextField.Root color={form.errors.password && 'ruby'}>
+						<TextField.Slot>
+							{form.errors.password ? (
+								<Tooltip content={<>{form.errors.password.message}</>}>
+									<InfoCircledIcon color="var(--ruby-10)" />
+								</Tooltip>
+							) : (
+								<LockClosedIcon />
+							)}
+						</TextField.Slot>
+
 						<TextField.Input
 							id="password"
 							required
@@ -78,32 +90,32 @@ const SignInPage = () => {
 								{isPasswordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
 							</IconButton>
 						</TextField.Slot>
-
-						{form.errors.password && (
-							<TextField.Slot>
-								<Tooltip content={<>{form.errors.password.message}</>}>
-									<InfoCircledIcon color="var(--ruby-10)" />
-								</Tooltip>
-							</TextField.Slot>
-						)}
 					</TextField.Root>
 				</Grid>
 				{/* Password | End */}
 
-				<Grid flow="column" columns="1fr 2fr" gap="5" mt="5" align="center">
-					<Button type="submit" radius="small" variant="solid" disabled={isSubmitBtnDisabled}>
-						{request.isFetching ? '...' : 'Login'}
-					</Button>
+				<Grid flow="column" columns="2fr 1fr" mt="4" align="center">
+					<Text as="label" size="2">
+						<Flex gap="2">
+							<Checkbox /> Remember me
+						</Flex>
+					</Text>
 
-					<Button asChild radius="small" variant="soft" highContrast>
+					<Button asChild radius="small" variant="ghost">
 						<NavLink to={ROUTES.AUTH.RESET_PASSWORD}>Restore password</NavLink>
+					</Button>
+				</Grid>
+
+				<Grid flow="column" columns="1fr" mt="6" align="center">
+					<Button type="submit" radius="small" variant="solid" size="3" disabled={isSubmitBtnDisabled}>
+						{request.isFetching ? '...' : 'Login'}
 					</Button>
 				</Grid>
 			</form>
 
 			<Flex justify="center" mt="5">
 				<Text size="2" highContrast>
-					Don\'t have an account?{' '}
+					Don&apos;t have an account?{' '}
 					<Button asChild radius="small" variant="ghost" highContrast>
 						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
 					</Button>

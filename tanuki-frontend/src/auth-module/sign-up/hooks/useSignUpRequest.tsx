@@ -7,18 +7,24 @@ import axios, { getErrCode } from '@axios';
 import type { FormFields } from '../sign-up.d';
 import type { UseFormSetError, UseFormGetValues } from 'react-hook-form';
 
+// @ts-ignore
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 const useSignUpRequest = (setError: UseFormSetError<FormFields>, getValues: UseFormGetValues<FormFields>) => {
 	const values = getValues();
 
 	const { isFetching, error, refetch } = useQuery({
-		queryKey: ['/api/auth/sign-up'],
+		queryKey: ['/auth/sign-up'],
 		queryFn: () =>
 			axios({
 				method: 'post',
-				url: '/api/auth/sign-up',
+				url: `${apiUrl}/auth/sign-up`,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
 				data: values
 			}),
-		gcTime: 0,
+		gcTime: 10,
 		enabled: false,
 		retry: 3
 	});

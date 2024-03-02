@@ -15,9 +15,6 @@ import '@core/styles/theme-config.css';
 
 import { ResetStyles } from '@core/styles';
 
-// @ts-ignore
-// const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
 const queryClient = new QueryClient();
 
 const Root = () => {

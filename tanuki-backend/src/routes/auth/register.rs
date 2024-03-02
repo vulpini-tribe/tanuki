@@ -54,18 +54,7 @@ pub enum UnitType {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RegisterRequest {
-    weight: f32,
-    height: i8,
-    age: i32,
-    unit: UnitType,
-    hormonal_sex: BodyConstitutions,
-
-    activity_rate: ActivityLevels,
-    goal: UsageGoals,
-    per_week: i8,
-
     name: String,
-    dob: DateTime<Utc>,
     email: String,
     password: String,
     password_repeat: String,

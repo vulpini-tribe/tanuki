@@ -7,6 +7,9 @@ import axios, { getErrCode } from '@axios';
 import type { FormFields } from '../sign-in.d';
 import type { UseFormSetError, UseFormGetValues } from 'react-hook-form';
 
+// @ts-ignore
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
 const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFormGetValues<FormFields>) => {
 	const { email, password } = getValues();
 
@@ -15,8 +18,11 @@ const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFor
 		queryFn: () =>
 			axios({
 				method: 'post',
-				url: '/api/auth/sign-in',
-				data: { email, password }
+				url: `${apiUrl}/auth/sign-in`,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				data: { username: email, password }
 			}),
 		enabled: false,
 		retry: 3
