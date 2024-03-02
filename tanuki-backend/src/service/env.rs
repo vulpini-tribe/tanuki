@@ -24,6 +24,7 @@ pub struct EnvConfig {
     pub smtp_port: u16,
     pub smtp_username: String,
     pub smtp_token: String,
+    pub email_from: String,
 }
 
 impl EnvConfig {
@@ -65,6 +66,7 @@ impl EnvConfig {
                 .expect("SMTP_PORT must be a number"),
             smtp_username: env::var("SMTP_USERNAME").expect("SMTP_USERNAME must be set"),
             smtp_token: env::var("SMTP_TOKEN").expect("SMTP_TOKEN must be set"),
+            email_from: env::var("EMAIL_FROM").expect("EMAIL_FROM must be set"),
         }
     }
 }

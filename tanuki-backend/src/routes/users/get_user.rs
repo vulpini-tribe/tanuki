@@ -6,6 +6,7 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::utils::auth::tokens::issue_confirmation_token_paseto;
+use crate::utils::emails::send_email;
 
 #[derive(Deserialize, Serialize, Debug)]
 struct User {
@@ -41,6 +42,20 @@ pub async fn get_user(
     issue_confirmation_token_paseto(*user_id, dp.redis.clone(), None)
         .await
         .unwrap();
+
+    // send email
+    let result = send_email(
+        "E-Mail Verification".to_string(),
+        "Keira".to_string(),
+        "mail@alena.red".to_string(),
+        "verification_email".to_string(),
+        *user_id,
+        dp.redis.clone(),
+    )
+    .await
+    .unwrap();
+
+    println!("{:?}", result);
 
     Ok(HttpResponse::Ok().json(json!(user)))
 }
