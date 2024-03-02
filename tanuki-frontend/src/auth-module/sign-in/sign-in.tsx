@@ -5,7 +5,7 @@ import ROUTES from '@routes';
 import useSignIn from './hooks/useSignIn';
 
 import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
-import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip } from '@radix-ui/themes';
+import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading } from '@radix-ui/themes';
 
 const SignInPage = () => {
 	const { form, request } = useSignIn();
@@ -22,7 +22,10 @@ const SignInPage = () => {
 	const isSubmitBtnDisabled = Boolean(form.errors.password || form.errors.email) || request.isFetching;
 
 	return (
-		<Flex direction="column" style={{ width: '100%' }}>
+		<Flex direction="column" style={{ width: '65%' }}>
+			<Heading size="6" mb="7">
+				Welcome Back
+			</Heading>
 			<form method="post" noValidate onSubmit={form.submit(onSubmit)} onChange={form.revalidate}>
 				{/* E-Mail | Start */}
 				<Grid flow="row" rows="min-content" gap="2">
@@ -97,6 +100,15 @@ const SignInPage = () => {
 					</Button>
 				</Grid>
 			</form>
+
+			<Flex justify="center" mt="5">
+				<Text size="2" highContrast>
+					Don\'t have an account?{' '}
+					<Button asChild radius="small" variant="ghost" highContrast>
+						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
+					</Button>
+				</Text>
+			</Flex>
 		</Flex>
 	);
 };

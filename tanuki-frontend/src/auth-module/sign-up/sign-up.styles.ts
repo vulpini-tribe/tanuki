@@ -37,11 +37,10 @@ export const TabsList = styled.div`
 `;
 
 export default styled.form`
-	width: 100%;
+	width: 65%;
 
 	background-color: rgba(255, 255, 255, 0.2);
 	border: 2px solid rgba(255, 255, 255, 0.5);
-	padding: var(--space-6);
 	border-radius: var(--radius-2);
 	backdrop-filter: blur(10px);
 `;

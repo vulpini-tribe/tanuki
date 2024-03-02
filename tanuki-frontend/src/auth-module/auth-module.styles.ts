@@ -1,50 +1,55 @@
 import styled from 'styled-components';
 
-export const CentralWrap = styled.div`
-	min-height: 60%;
-	display: flex;
-	align-items: start;
-
-	width: 75%;
-	max-width: 600px;
-`;
-
-export const SignButtons = styled.div`
-	@media (width <= 600px) OR (height <= 600px) {
-		position: fixed;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		padding: 30px;
-	}
-`;
-
-export const Content = styled.div`
-	position: absolute;
-	inset: 0;
-	padding: 30px;
-`;
-
-export const LeafBackground = styled.div<{ $leafUrl: string }>`
-	position: relative;
-	display: flex;
-	justify-content: center;
+export const Content = styled.main`
+	width: 100%;
 	height: 100%;
-	min-height: 100vh;
-	inset: 0;
-	background-color: var(--accent-6);
-	${(props) => (props.$leafUrl ? `background-image: url(${props.$leafUrl});` : '')}
-	background-repeat: repeat;
-	background-size: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
 
-	&::before {
-		position: absolute;
-		background: linear-gradient(0deg, var(--accent-5) 0%, rgba(255 255 255 / 0) 50%, var(--accent-5) 100%);
-		content: '';
-		inset: 0;
+export const SideContent = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	@media (width <= 930px) {
+		display: none;
 	}
+`;
+
+export const Image = styled.div<{ $src: string }>`
+	width: 100%;
+	height: 100%;
+	${(props) => (props.$src ? `background-image: url(${props.$src});` : '')}
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+`;
+
+export const Logo = styled.div<{ $src: string }>`
+	position: fixed;
+	top: 48px;
+	left: 48px;
+	width: 100px;
+	height: 30px;
+	${(props) => `background-image: url(${props.$src});`}
+	background-repeat: no-repeat;
+	background-position: center;
 `;
 
 export default styled.div`
 	position: relative;
+	display: grid;
+	grid-auto-columns: 3fr 4fr;
+	grid-auto-flow: column;
+	height: 100%;
+	min-height: 100vh;
+	background-color: var(--accent-2);
+
+	@media (width <= 930px) {
+		grid-auto-columns: 1fr 0;
+	}
 `;

@@ -7,52 +7,35 @@ import ResetPassword from './reset-password';
 import SetPassword from './set-password';
 
 import ROUTES from '@routes';
-import Root, { LeafBackground, Content, SignButtons, CentralWrap } from './auth-module.styles';
+import Root, { Logo, Content, SideContent, Image } from './auth-module.styles';
 
 import { Grid, Flex, Button } from '@radix-ui/themes';
 
 import logoUrl from '@assets/images/logo.svg';
 import logoUrl2 from '@assets/images/logo-2.svg';
 import leafUrl from '@assets/images/leaf.svg';
+import tanukiUrl from '@assets/images/tanuki.jpg';
 
 import type { Props } from './auth-module.d';
 
 const AuthRoot = () => (
 	<Root>
-		<LeafBackground $leafUrl={leafUrl} />
+		<Logo $src={logoUrl} />
 
 		<Content>
-			<Grid flow="column" columns="1fr max-content">
-				<Grid flow="row" gap="3">
-					<img src={logoUrl} alt="Sogaz" />
-					<img src={logoUrl2} alt="Sogaz" />
-				</Grid>
+			<Routes>
+				<Route path={ROUTES.AUTH.SIGN_IN} element={<SignInPage />} />
+				<Route path={ROUTES.AUTH.SIGN_UP} element={<SignUp />} />
+				<Route path={ROUTES.AUTH.RESET_PASSWORD} element={<ResetPassword />} />
+				<Route path={ROUTES.AUTH.NEW_PASSWORD} element={<SetPassword />} />
 
-				<Flex gap="6" height="max-content" align="center" justify="center" asChild>
-					<SignButtons>
-						<Button asChild radius="small" variant="ghost" highContrast>
-							<NavLink to={ROUTES.AUTH.SIGN_IN}>Sign In</NavLink>
-						</Button>
-						<Button asChild radius="small" variant="outline" highContrast>
-							<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign Up</NavLink>
-						</Button>
-					</SignButtons>
-				</Flex>
-			</Grid>
-
-			<Flex align="center" justify="center" style={{ height: 'calc(100% - 160px)' }}>
-				<CentralWrap>
-					<Routes>
-						<Route path={ROUTES.AUTH.SIGN_IN} element={<SignInPage />} />
-						<Route path={ROUTES.AUTH.SIGN_UP} element={<SignUp />} />
-						<Route path={ROUTES.AUTH.RESET_PASSWORD} element={<ResetPassword />} />
-						<Route path={ROUTES.AUTH.NEW_PASSWORD} element={<SetPassword />} />
-
-						<Route path="*" element={<Navigate to={ROUTES.AUTH.SIGN_IN} replace />} />
-					</Routes>
-				</CentralWrap>
-			</Flex>
+				<Route path="*" element={<Navigate to={ROUTES.AUTH.SIGN_IN} replace />} />
+			</Routes>
 		</Content>
+
+		<SideContent>
+			<Image $src={tanukiUrl} />
+		</SideContent>
 	</Root>
 );
 
