@@ -1,8 +1,10 @@
 use crate::service::data_providers::WebDataPool;
 use actix_web::{web, Error, HttpResponse};
 use chrono::{DateTime, Utc};
+use email_address::*;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use std::str::FromStr;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum BodyConstitutions {
@@ -75,7 +77,28 @@ pub async fn register(
     _dp: web::Data<WebDataPool>,
 ) -> Result<HttpResponse, Error> {
     let new_user = new_user.into_inner();
-    println!("{:#?}", new_user);
+
+    // check if passwords equal
+    if new_user.password != new_user.password_repeat {
+        return Ok(HttpResponse::BadRequest().json(json!({
+            "data": "passwords do not match"
+        })));
+    }
+
+    // check if email is valid
+    if EmailAddress::is_valid(&new_user.email) == false {
+        return Ok(HttpResponse::BadRequest().json(json!({
+            "data": "email is not valid"
+        })));
+    }
+
+    // check if email is already in use
+    // check if name is valid
+    if new_user.name.len() < 3 {
+        return Ok(HttpResponse::BadRequest().json(json!({
+            "data": "name is too short"
+        })));
+    }
 
     Ok(HttpResponse::Ok().json(json!("register")))
 }

@@ -69,3 +69,4 @@ hex = "0.4.3"
 argon2 = "0.5.3"
 lettre = { version = "0.11.4", features = ["builder", "tokio1-native-tls"] }
 minijinja = "1.0.12"
+email_address = "0.2.4"

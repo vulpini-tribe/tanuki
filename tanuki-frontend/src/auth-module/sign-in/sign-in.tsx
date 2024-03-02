@@ -24,7 +24,7 @@ const SignInPage = () => {
 	return (
 		<Flex direction="column" style={{ width: '65%' }}>
 			<Heading size="6" mb="7">
-				Welcome Back
+				Login to your account
 			</Heading>
 			<form method="post" noValidate onSubmit={form.submit(onSubmit)} onChange={form.revalidate}>
 				{/* E-Mail | Start */}
@@ -48,7 +48,7 @@ const SignInPage = () => {
 							id="email"
 							type="email"
 							required
-							placeholder="example@foo.bar"
+							placeholder="E-Mail"
 							autoComplete="email"
 							{...form.email}
 							radius="small"
@@ -78,7 +78,7 @@ const SignInPage = () => {
 						<TextField.Input
 							id="password"
 							required
-							placeholder="••••••"
+							placeholder="Password"
 							autoComplete="current-password"
 							type={isPasswordVisible ? 'text' : 'password'}
 							{...form.password}
