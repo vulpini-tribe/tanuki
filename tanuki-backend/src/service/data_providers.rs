@@ -1,3 +1,4 @@
+use crate::service;
 use log;
 
 use sqlx::postgres::PgPoolOptions;
@@ -28,13 +29,20 @@ impl WebDataPool {
 
     async fn create_db() -> sqlx::Pool<sqlx::Postgres> {
         println!("[+] Postgres connection pool creating.");
+        let env_config = service::env::EnvConfig::new();
+
+        let ssl_mode = if env_config.pg.ssl_mode {
+            PgSslMode::Require
+        } else {
+            PgSslMode::Allow
+        };
 
         let connect_options = PgConnectOptions::new()
-            .username("dev_tanuki_psql_user")
-            .password("msjUdSLfpMpxU2yP0Puf7JhHqqsJwPnF")
-            .database("dev_tanuki_psql")
-            .host("dpg-cnf1r36d3nmc73f0tde0-a.oregon-postgres.render.com")
-            .ssl_mode(PgSslMode::Require); // Set SSL mode to Require
+            .username(&env_config.pg.username)
+            .password(&env_config.pg.password)
+            .database(&env_config.pg.database)
+            .host(&env_config.pg.hostname)
+            .ssl_mode(ssl_mode);
 
         let pool = PgPoolOptions::new()
             .max_connections(5)

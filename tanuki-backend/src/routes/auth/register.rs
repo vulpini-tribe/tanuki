@@ -38,7 +38,7 @@ impl ResponseError for MyError {
 }
 
 async fn rollback_tr(pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>) -> () {
-    pg_transaction.rollback().await.map_err(|_| {
+    let _ = pg_transaction.rollback().await.map_err(|_| {
         actix_web::error::InternalError::new(
             json!({
                 "errors": {
@@ -48,8 +48,6 @@ async fn rollback_tr(pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>) -> (
             actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
         )
     });
-
-    ()
 }
 
 #[derive(Serialize, Deserialize, Debug)]

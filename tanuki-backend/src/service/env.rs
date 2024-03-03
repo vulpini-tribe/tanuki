@@ -3,12 +3,30 @@ use log;
 use std::env;
 
 #[derive(Debug, Clone)]
+pub struct PgConfig {
+    pub hostname: String,
+    pub port: Option<i64>,
+    pub username: String,
+    pub password: String,
+    pub database: String,
+    pub ssl_mode: bool,
+    pub as_string: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct SMTPConfig {
+    pub server: String,
+    pub port: u16,
+    pub username: String,
+    pub token: String,
+}
+
+#[derive(Debug, Clone)]
 pub struct EnvConfig {
     // Base
     pub port: u16,
     pub hostname: String,
     pub redis_url: String,
-    pub database_url: String,
 
     // Params
     pub with_migration: bool,
@@ -19,11 +37,8 @@ pub struct EnvConfig {
     pub token_expiration: i64,
     pub hmac_secret: String,
 
-    // Email
-    pub smtp_server: String,
-    pub smtp_port: u16,
-    pub smtp_username: String,
-    pub smtp_token: String,
+    pub pg: PgConfig,
+    pub smtp: SMTPConfig,
     pub email_from: String,
 }
 
@@ -44,7 +59,6 @@ impl EnvConfig {
                 .expect("PORT must be a number"),
 
             redis_url: env::var("REDIS_URL").expect("REDIS_URL must be set"),
-            database_url: env::var("DATABASE_URL").expect("DATABASE_URL must be set"),
 
             // Additional params
             with_migration: with_migration == "MIGRATION",
@@ -58,15 +72,33 @@ impl EnvConfig {
                 .expect("TOKEN_EXPIRATION must be a number"),
             hmac_secret: env::var("HMAC_SECRET").expect("HMAC_SECRET must be set"),
 
-            // Email
-            smtp_server: env::var("SMTP_SERVER").expect("SMTP_SERVER must be set"),
-            smtp_port: env::var("SMTP_PORT")
-                .expect("SMTP_PORT must be set")
-                .parse::<u16>()
-                .expect("SMTP_PORT must be a number"),
-            smtp_username: env::var("SMTP_USERNAME").expect("SMTP_USERNAME must be set"),
-            smtp_token: env::var("SMTP_TOKEN").expect("SMTP_TOKEN must be set"),
             email_from: env::var("EMAIL_FROM").expect("EMAIL_FROM must be set"),
+
+            smtp: SMTPConfig {
+                server: env::var("SMTP_SERVER").expect("SMTP_SERVER must be set"),
+                port: env::var("SMTP_PORT")
+                    .expect("SMTP_PORT must be set")
+                    .parse::<u16>()
+                    .expect("SMTP_PORT must be a number"),
+                username: env::var("SMTP_USERNAME").expect("SMTP_USERNAME must be set"),
+                token: env::var("SMTP_TOKEN").expect("SMTP_TOKEN must be set"),
+            },
+
+            pg: PgConfig {
+                hostname: env::var("PG.HOSTNAME").expect("PG.HOSTNAME must be set"),
+                port: env::var("PG.PORT")
+                    .unwrap_or("5432".to_string())
+                    .parse::<i64>()
+                    .ok(),
+                username: env::var("PG.USERNAME").expect("PG.USERNAME must be set"),
+                password: env::var("PG.PASSWORD").expect("PG.PASSWORD must be set"),
+                database: env::var("PG.DATABASE").expect("PG.DATABASE must be set"),
+                ssl_mode: env::var("PG.SSLMODE")
+                    .expect("PG.SSLMODE must be set")
+                    .parse::<bool>()
+                    .unwrap(),
+                as_string: env::var("PG.AS_STRING").expect("PG.AS_STRING must be set"),
+            },
         }
     }
 }

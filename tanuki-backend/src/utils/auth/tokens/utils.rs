@@ -26,7 +26,7 @@ pub fn get_user_id(claims: &Claims) -> Result<uuid::Uuid, String> {
 
 // Get redis key
 pub fn get_redis_key(session_key: &str, is_for_password_change: Option<bool>) -> String {
-    let mut redis_key = "".to_string();
+    let redis_key;
 
     if is_for_password_change.is_some() {
         redis_key = format!(

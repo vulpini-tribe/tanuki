@@ -20,7 +20,7 @@ async fn main() -> std::io::Result<()> {
     service::telemetry::init_subscriber(tel_subscriber);
 
     service::in_deploy_migrations::run_migrations(
-        env_config.database_url.clone(),
+        env_config.pg.as_string.clone(),
         env_config.with_migration,
     );
 
