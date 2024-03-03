@@ -27,11 +27,7 @@ pub async fn register(
     // Check if username is valid
     if new_user.name.len() < 3 {
         Err(actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "name": "Username too short"
-                }
-            }),
+            json!({"errors": { "name": "Username too short" }}),
             actix_web::http::StatusCode::BAD_REQUEST,
         ))?
     }
@@ -39,11 +35,7 @@ pub async fn register(
     // Check if password is valid
     if new_user.password.len() < 8 {
         Err(actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "password": "Password too short"
-                }
-            }),
+            json!({"errors": { "password": "Password too short" }}),
             actix_web::http::StatusCode::BAD_REQUEST,
         ))?
     }
@@ -51,11 +43,7 @@ pub async fn register(
     // // Check if E-Mail is valid
     if EmailAddress::is_valid(&new_user.email) == false {
         Err(actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "email": "Invalid E-Mail"
-                }
-            }),
+            json!({"errors": { "email": "Invalid E-Mail" }}),
             actix_web::http::StatusCode::BAD_REQUEST,
         ))?
     }
@@ -73,11 +61,7 @@ pub async fn register(
     // Open connection with db
     let mut pg_transaction = dp.pg.begin().await.map_err(|_| {
         actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "rust": "Failed to acquire database connection"
-                }
-            }),
+            json!({"errors": { "rust": "Failed to acquire database connection" }}),
             actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
         )
     })?;
@@ -93,18 +77,21 @@ pub async fn register(
         {
             Ok(row) => {
                 let user_id: uuid::Uuid = row.get("id");
-                Ok(user_id)
+
+                user_id
             }
             Err(_) => {
                 is_rollback_needed = true;
 
-                Err(())
+                Err(actix_web::error::InternalError::new(
+                    json!({"errors": { "rust": "Transaction failed to create the user" }}),
+                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+                ))?
             }
         };
 
-    // create entry in user_profile
     match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
-        .bind(user_id.unwrap())
+        .bind(&user_id)
         .bind(&new_user.name)
         .execute(&mut *pg_transaction)
         .await
@@ -112,6 +99,11 @@ pub async fn register(
         Ok(_) => {}
         Err(_) => {
             is_rollback_needed = true;
+
+            Err(actix_web::error::InternalError::new(
+                json!({"errors": { "rust": "Transaction failed to create the user" }}),
+                actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+            ))?
         }
     }
 
@@ -119,11 +111,7 @@ pub async fn register(
         true => {
             pg_transaction.rollback().await.map_err(|_| {
                 actix_web::error::InternalError::new(
-                    json!({
-                        "errors": {
-                            "rust": "Transaction failed to create the user"
-                        }
-                    }),
+                    json!({"errors": { "rust": "Transaction failed to create the user" }}),
                     actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
                 )
             })?;
@@ -131,18 +119,17 @@ pub async fn register(
         false => {
             pg_transaction.commit().await.map_err(|_| {
                 actix_web::error::InternalError::new(
-                    json!({
-                        "errors": {
-                            "rust": "Unable to close transaction"
-                        }
-                    }),
-                    actix_web::http::StatusCode::BAD_REQUEST,
+                    json!({"errors": {"rust": "Unable to close transaction"}}),
+                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
                 )
             })?;
         }
     }
 
     Ok(HttpResponse::Ok().json(json!({
-        "data": "User registered successfully"
+        "data": {
+            "user_id": user_id
+        },
+        "info": "User registered successfully"
     })))
 }
