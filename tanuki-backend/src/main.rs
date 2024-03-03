@@ -1,4 +1,5 @@
 pub mod routes;
+pub mod schema;
 pub mod service;
 pub mod types;
 pub mod utils;
@@ -25,12 +26,17 @@ async fn main() -> std::io::Result<()> {
 
     tracing::event!(target: "backend", tracing::Level::INFO, "Listening on http://{}:{}", env_config.hostname, env_config.port);
 
-    HttpServer::new(move || {
-        let data_providers = service::data_providers::WebDataPool::new(
-            env_config.redis_url.clone(),
-            env_config.database_url.clone(),
-        );
+    let data_providers = async {
+        let pool: service::data_providers::WebDataPool =
+            service::data_providers::WebDataPool::new().await.into();
 
+        pool
+    }
+    .await;
+
+    let data_providers = web::Data::new(data_providers);
+
+    HttpServer::new(move || {
         let middlewares = service::middlewares::Middlewares::new();
 
         App::new()
@@ -38,7 +44,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middlewares.cors)
             .wrap(middlewares.compress)
             .wrap(middlewares.logger)
-            .app_data(web::Data::new(data_providers))
+            .app_data(data_providers.clone())
             .service(auth::_routes::get_routes())
             .service(users::_routes::get_routes())
             .service(health::_routes::get_routes())

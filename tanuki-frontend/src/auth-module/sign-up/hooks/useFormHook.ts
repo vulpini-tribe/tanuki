@@ -8,8 +8,7 @@ import type { FormFields, FormKeys } from '../sign-up.d';
 const schema = yup.object().shape({
 	name: yup.string().required('Name is required'),
 	email: yup.string().email('Invalid email').required('Email is required'),
-	password: yup.string().required('Password is required'),
-	password_repeat: yup.string().oneOf([yup.ref('password')], 'Passwords must match')
+	password: yup.string().required('Password is required')
 });
 
 const useFormHook = () => {
@@ -26,7 +25,6 @@ const useFormHook = () => {
 		name: register('name'),
 		email: register('email'),
 		password: register('password'),
-		password_repeat: register('password_repeat'),
 
 		submit: handleSubmit,
 		setError,

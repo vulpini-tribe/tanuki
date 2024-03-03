@@ -1,15 +1,17 @@
-use diesel_async::pooled_connection::{deadpool, AsyncDieselConnectionManager};
-use diesel_async::AsyncPgConnection;
 use log;
-use r2d2_redis::RedisConnectionManager;
 
+use sqlx::postgres::PgPoolOptions;
+use sqlx::postgres::{PgConnectOptions, PgSslMode};
+
+use r2d2_redis::RedisConnectionManager;
 pub struct WebDataPool {
-    pub pg: deadpool::Pool<AsyncPgConnection>,
+    pub pg: sqlx::Pool<sqlx::Postgres>,
     pub redis: r2d2::Pool<RedisConnectionManager>,
 }
 
 impl WebDataPool {
-    fn create_redis(redis_url: String) -> r2d2::Pool<RedisConnectionManager> {
+    fn create_redis() -> r2d2::Pool<RedisConnectionManager> {
+        let redis_url = "rediss://red-cnf1qof109ks73a2a5b0:sKBJhrljdaeKVhHW8MdQoc3ucmgaG8Uc@frankfurt-redis.render.com:6379";
         let manager =
             RedisConnectionManager::new(redis_url).expect("Redis connection should be successful");
 
@@ -24,23 +26,31 @@ impl WebDataPool {
         redis
     }
 
-    fn create_db(database_url: String) -> deadpool::Pool<AsyncPgConnection> {
-        let tanuki_pg = AsyncDieselConnectionManager::<AsyncPgConnection>::new(database_url);
+    async fn create_db() -> sqlx::Pool<sqlx::Postgres> {
+        println!("[+] Postgres connection pool creating.");
 
-        log::info!("[+] PostgreSQL connection manager created.");
+        let connect_options = PgConnectOptions::new()
+            .username("dev_tanuki_psql_user")
+            .password("msjUdSLfpMpxU2yP0Puf7JhHqqsJwPnF")
+            .database("dev_tanuki_psql")
+            .host("dpg-cnf1r36d3nmc73f0tde0-a.oregon-postgres.render.com")
+            .ssl_mode(PgSslMode::Require); // Set SSL mode to Require
 
-        let pg = deadpool::Pool::builder(tanuki_pg)
-            .build()
-            .expect("DB connect to tanuki should be established");
-        log::info!("[+] PostgreSQL connection pool created.");
+        let pool = PgPoolOptions::new()
+            .max_connections(5)
+            .connect_with(connect_options)
+            .await
+            .unwrap();
 
-        pg
+        println!("[+] Postgres connection pool created.");
+
+        pool
     }
 
-    pub fn new(redis_url: String, database_url: String) -> WebDataPool {
+    pub async fn new() -> WebDataPool {
         WebDataPool {
-            pg: WebDataPool::create_db(database_url),
-            redis: WebDataPool::create_redis(redis_url),
+            pg: WebDataPool::create_db().await.into(),
+            redis: WebDataPool::create_redis(),
         }
     }
 }

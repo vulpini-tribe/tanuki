@@ -7,6 +7,7 @@ diesel::table! {
         theme -> Nullable<Text>,
         language -> Nullable<Text>,
         units -> Nullable<Text>,
+        nickname -> Nullable<Text>,
     }
 }
 

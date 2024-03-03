@@ -85,35 +85,6 @@ const PersonalTab = ({ form }: SharedProps) => {
 				</TextField.Root>
 			</Grid>
 			{/* Password | End */}
-
-			{/* Repeat password | Start */}
-			<Grid flow="row" rows="min-content" gap="2">
-				<Text as="label" htmlFor="password_repeat" size="2" highContrast color="gray">
-					Repeat password
-				</Text>
-
-				<TextField.Root color={form.errors.password_repeat && 'ruby'}>
-					<TextField.Input
-						id="password_repeat"
-						type="password"
-						required
-						placeholder="••••••"
-						autoComplete="password_repeat"
-						{...form.password_repeat}
-						radius="small"
-						size="3"
-					/>
-
-					{form.errors.password_repeat && (
-						<TextField.Slot>
-							<Tooltip content={<>{form.errors.password_repeat.message}</>}>
-								<InfoCircledIcon color="var(--ruby-10)" />
-							</Tooltip>
-						</TextField.Slot>
-					)}
-				</TextField.Root>
-			</Grid>
-			{/* Repeat password | End */}
 		</Grid>
 	);
 };

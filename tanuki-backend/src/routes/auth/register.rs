@@ -1,104 +1,146 @@
 use crate::service::data_providers::WebDataPool;
+use crate::types::auth::UserToRegister;
 use actix_web::{web, Error, HttpResponse};
-use chrono::{DateTime, Utc};
 use email_address::*;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use std::str::FromStr;
+use sqlx::types::JsonValue;
+use sqlx::Row;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub enum BodyConstitutions {
-    #[serde(rename = "female")]
-    Female,
-
-    #[serde(rename = "male")]
-    Male,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum UsageGoals {
-    #[serde(rename = "loss")]
-    Loss,
-
-    #[serde(rename = "gain")]
-    Gain,
-
-    #[serde(rename = "maintain")]
-    Maintain,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum ActivityLevels {
-    #[serde(rename = "extra_small")]
-    ExtraSmall,
-
-    #[serde(rename = "small")]
-    Small,
-
-    #[serde(rename = "medium")]
-    Medium,
-
-    #[serde(rename = "large")]
-    Large,
-
-    #[serde(rename = "extra_large")]
-    ExtraLarge,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum UnitType {
-    #[serde(rename = "metric")]
-    Metric,
-
-    #[serde(rename = "retarded")]
-    Retarded,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct RegisterRequest {
+pub struct RawUserData {
     name: String,
     email: String,
     password: String,
-    password_repeat: String,
 }
 
-// pub struct RegisterResponse {
-//     pub bearer_token: String,
-//     pub refresh_token: String,
-// }
+use actix_web::ResponseError;
+use std::fmt;
+
+pub struct MyError(sqlx::Error);
+
+impl fmt::Debug for MyError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(&self.0, f)
+    }
+}
+
+impl fmt::Display for MyError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Display::fmt(&self.0, f)
+    }
+}
+
+impl ResponseError for MyError {
+    fn error_response(&self) -> HttpResponse {
+        HttpResponse::InternalServerError().json(self.to_string())
+    }
+}
+
+async fn rollback_tr(pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>) -> () {
+    pg_transaction.rollback().await.map_err(|_| {
+        actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "rust": "Failed to rollback transaction"
+                }
+            }),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        )
+    });
+
+    ()
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FormVal {
-    pub data: RegisterRequest,
+    pub data: RawUserData,
 }
 
 pub async fn register(
-    new_user: web::Form<RegisterRequest>,
-    _dp: web::Data<WebDataPool>,
+    new_user: web::Form<RawUserData>,
+    dp: web::Data<WebDataPool>,
 ) -> Result<HttpResponse, Error> {
     let new_user = new_user.into_inner();
 
-    // check if passwords equal
-    if new_user.password != new_user.password_repeat {
-        return Ok(HttpResponse::BadRequest().json(json!({
-            "data": "passwords do not match"
-        })));
-    }
-
-    // check if email is valid
+    // Check if E-Mail is valid
     if EmailAddress::is_valid(&new_user.email) == false {
-        return Ok(HttpResponse::BadRequest().json(json!({
-            "data": "email is not valid"
-        })));
+        return Err(actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "email": "E-mail is not valid"
+                }
+            }),
+            actix_web::http::StatusCode::BAD_REQUEST,
+        )
+        .into());
     }
 
-    // check if email is already in use
-    // check if name is valid
-    if new_user.name.len() < 3 {
-        return Ok(HttpResponse::BadRequest().json(json!({
-            "data": "name is too short"
-        })));
+    // hash the password
+    let hashed_password =
+        crate::utils::auth::password::hash_password(new_user.password.as_bytes()).await;
+
+    // create user with hashed password for insert into users table
+    let user = UserToRegister {
+        email: new_user.email,
+        password: hashed_password,
+    };
+
+    // Open connection with db
+    let mut pg_transaction = dp.pg.begin().await.map_err(|_| {
+        actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "rust": "Failed to acquire database connection"
+                }
+            }),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        )
+    })?;
+
+    let user_id =
+        match sqlx::query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id")
+            .bind(&user.email)
+            .bind(&user.password)
+            .fetch_one(&mut *pg_transaction)
+            .await
+        {
+            Ok(row) => {
+                let user_id: uuid::Uuid = row.get("id");
+                user_id
+            }
+            Err(e) => {
+                rollback_tr(pg_transaction).await;
+
+                return Err(MyError(e).into());
+            }
+        };
+
+    // create entry in user_profile
+    match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
+        .bind(&user_id)
+        .bind(&new_user.name)
+        .execute(&mut *pg_transaction)
+        .await
+    {
+        Ok(_) => {}
+        Err(e) => {
+            rollback_tr(pg_transaction).await;
+
+            return Err(MyError(e).into());
+        }
     }
+
+    pg_transaction.commit().await.map_err(|_| {
+        actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "rust": "Failed to commit transaction"
+                }
+            }),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        )
+    })?;
 
     Ok(HttpResponse::Ok().json(json!("register")))
 }

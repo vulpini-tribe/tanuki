@@ -1,7 +1,6 @@
-use lettre::message::Body;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{AsyncSmtpTransport, AsyncTransport, Tokio1Executor};
-use minijinja::{context, Environment};
+use minijinja::Environment;
 use r2d2_redis::RedisConnectionManager;
 
 pub async fn send_email(

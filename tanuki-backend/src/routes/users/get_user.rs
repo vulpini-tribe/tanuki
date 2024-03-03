@@ -1,6 +1,6 @@
 use crate::service::data_providers::WebDataPool;
 use actix_web::{web, Error, HttpResponse};
-use r2d2_redis::redis::{Commands, Value};
+// use r2d2_redis::redis::{Commands, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use uuid::Uuid;

@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS user_profile (
 	theme TEXT,
 	language TEXT,
 	units TEXT,
+	nickname TEXT,
 
 	PRIMARY KEY(id),
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
