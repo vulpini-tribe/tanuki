@@ -1,10 +1,9 @@
 use crate::service::data_providers::WebDataPool;
 use crate::types::auth::UserToRegister;
-use actix_web::{web, Error, HttpResponse};
+use actix_web::{web, HttpResponse};
 use email_address::*;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use sqlx::types::JsonValue;
 use sqlx::Row;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -12,42 +11,6 @@ pub struct RawUserData {
     name: String,
     email: String,
     password: String,
-}
-
-use actix_web::ResponseError;
-use std::fmt;
-
-pub struct MyError(sqlx::Error);
-
-impl fmt::Debug for MyError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt::Debug::fmt(&self.0, f)
-    }
-}
-
-impl fmt::Display for MyError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        fmt::Display::fmt(&self.0, f)
-    }
-}
-
-impl ResponseError for MyError {
-    fn error_response(&self) -> HttpResponse {
-        HttpResponse::InternalServerError().json(self.to_string())
-    }
-}
-
-async fn rollback_tr(pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>) -> () {
-    let _ = pg_transaction.rollback().await.map_err(|_| {
-        actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "rust": "Failed to rollback transaction"
-                }
-            }),
-            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-        )
-    });
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -58,20 +21,43 @@ pub struct FormVal {
 pub async fn register(
     new_user: web::Form<RawUserData>,
     dp: web::Data<WebDataPool>,
-) -> Result<HttpResponse, Error> {
+) -> Result<HttpResponse, actix_web::Error> {
     let new_user = new_user.into_inner();
 
-    // Check if E-Mail is valid
-    if EmailAddress::is_valid(&new_user.email) == false {
-        return Err(actix_web::error::InternalError::new(
+    // Check if username is valid
+    if new_user.name.len() < 3 {
+        Err(actix_web::error::InternalError::new(
             json!({
                 "errors": {
-                    "email": "E-mail is not valid"
+                    "name": "Username too short"
                 }
             }),
             actix_web::http::StatusCode::BAD_REQUEST,
-        )
-        .into());
+        ))?
+    }
+
+    // Check if password is valid
+    if new_user.password.len() < 8 {
+        Err(actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "password": "Password too short"
+                }
+            }),
+            actix_web::http::StatusCode::BAD_REQUEST,
+        ))?
+    }
+
+    // // Check if E-Mail is valid
+    if EmailAddress::is_valid(&new_user.email) == false {
+        Err(actix_web::error::InternalError::new(
+            json!({
+                "errors": {
+                    "email": "Invalid E-Mail"
+                }
+            }),
+            actix_web::http::StatusCode::BAD_REQUEST,
+        ))?
     }
 
     // hash the password
@@ -96,6 +82,8 @@ pub async fn register(
         )
     })?;
 
+    let mut is_rollback_needed = false;
+
     let user_id =
         match sqlx::query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id")
             .bind(&user.email)
@@ -105,40 +93,56 @@ pub async fn register(
         {
             Ok(row) => {
                 let user_id: uuid::Uuid = row.get("id");
-                user_id
+                Ok(user_id)
             }
-            Err(e) => {
-                rollback_tr(pg_transaction).await;
+            Err(_) => {
+                is_rollback_needed = true;
 
-                return Err(MyError(e).into());
+                Err(())
             }
         };
 
     // create entry in user_profile
     match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
-        .bind(&user_id)
+        .bind(user_id.unwrap())
         .bind(&new_user.name)
         .execute(&mut *pg_transaction)
         .await
     {
         Ok(_) => {}
-        Err(e) => {
-            rollback_tr(pg_transaction).await;
-
-            return Err(MyError(e).into());
+        Err(_) => {
+            is_rollback_needed = true;
         }
     }
 
-    pg_transaction.commit().await.map_err(|_| {
-        actix_web::error::InternalError::new(
-            json!({
-                "errors": {
-                    "rust": "Failed to commit transaction"
-                }
-            }),
-            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-        )
-    })?;
+    match is_rollback_needed {
+        true => {
+            pg_transaction.rollback().await.map_err(|_| {
+                actix_web::error::InternalError::new(
+                    json!({
+                        "errors": {
+                            "rust": "Transaction failed to create the user"
+                        }
+                    }),
+                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+                )
+            })?;
+        }
+        false => {
+            pg_transaction.commit().await.map_err(|_| {
+                actix_web::error::InternalError::new(
+                    json!({
+                        "errors": {
+                            "rust": "Unable to close transaction"
+                        }
+                    }),
+                    actix_web::http::StatusCode::BAD_REQUEST,
+                )
+            })?;
+        }
+    }
 
-    Ok(HttpResponse::Ok().json(json!("register")))
+    Ok(HttpResponse::Ok().json(json!({
+        "data": "User registered successfully"
+    })))
 }

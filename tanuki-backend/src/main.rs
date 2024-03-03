@@ -1,3 +1,4 @@
+pub mod errors;
 pub mod routes;
 pub mod schema;
 pub mod service;
