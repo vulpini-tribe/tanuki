@@ -1,15 +1,18 @@
-use argon2::password_hash::{rand_core, PasswordHash, SaltString};
+use argon2::password_hash::{rand_core, Error, PasswordHash, SaltString};
 use argon2::Argon2;
 use argon2::{PasswordHasher, PasswordVerifier};
 
 #[tracing::instrument(name = "Hashing user password", skip(password))]
-pub async fn hash_password(password: &[u8]) -> String {
+pub async fn hash_password(password: &[u8]) -> Result<String, String> {
     let salt = SaltString::generate(&mut rand_core::OsRng);
 
-    Argon2::default()
-        .hash_password(password, &salt)
-        .expect("Unable to hash password")
-        .to_string()
+    match Argon2::default().hash_password(password, &salt) {
+        Ok(hash) => Ok(hash.to_string()),
+        Err(_) => Err(
+            "An error has been occurred during the registration process. Please try again later."
+                .to_string(),
+        ),
+    }
 }
 
 #[tracing::instrument(name = "Verifying user password", skip(password, hash))]

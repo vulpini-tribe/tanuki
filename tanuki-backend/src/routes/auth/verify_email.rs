@@ -26,7 +26,7 @@ pub async fn verify_email(
             )
         })?;
 
-    // if exists, mark the user as verified and delete the token from the redis storage
+    // if exists, mark the user as verified in db
 
     Ok(HttpResponse::Ok().json(json!({
         "info": {

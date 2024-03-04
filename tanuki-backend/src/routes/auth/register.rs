@@ -6,6 +6,9 @@ use email_address::*;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::Row;
+use std::fmt::Debug;
+
+use crate::errors::reg_errors;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RawUserData {
@@ -19,41 +22,59 @@ pub struct FormVal {
     pub data: RawUserData,
 }
 
+pub async fn rollback(
+    pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>,
+) -> Result<(), actix_web::Error> {
+    let result = pg_transaction.rollback().await;
+
+    match result {
+        Ok(_) => Ok(()),
+        Err(_) => Err(reg_errors::system(
+            "An error has been occurred during the registration process. Please try again later.",
+        ))?,
+    }
+}
+
+pub async fn commit(
+    pg_transaction: sqlx::Transaction<'_, sqlx::Postgres>,
+) -> Result<(), actix_web::Error> {
+    let result = pg_transaction.commit().await;
+
+    match result {
+        Ok(_) => Ok(()),
+        Err(_) => Err(reg_errors::system(
+            "An error has been occurred during the registration process. Please try again later.",
+        ))?,
+    }
+}
+
 pub async fn register(
     new_user: web::Form<RawUserData>,
     dp: web::Data<WebDataPool>,
 ) -> Result<HttpResponse, actix_web::Error> {
     let new_user = new_user.into_inner();
 
-    // Check if username is valid
+    // Check if the username is valid
     if new_user.name.len() < 3 {
-        Err(actix_web::error::InternalError::new(
-            json!({"errors": { "name": "Username too short" }}),
-            actix_web::http::StatusCode::BAD_REQUEST,
-        ))?
+        Err(reg_errors::name("Username too short"))?
     }
 
-    // Check if password is valid
+    // Check if the password is valid
     if new_user.password.len() < 8 {
-        Err(actix_web::error::InternalError::new(
-            json!({"errors": { "password": "Password too short" }}),
-            actix_web::http::StatusCode::BAD_REQUEST,
-        ))?
+        Err(reg_errors::password("Password too short"))?
     }
 
-    // // Check if E-Mail is valid
+    // Check if the email is valid
     if EmailAddress::is_valid(&new_user.email) == false {
-        Err(actix_web::error::InternalError::new(
-            json!({"errors": { "email": "Invalid E-Mail" }}),
-            actix_web::http::StatusCode::BAD_REQUEST,
-        ))?
+        Err(reg_errors::email("Invalid E-Mail"))?
     }
 
-    // hash the password
-    let hashed_password =
-        crate::utils::auth::password::hash_password(new_user.password.as_bytes()).await;
+    // Hash the password
+    let hashed_password = crate::utils::auth::password::hash_password(new_user.password.as_bytes())
+        .await
+        .map_err(reg_errors::system)?;
 
-    // create user with hashed password for insert into users table
+    // Create a new user
     let user = UserToRegister {
         email: new_user.email,
         password: hashed_password,
@@ -61,36 +82,34 @@ pub async fn register(
 
     // Open connection with db
     let mut pg_transaction = dp.pg.begin().await.map_err(|_| {
-        actix_web::error::InternalError::new(
-            json!({"errors": { "rust": "Failed to acquire database connection" }}),
-            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        reg_errors::system(
+            "An error has been occurred during the registration process. Please try again later.",
         )
     })?;
 
+    // ref-deref problem ,so we can use commit, or rollback
     let mut is_rollback_needed = false;
 
-    let user_id =
-        match sqlx::query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id")
-            .bind(&user.email)
-            .bind(&user.password)
-            .fetch_one(&mut *pg_transaction)
-            .await
-        {
-            Ok(row) => {
-                let user_id: uuid::Uuid = row.get("id");
+    // Create user & get user_id
+    let user_id = match sqlx::query(
+        "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id",
+    )
+    .bind(&user.email)
+    .bind(&user.password)
+    .fetch_one(&mut *pg_transaction)
+    .await
+    {
+        Ok(row) => {
+            let user_id: uuid::Uuid = row.get("id");
 
-                user_id
-            }
-            Err(_) => {
-                is_rollback_needed = true;
+            user_id
+        }
+        Err(_) => Err(reg_errors::system(
+            "An error has been occurred during the registration process. Please try again later.",
+        ))?,
+    };
 
-                Err(actix_web::error::InternalError::new(
-                    json!({"errors": { "rust": "Transaction failed to create the user" }}),
-                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-                ))?
-            }
-        };
-
+    // Create user profile
     match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
         .bind(&user_id)
         .bind(&new_user.name)
@@ -100,41 +119,23 @@ pub async fn register(
         Ok(_) => {}
         Err(_) => {
             is_rollback_needed = true;
-
-            Err(actix_web::error::InternalError::new(
-                json!({"errors": { "rust": "Transaction failed to create the user" }}),
-                actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-            ))?
         }
     }
 
-    match is_rollback_needed {
-        true => {
-            pg_transaction.rollback().await.map_err(|_| {
-                actix_web::error::InternalError::new(
-                    json!({"errors": { "rust": "Transaction failed to create the user" }}),
-                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-                )
-            })?;
-        }
-        false => {
-            pg_transaction.commit().await.map_err(|_| {
-                actix_web::error::InternalError::new(
-                    json!({"errors": {"rust": "Unable to close transaction"}}),
-                    actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
-                )
-            })?;
-        }
+    if is_rollback_needed == true {
+        rollback(pg_transaction).await?;
+    } else {
+        commit(pg_transaction).await?;
     }
 
+    // Check if redis is available
     dp.redis.get().map_err(|_| {
-        actix_web::error::InternalError::new(
-            json!({"errors": {"rust": "Failed to acquire redis connection"}}),
-            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        reg_errors::system(
+            "An error has been occurred during the registration process. Please try again later.",
         )
     })?;
 
-    // send email
+    // send email with PASETO token
     send_email(
         "E-Mail Verification".to_string(),
         new_user.name.clone(),
@@ -145,15 +146,14 @@ pub async fn register(
     )
     .await
     .map_err(|_| {
-        actix_web::error::InternalError::new(
-            json!({"errors": {"rust": "Failed to send email"}}),
-            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        reg_errors::system(
+            "An error has been occurred during sending the verification e-mail. Please try again later.",
         )
     })?;
 
     Ok(HttpResponse::Ok().json(json!({
         "data": {
-            "user_id": user_id
+            "user_id": user_id,
         },
         "info": {
             "user": "User registered successfully",
