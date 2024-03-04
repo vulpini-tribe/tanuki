@@ -16,7 +16,7 @@ const SignUpPage = () => {
 		request.fetch();
 	};
 
-	const isDisabled = !isRead || !form.isValid;
+	const isDisabled = !isRead || !form.isValid || request.isFetching;
 
 	return (
 		<Root method="post" noValidate onSubmit={form.submit(onSubmit)} onChange={form.revalidate}>

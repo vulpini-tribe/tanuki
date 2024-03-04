@@ -44,6 +44,10 @@ export const getErrCode = (error: unknown) => {
 
 	if (!error.response) return error.status;
 
+	if (error.response && error.response.status) {
+		return error.response.status;
+	}
+
 	if (!isApiErrorResponse(error.response.data)) {
 		return error.response.status;
 	}

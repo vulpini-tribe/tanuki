@@ -29,9 +29,7 @@ pub async fn rollback(
 
     match result {
         Ok(_) => Ok(()),
-        Err(_) => Err(reg_errors::system(
-            "An error has been occurred during the registration process. Please try again later.",
-        ))?,
+        Err(_) => Err(reg_errors::system(reg_errors::DEFAULT_MSG))?,
     }
 }
 
@@ -42,9 +40,7 @@ pub async fn commit(
 
     match result {
         Ok(_) => Ok(()),
-        Err(_) => Err(reg_errors::system(
-            "An error has been occurred during the registration process. Please try again later.",
-        ))?,
+        Err(_) => Err(reg_errors::system(reg_errors::DEFAULT_MSG))?,
     }
 }
 
@@ -81,33 +77,30 @@ pub async fn register(
     };
 
     // Open connection with db
-    let mut pg_transaction = dp.pg.begin().await.map_err(|_| {
-        reg_errors::system(
-            "An error has been occurred during the registration process. Please try again later.",
-        )
-    })?;
+    let mut pg_transaction = dp
+        .pg
+        .begin()
+        .await
+        .map_err(|_| reg_errors::system(reg_errors::DEFAULT_MSG))?;
 
     // ref-deref problem ,so we can use commit, or rollback
     let mut is_rollback_needed = false;
 
     // Create user & get user_id
-    let user_id = match sqlx::query(
-        "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id",
-    )
-    .bind(&user.email)
-    .bind(&user.password)
-    .fetch_one(&mut *pg_transaction)
-    .await
-    {
-        Ok(row) => {
-            let user_id: uuid::Uuid = row.get("id");
+    let user_id =
+        match sqlx::query("INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id")
+            .bind(&user.email)
+            .bind(&user.password)
+            .fetch_one(&mut *pg_transaction)
+            .await
+        {
+            Ok(row) => {
+                let user_id: uuid::Uuid = row.get("id");
 
-            user_id
-        }
-        Err(_) => Err(reg_errors::system(
-            "An error has been occurred during the registration process. Please try again later.",
-        ))?,
-    };
+                user_id
+            }
+            Err(_) => Err(reg_errors::system(reg_errors::DEFAULT_MSG))?,
+        };
 
     // Create user profile
     match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
@@ -129,11 +122,9 @@ pub async fn register(
     }
 
     // Check if redis is available
-    dp.redis.get().map_err(|_| {
-        reg_errors::system(
-            "An error has been occurred during the registration process. Please try again later.",
-        )
-    })?;
+    dp.redis
+        .get()
+        .map_err(|_| reg_errors::system(reg_errors::DEFAULT_MSG))?;
 
     // send email with PASETO token
     send_email(
@@ -157,7 +148,7 @@ pub async fn register(
         },
         "info": {
             "user": "User registered successfully",
-            "verification": "Verification email sent successfully"
+            "verification": "Verification email has been sent"
         }
     })))
 }

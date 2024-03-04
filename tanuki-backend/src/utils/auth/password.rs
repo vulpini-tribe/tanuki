@@ -1,4 +1,4 @@
-use argon2::password_hash::{rand_core, Error, PasswordHash, SaltString};
+use argon2::password_hash::{rand_core, PasswordHash, SaltString};
 use argon2::Argon2;
 use argon2::{PasswordHasher, PasswordVerifier};
 
