@@ -37,14 +37,11 @@ pub async fn send_email(
     let confirmation_link = {
         if template_name == "password_reset_email.html" {
             format!(
-                "{}/users/password/confirm/change_password?token={}",
+                "{}/auth/change-password?token={}",
                 web_address, issued_token,
             )
         } else {
-            format!(
-                "{}/users/register/confirm/?token={}",
-                web_address, issued_token,
-            )
+            format!("{}/auth/validate?token={}", web_address, issued_token,)
         }
     };
 

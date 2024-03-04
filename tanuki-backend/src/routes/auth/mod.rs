@@ -11,3 +11,6 @@ pub use refresh::refresh;
 
 mod register;
 pub use register::register;
+
+mod verify_email;
+pub use verify_email::verify_email;

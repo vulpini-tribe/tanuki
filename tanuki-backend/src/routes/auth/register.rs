@@ -1,5 +1,6 @@
 use crate::service::data_providers::WebDataPool;
 use crate::types::auth::UserToRegister;
+use crate::utils::emails::send_email;
 use actix_web::{web, HttpResponse};
 use email_address::*;
 use serde::{Deserialize, Serialize};
@@ -126,10 +127,37 @@ pub async fn register(
         }
     }
 
+    dp.redis.get().map_err(|_| {
+        actix_web::error::InternalError::new(
+            json!({"errors": {"rust": "Failed to acquire redis connection"}}),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        )
+    })?;
+
+    // send email
+    send_email(
+        "E-Mail Verification".to_string(),
+        new_user.name.clone(),
+        user.email.clone(),
+        "verification_email".to_string(),
+        user_id,
+        dp.redis.clone(),
+    )
+    .await
+    .map_err(|_| {
+        actix_web::error::InternalError::new(
+            json!({"errors": {"rust": "Failed to send email"}}),
+            actix_web::http::StatusCode::INTERNAL_SERVER_ERROR,
+        )
+    })?;
+
     Ok(HttpResponse::Ok().json(json!({
         "data": {
             "user_id": user_id
         },
-        "info": "User registered successfully"
+        "info": {
+            "user": "User registered successfully",
+            "verification": "Verification email sent successfully"
+        }
     })))
 }
