@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 
 import toast from 'react-hot-toast';
-import axios, { getErrCode } from '@axios';
+import axios, { getErrCode, getErrMessage } from '@axios';
 
 // @ts-ignore
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 const useValidateRequest = () => {
-	const rrrr = useRef();
+	const token = useRef<string>();
 
 	const { isFetching, error, refetch } = useQuery({
 		queryKey: ['/auth/validate'],
@@ -19,11 +19,11 @@ const useValidateRequest = () => {
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: { token: rrrr.current }
+				data: { token: token.current }
 			}),
-		gcTime: 10,
+		gcTime: 0,
 		enabled: false,
-		retry: 3
+		retry: 1
 	});
 
 	useEffect(() => {
@@ -35,11 +35,12 @@ const useValidateRequest = () => {
 	}, [error]);
 
 	const fetchData = (newToken: string) => {
-		rrrr.current = newToken;
+		token.current = newToken;
 		refetch();
 	};
 
 	return {
+		error: error ? getErrMessage(error) : undefined,
 		isFetching,
 		fetch: fetchData
 	};

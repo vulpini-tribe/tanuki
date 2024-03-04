@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, NavLink } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import SignUp from './sign-up';
 import SignInPage from './sign-in';
@@ -10,11 +10,7 @@ import ValidateEmail from './validate-email';
 import ROUTES from '@routes';
 import Root, { Logo, Content, SideContent, Image } from './auth-module.styles';
 
-import { Grid, Flex, Button } from '@radix-ui/themes';
-
 import logoUrl from '@assets/images/logo.svg';
-import logoUrl2 from '@assets/images/logo-2.svg';
-import leafUrl from '@assets/images/leaf.svg';
 import tanukiUrl from '@assets/images/tanuki.jpg';
 
 import type { Props } from './auth-module.d';

@@ -6,6 +6,7 @@ type ApiError = {
 	status: number;
 	detail: string;
 	instance: string;
+	errors: object;
 };
 
 function isApiErrorResponse(res: unknown): res is ApiError {
@@ -13,7 +14,11 @@ function isApiErrorResponse(res: unknown): res is ApiError {
 		return false;
 	}
 
-	return res && 'type' in res && 'title' in res && 'status' in res && 'detail' in res && 'instance' in res;
+	const isDefaultErrorStruct =
+		res && 'type' in res && 'title' in res && 'status' in res && 'detail' in res && 'instance' in res;
+	const isRustErrorStruct = res && 'errors' in res;
+
+	return isRustErrorStruct || isDefaultErrorStruct;
 }
 
 export const getErrMessage = (error: unknown) => {
@@ -29,7 +34,7 @@ export const getErrMessage = (error: unknown) => {
 		return error.message;
 	}
 
-	return error.response.data.detail;
+	return error.response.data.detail || error.response.data.errors;
 };
 
 export const getErrCode = (error: unknown) => {
