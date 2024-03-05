@@ -8,13 +8,16 @@ import { PersonalTab } from './tabs';
 import Root, { TabsActions } from './sign-up.styles';
 
 import useSignUp from './hooks';
+import { useRegister } from '@src/auth-module';
 
 const SignUpPage = () => {
-	const { form, request } = useSignUp();
+	const { form } = useSignUp();
+	const request = useRegister();
 	const [isRead, setIsRead] = React.useState(false);
 
 	const onSubmit = () => {
-		request.fetch();
+		const values = form.getValues();
+		request.mutate(values);
 	};
 
 	const isDisabled = !isRead || !form.isValid || request.isFetching;

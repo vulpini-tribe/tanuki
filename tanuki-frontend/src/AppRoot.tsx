@@ -17,30 +17,27 @@ import { ResetStyles } from '@core/styles';
 
 const queryClient = new QueryClient();
 
-const Root = () => {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<Theme
-				appearance="light"
-				accentColor="grass"
-				grayColor="slate"
-				panelBackground="solid"
-				radius="large"
-				scaling="110%"
-			>
-				<ResetStyles />
+const Root = () => (
+	<QueryClientProvider client={queryClient}>
+		<Theme
+			appearance="light"
+			accentColor="grass"
+			grayColor="slate"
+			panelBackground="solid"
+			radius="large"
+			scaling="110%"
+		>
+			<ResetStyles />
 
-				<BrowserRouter>
-					<Toaster position="top-right" />
-					<AuthModule>
-						<ContentModule />
-					</AuthModule>
+			<BrowserRouter>
+				<Toaster position="top-right" />
 
-					{/* <ThemePanel /> */}
-				</BrowserRouter>
-			</Theme>
-		</QueryClientProvider>
-	);
-};
+				<AuthModule>
+					<ContentModule />
+				</AuthModule>
+			</BrowserRouter>
+		</Theme>
+	</QueryClientProvider>
+);
 
 export default Root;

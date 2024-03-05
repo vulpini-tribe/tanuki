@@ -1,12 +1,7 @@
-use crate::service::data_providers::WebDataPool;
-use actix_web::{web, Error, HttpResponse};
-// use r2d2_redis::redis::{Commands, Value};
+use crate::errors::reg_errors;
+use actix_web::{Error, HttpResponse};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use uuid::Uuid;
-
-use crate::utils::auth::tokens::issue_confirmation_token_paseto;
-use crate::utils::emails::send_email;
 
 #[derive(Deserialize, Serialize, Debug)]
 struct User {
@@ -14,14 +9,33 @@ struct User {
     name: String,
 }
 
-pub async fn get_user(
-    user_id: web::Path<Uuid>,
-    dp: web::Data<WebDataPool>,
-) -> Result<HttpResponse, Error> {
-    let user = User {
-        id: user_id.to_string(),
-        name: "John Doe".to_string(),
-    };
+pub async fn get_user(session: actix_session::Session) -> Result<HttpResponse, Error> {
+    match session_user_id(&session).await {
+        Ok(user_id) => {
+            tracing::event!(target: "backend", tracing::Level::INFO, "Users retrieved from the DB.");
 
-    Ok(HttpResponse::Ok().json(json!(user)))
+            Ok(HttpResponse::Ok().json(User {
+                id: user_id.to_string(),
+                name: "John Doe".to_string(),
+            }))
+        }
+        Err(e) => {
+            tracing::event!(target: "backend", tracing::Level::ERROR, "Fail to get user's profile: {:#?}", e);
+
+            Err(reg_errors::not_authenticated(
+                "You are not authenticated. Please login. 1",
+            ))
+        }
+    }
+}
+
+#[tracing::instrument(name = "Get user_id from session.", skip(session))]
+async fn session_user_id(session: &actix_session::Session) -> Result<uuid::Uuid, String> {
+    match session.get(crate::types::USER_ID_KEY) {
+        Ok(user_id) => match user_id {
+            Some(id) => Ok(id),
+            None => Err("".to_string()),
+        },
+        Err(_) => Err("".to_string()),
+    }
 }

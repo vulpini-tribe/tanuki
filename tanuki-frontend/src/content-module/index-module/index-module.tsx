@@ -1,52 +1,24 @@
 import React from 'react';
 import { Button } from '@radix-ui/themes';
 
-import { useUnit } from 'effector-react';
-import { $authStore, deleteUserId } from '../../auth-module/store';
+import { toggleAuth } from '../../auth-module/store';
 
-import { useError } from '@hooks';
-import { useQuery } from '@tanstack/react-query';
-
-import axios from '@axios';
-
-// @ts-ignore
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
-async function fetchPosts() {
-	const resp = await axios({
-		method: 'post',
-		url: `${apiUrl}/auth/sign-out`,
-		withCredentials: true
-	});
-
-	return resp.data;
-}
-
-const useLogoutRequest = () => {
-	const authStore = useUnit($authStore);
-
-	const { isFetching, error, errorUpdatedAt, data, dataUpdatedAt, ...restProps } = useQuery({
-		queryKey: ['/api/auth/sign-out', authStore.userId],
-		queryFn: fetchPosts,
-		enabled: false,
-		retry: 0
-	});
-
-	useError({ error, errorUpdatedAt, data, dataUpdatedAt });
-
-	return {
-		isFetching,
-		refetch: restProps.refetch
-	};
-};
+import toast from 'react-hot-toast';
+import { useLogout } from '@src/auth-module';
 
 const IndexModule = () => {
-	const logoutMod = useLogoutRequest();
+	const logoutReq = useLogout({
+		retry: 0,
+		onSuccess: () => {
+			toggleAuth(false);
+		},
+		onError: () => {
+			toast.error('Failed to log out');
+		}
+	});
 
 	const logout = () => {
-		logoutMod.refetch().finally(() => {
-			deleteUserId();
-		});
+		logoutReq.mutate({});
 	};
 
 	return (

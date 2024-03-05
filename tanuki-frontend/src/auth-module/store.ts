@@ -1,34 +1,19 @@
-import { createEvent, createStore, createEffect } from 'effector';
+import { createEvent, createStore } from 'effector';
 
-export const toggleAuth = createEvent();
-export const setUserId = createEvent();
-export const deleteUserId = createEvent();
+type AuthStore = {
+	isAuthorized: boolean;
+};
 
-export const $authStore = createStore({ isAuthorized: false, userId: undefined });
+export const toggleAuth = createEvent<AuthStore['isAuthorized']>();
+export const $authStore = createStore<AuthStore>({
+	isAuthorized: window.localStorage.getItem('isAuthorized') === 'true' ? true : false
+});
 
 $authStore.on(toggleAuth, (store, nextValue) => {
 	const newStore = { ...store };
 
 	newStore.isAuthorized = nextValue;
-
-	return newStore;
-});
-
-$authStore.on(setUserId, (store, userId) => {
-	const newStore = { ...store };
-
-	newStore.userId = userId;
-	window.localStorage.setItem('user_id', userId);
-
-	return newStore;
-});
-
-$authStore.on(deleteUserId, (store) => {
-	const newStore = { ...store };
-
-	newStore.isAuthorized = false;
-	newStore.userId = undefined;
-	window.localStorage.removeItem('user_id');
+	window.localStorage.setItem('isAuthorized', nextValue.toString());
 
 	return newStore;
 });

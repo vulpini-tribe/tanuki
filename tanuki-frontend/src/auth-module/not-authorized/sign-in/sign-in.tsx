@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import ROUTES from '@routes';
+import { useLogin } from '@src/auth-module';
 import useSignIn from './hooks/useSignIn';
 
 import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading, Checkbox } from '@radix-ui/themes';
 import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 
 const SignInPage = () => {
-	const { form, request } = useSignIn();
+	const { form } = useSignIn();
+	const request = useLogin();
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const togglePasswordVisibility = () => {
@@ -16,10 +18,11 @@ const SignInPage = () => {
 	};
 
 	const onSubmit = () => {
-		request.fetch();
+		const values = form.getValues();
+		request.mutate(values);
 	};
 
-	const isSubmitBtnDisabled = Boolean(form.errors.password || form.errors.email) || request.isFetching;
+	const isSubmitBtnDisabled = Boolean(form.errors.password || form.errors.email) || request.isPending;
 
 	return (
 		<Flex direction="column" style={{ width: '65%' }}>
@@ -94,32 +97,21 @@ const SignInPage = () => {
 				</Grid>
 				{/* Password | End */}
 
-				<Grid flow="column" columns="2fr 1fr" mt="4" align="center">
-					<Text as="label" size="2">
-						<Flex gap="2">
-							<Checkbox /> Remember me
-						</Flex>
-					</Text>
-
-					<Button asChild radius="small" variant="ghost">
-						<NavLink to={ROUTES.AUTH.RESET_PASSWORD}>Restore password</NavLink>
+				<Grid flow="column" columns="2fr 5fr" mt="4" align="center" gap="6">
+					<Button asChild radius="small" variant="surface" size="3" highContrast>
+						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
 					</Button>
-				</Grid>
 
-				<Grid flow="column" columns="1fr" mt="6" align="center">
 					<Button type="submit" radius="small" variant="solid" size="3" disabled={isSubmitBtnDisabled}>
-						{request.isFetching ? '...' : 'Login'}
+						{request.isPending ? '...' : 'Login'}
 					</Button>
 				</Grid>
 			</form>
 
-			<Flex justify="center" mt="5">
-				<Text size="2" highContrast>
-					Don&apos;t have an account?{' '}
-					<Button asChild radius="small" variant="ghost" highContrast>
-						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
-					</Button>
-				</Text>
+			<Flex align="center" justify="start" mt="2">
+				<Button asChild radius="small" variant="ghost" size="1">
+					<NavLink to={ROUTES.AUTH.RESET_PASSWORD}>Restore password</NavLink>
+				</Button>
 			</Flex>
 		</Flex>
 	);

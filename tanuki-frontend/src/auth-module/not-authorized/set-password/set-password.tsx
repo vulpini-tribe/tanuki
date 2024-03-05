@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SetPassword = () => {
-	return <div>SetPassword</div>;
+	return <div>Set Password</div>;
 };
 
 export default SetPassword;

@@ -55,4 +55,15 @@ export const getErrCode = (error: unknown) => {
 	return error.response.data.status;
 };
 
-export default axios;
+// @ts-ignore
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+const instance = axios.create({
+	baseURL: apiUrl,
+	withCredentials: true,
+	headers: {
+		'Content-Type': 'application/x-www-form-urlencoded'
+	}
+});
+
+export default instance;

@@ -57,7 +57,7 @@ pub async fn login(
                     }
                 })))
             } else {
-                Err(reg_errors::system("Invalid e-mail or password"))?
+                Err(reg_errors::not_authenticated("Invalid e-mail or password"))?
             }
         }
         Err(e) => Err(e),
@@ -87,7 +87,7 @@ pub async fn get_active_user(
         Err(e) => {
             tracing::event!(target: "sqlx",tracing::Level::ERROR, "User not found in DB: {:#?}", e);
 
-            Err(reg_errors::system(reg_errors::DEFAULT_MSG))
+            Err(reg_errors::not_authenticated("Invalid e-mail or password"))?
         }
     }
 }
