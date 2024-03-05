@@ -16,7 +16,63 @@ import tanukiUrl from '@assets/images/tanuki.jpg';
 import type { Props } from './auth-module.d';
 
 import { useUnit } from 'effector-react';
-import { $authStore } from './store';
+import { $authStore, toggleAuth, setUserId } from './store';
+
+import { useQuery } from '@tanstack/react-query';
+
+import axios from '@axios';
+
+// @ts-ignore
+const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+const useProfile = () => {
+	const authStore = useUnit($authStore);
+
+	const { isFetching, refetch, dataUpdatedAt, data } = useQuery({
+		queryKey: ['/api/user', authStore.userId],
+		queryFn: () =>
+			axios({
+				method: 'get',
+				url: `${apiUrl}/users/${authStore.userId}`,
+				// headers: {
+				// 	'Content-Type': 'application/x-www-form-urlencoded'
+				// },
+				withCredentials: true
+			}),
+		enabled: false,
+		retry: 0
+	});
+
+	useEffect(() => {
+		const userId = window.localStorage.getItem('user_id');
+
+		if (userId) {
+			setUserId(userId);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!authStore.userId) {
+			return;
+		}
+
+		refetch();
+	}, [authStore.userId]);
+
+	useEffect(() => {
+		if (!dataUpdatedAt) {
+			return;
+		}
+
+		if (data.status === 200) {
+			toggleAuth(true);
+		}
+	}, [dataUpdatedAt]);
+
+	return {
+		isFetching
+	};
+};
 
 const AuthRoot = () => (
 	<Root>
@@ -42,8 +98,11 @@ const AuthRoot = () => (
 
 const AuthModuleRoot = ({ children }: Props) => {
 	const authStore = useUnit($authStore);
+	const { isFetching } = useProfile();
 
 	switch (true) {
+		case isFetching:
+			return <div>Loading...</div>;
 		case authStore.isAuthorized:
 			return children;
 		default:

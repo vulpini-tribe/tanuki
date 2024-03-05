@@ -51,7 +51,11 @@ pub async fn login(
                     .insert(crate::types::USER_EMAIL_KEY, &loggedin_user.email)
                     .expect("`user_email` cannot be inserted into session");
 
-                Ok(HttpResponse::Ok().json(json!("login")))
+                Ok(HttpResponse::Ok().json(json!({
+                    "data": {
+                        "user_id": loggedin_user.id,
+                    }
+                })))
             } else {
                 Err(reg_errors::system("Invalid e-mail or password"))?
             }

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import axios from '@axios';
 import { useError } from '@hooks';
-import { toggleAuth } from '../../store';
+import { toggleAuth, setUserId } from '../../store';
 
 import type { FormFields } from '../sign-in.d';
 import type { UseFormSetError, UseFormGetValues } from 'react-hook-form';
@@ -37,6 +37,7 @@ const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFor
 
 		if (data.status === 200) {
 			toggleAuth(true);
+			setUserId(data?.data?.data?.user_id);
 		}
 	}, [dataUpdatedAt]);
 

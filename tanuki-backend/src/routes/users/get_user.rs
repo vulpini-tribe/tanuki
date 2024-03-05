@@ -23,39 +23,5 @@ pub async fn get_user(
         name: "John Doe".to_string(),
     };
 
-    // let mut redis_connection = dp.redis.get().expect("Cannot get redis connection");
-
-    // redis_connection
-    //     .set::<&str, String, Value>(&user_id.to_string(), serde_json::to_string(&user).unwrap())
-    //     .expect("Cannot set user in redis");
-
-    // let test = redis_connection
-    //     .get::<String, String>("123123123".to_string())
-    //     .unwrap();
-
-    // println!(
-    //     "{:?} : {:?}",
-    //     test,
-    //     serde_json::from_str::<User>(&test).unwrap()
-    // );
-
-    issue_confirmation_token_paseto(*user_id, dp.redis.clone(), None)
-        .await
-        .unwrap();
-
-    // send email
-    let result = send_email(
-        "E-Mail Verification".to_string(),
-        "Keira".to_string(),
-        "mail@alena.red".to_string(),
-        "verification_email".to_string(),
-        *user_id,
-        dp.redis.clone(),
-    )
-    .await
-    .unwrap();
-
-    println!("{:?}", result);
-
     Ok(HttpResponse::Ok().json(json!(user)))
 }
