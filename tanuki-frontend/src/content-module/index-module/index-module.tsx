@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@radix-ui/themes';
 
 import { useUnit } from 'effector-react';
-import { $authStore, toggleAuth, deleteUserId } from '../../auth-module/store';
+import { $authStore, deleteUserId } from '../../auth-module/store';
 
 import { useError } from '@hooks';
 import { useQuery } from '@tanstack/react-query';
@@ -18,8 +18,6 @@ async function fetchPosts() {
 		url: `${apiUrl}/auth/sign-out`,
 		withCredentials: true
 	});
-
-	deleteUserId();
 
 	return resp.data;
 }
@@ -46,7 +44,9 @@ const IndexModule = () => {
 	const logoutMod = useLogoutRequest();
 
 	const logout = () => {
-		logoutMod.refetch();
+		logoutMod.refetch().finally(() => {
+			deleteUserId();
+		});
 	};
 
 	return (
