@@ -7,7 +7,11 @@ import type { FormFields, FormKeys } from '../sign-up.d';
 
 const schema = yup.object().shape({
 	name: yup.string().required('Name is required'),
-	email: yup.string().email('Invalid email').required('Email is required'),
+	email: yup
+		.string()
+		.ascii('You can use ASCII symbols only')
+		.email('Please enter a valid email address')
+		.required("E-Mail couldn't be empty"),
 	password: yup.string().required('Password is required')
 });
 

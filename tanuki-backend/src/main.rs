@@ -45,6 +45,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middlewares.cors)
             .wrap(middlewares.compress)
             .wrap(middlewares.logger)
+            .wrap(middlewares.session)
             .app_data(data_providers.clone())
             .service(auth::_routes::get_routes())
             .service(users::_routes::get_routes())

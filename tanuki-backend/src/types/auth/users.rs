@@ -18,3 +18,11 @@ pub struct UserProfile {
     pub language: Option<String>,
     pub units: Option<String>,
 }
+
+#[derive(Insertable, Queryable, Selectable, Serialize, Deserialize, Debug)]
+pub struct User {
+    pub id: uuid::Uuid,
+    pub email: String,
+    pub password: String,
+    pub is_active: bool,
+}

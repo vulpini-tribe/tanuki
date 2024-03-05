@@ -3,8 +3,6 @@ use crate::service::data_providers::WebDataPool;
 use actix_web::{web, HttpResponse};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-
-use sqlx::Row;
 use std::fmt::Debug;
 
 use crate::utils::auth::tokens::verify_confirmation_token_paseto;
@@ -44,6 +42,7 @@ pub async fn verify_email(
         .await
         .map_err(|_| reg_errors::system(reg_errors::DEFAULT_MSG))?;
 
+    // Complete the transaction
     pg_transaction
         .commit()
         .await

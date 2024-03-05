@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Flex, Button, Grid, Text, Checkbox } from '@radix-ui/themes';
 
 import ROUTES from '@routes';
@@ -12,7 +13,7 @@ const SignUpPage = () => {
 	const { form, request } = useSignUp();
 	const [isRead, setIsRead] = React.useState(false);
 
-	const onSubmit = (data: unknown) => {
+	const onSubmit = () => {
 		request.fetch();
 	};
 
@@ -40,7 +41,7 @@ const SignUpPage = () => {
 						</Text>
 
 						<Button type="submit" size="2" disabled={isDisabled}>
-							Register
+							{request.isFetching ? <DotsHorizontalIcon /> : 'Register'}
 						</Button>
 					</TabsActions>
 				</Grid>

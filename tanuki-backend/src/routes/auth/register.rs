@@ -2,7 +2,7 @@ use crate::service::data_providers::WebDataPool;
 use crate::types::auth::UserToRegister;
 use crate::utils::emails::send_email;
 use actix_web::{web, HttpResponse};
-use email_address::*;
+use email_address::EmailAddress;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::Row;
@@ -51,12 +51,12 @@ pub async fn register(
     let new_user = new_user.into_inner();
 
     // Check if the username is valid
-    if new_user.name.len() < 3 {
+    if new_user.name.is_empty() {
         Err(reg_errors::name("Username too short"))?
     }
 
     // Check if the password is valid
-    if new_user.password.len() < 8 {
+    if new_user.password.is_empty() {
         Err(reg_errors::password("Password too short"))?
     }
 
@@ -103,7 +103,7 @@ pub async fn register(
         };
 
     // Create user profile
-    match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2)")
+    match sqlx::query("INSERT INTO user_profile (user_id, nickname) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING")
         .bind(&user_id)
         .bind(&new_user.name)
         .execute(&mut *pg_transaction)

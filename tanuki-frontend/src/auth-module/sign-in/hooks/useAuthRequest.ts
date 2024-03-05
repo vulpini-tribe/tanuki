@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-import toast from 'react-hot-toast';
-import axios, { getErrCode } from '@axios';
+import axios from '@axios';
+import { useError } from '@hooks';
+import { toggleAuth } from '../../store';
 
 import type { FormFields } from '../sign-in.d';
 import type { UseFormSetError, UseFormGetValues } from 'react-hook-form';
@@ -13,7 +14,7 @@ const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFormGetValues<FormFields>) => {
 	const { email, password } = getValues();
 
-	const { isFetching, error, refetch } = useQuery({
+	const { isFetching, error, refetch, errorUpdatedAt, dataUpdatedAt, data } = useQuery({
 		queryKey: ['/api/auth/sign-in', password, email],
 		queryFn: () =>
 			axios({
@@ -22,19 +23,24 @@ const useAuthRequest = (setError: UseFormSetError<FormFields>, getValues: UseFor
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				data: { username: email, password }
+				data: { email, password },
+				withCredentials: true
 			}),
 		enabled: false,
-		retry: 3
+		retry: 0
 	});
 
 	useEffect(() => {
-		const errorCode = getErrCode(error);
-
-		if (errorCode === 500) {
-			toast.error('Internal Server Error');
+		if (!dataUpdatedAt) {
+			return;
 		}
-	}, [error]);
+
+		if (data.status === 200) {
+			toggleAuth(true);
+		}
+	}, [dataUpdatedAt]);
+
+	useError({ error, errorUpdatedAt, data, dataUpdatedAt });
 
 	return {
 		isFetching,

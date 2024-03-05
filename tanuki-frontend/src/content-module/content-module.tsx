@@ -1,6 +1,9 @@
 import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { Heading, Text } from '@radix-ui/themes';
+import ROUTES from '@routes';
+import IndexModule from './index-module';
+import { Heading } from '@radix-ui/themes';
 
 const ContentModule = () => {
 	return (
@@ -8,9 +11,12 @@ const ContentModule = () => {
 			<Heading mb="2" size="8" weight="bold">
 				Content Module
 			</Heading>
-			<Text size="3" weight="light">
-				Place routing here
-			</Text>
+
+			<Routes>
+				<Route path={ROUTES.INDEX.ROOT} element={<IndexModule />} />
+
+				<Route path="*" element={<Navigate to={ROUTES.INDEX.ROOT} replace />} />
+			</Routes>
 		</div>
 	);
 };

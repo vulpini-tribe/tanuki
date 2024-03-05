@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import SignUp from './sign-up';
@@ -14,6 +14,9 @@ import logoUrl from '@assets/images/logo.svg';
 import tanukiUrl from '@assets/images/tanuki.jpg';
 
 import type { Props } from './auth-module.d';
+
+import { useUnit } from 'effector-react';
+import { $authStore } from './store';
 
 const AuthRoot = () => (
 	<Root>
@@ -38,14 +41,11 @@ const AuthRoot = () => (
 );
 
 const AuthModuleRoot = ({ children }: Props) => {
-	const isAuthorized = false;
+	const authStore = useUnit($authStore);
 
 	switch (true) {
-		// case 404
-		// case 403
-		case isAuthorized:
+		case authStore.isAuthorized:
 			return children;
-		// case 401:
 		default:
 			return <AuthRoot />;
 	}
