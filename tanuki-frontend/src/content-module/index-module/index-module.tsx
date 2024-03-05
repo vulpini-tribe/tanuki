@@ -12,29 +12,29 @@ import axios from '@axios';
 // @ts-ignore
 const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
+async function fetchPosts() {
+	const resp = await axios({
+		method: 'post',
+		url: `${apiUrl}/auth/sign-out`,
+		withCredentials: true
+	});
+
+	deleteUserId();
+
+	return resp.data;
+}
+
 const useLogoutRequest = () => {
 	const authStore = useUnit($authStore);
 
 	const { isFetching, error, errorUpdatedAt, data, dataUpdatedAt, ...restProps } = useQuery({
 		queryKey: ['/api/auth/sign-out', authStore.userId],
-		queryFn: () =>
-			axios({
-				method: 'post',
-				url: `${apiUrl}/auth/sign-out`,
-				withCredentials: true
-			}),
+		queryFn: fetchPosts,
 		enabled: false,
 		retry: 0
 	});
 
 	useError({ error, errorUpdatedAt, data, dataUpdatedAt });
-
-	useEffect(() => {
-		if (restProps.status === 'success') {
-			toggleAuth(false);
-			deleteUserId(undefined);
-		}
-	}, [restProps.status]);
 
 	return {
 		isFetching,

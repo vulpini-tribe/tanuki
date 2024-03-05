@@ -17,8 +17,8 @@ $authStore.on(toggleAuth, (store, nextValue) => {
 $authStore.on(setUserId, (store, userId) => {
 	const newStore = { ...store };
 
-	window.localStorage.setItem('user_id', userId);
 	newStore.userId = userId;
+	window.localStorage.setItem('user_id', userId);
 
 	return newStore;
 });
@@ -26,8 +26,9 @@ $authStore.on(setUserId, (store, userId) => {
 $authStore.on(deleteUserId, (store) => {
 	const newStore = { ...store };
 
-	window.localStorage.removeItem('user_id');
+	newStore.isAuthorized = false;
 	newStore.userId = undefined;
+	window.localStorage.removeItem('user_id');
 
 	return newStore;
 });

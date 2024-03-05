@@ -34,9 +34,6 @@ const useProfile = () => {
 			axios({
 				method: 'get',
 				url: `${apiUrl}/users/${authStore.userId}`,
-				// headers: {
-				// 	'Content-Type': 'application/x-www-form-urlencoded'
-				// },
 				withCredentials: true
 			}),
 		enabled: false,
@@ -45,6 +42,7 @@ const useProfile = () => {
 
 	useEffect(() => {
 		const userId = window.localStorage.getItem('user_id');
+		console.log(userId);
 
 		if (userId) {
 			setUserId(userId);
