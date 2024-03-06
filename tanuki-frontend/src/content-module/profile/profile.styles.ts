@@ -5,7 +5,7 @@ export const ProfileLink = styled.span`
 `;
 
 export default styled.div`
-	position: absolute;
+	position: fixed;
 	top: var(--space-3);
 	right: var(--space-3);
 	display: grid;
