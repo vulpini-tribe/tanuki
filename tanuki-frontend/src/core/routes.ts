@@ -1,5 +1,8 @@
 const AUTH = '/auth';
 const INDEX = '/main';
+const DISHES = '/dishes';
+const FOOD = '/food';
+const SETTINGS = '/settings';
 
 const ROUTES = {
 	ROOT: '/',
@@ -16,10 +19,26 @@ const ROUTES = {
 	INDEX: {
 		ROOT: INDEX
 	},
+	DISHES: {
+		ROOT: DISHES
+	},
+	FOOD: {
+		ROOT: FOOD
+	},
+	SETTINGS: {
+		ROOT: SETTINGS
+	},
 	FORBIDDEN: '/403',
 	NOT_FOUND: '/404',
 	CALLBACK: '/callback',
-	CREDITS: '/credits'
+	CREDITS: '/credits',
+
+	CONTENT: {
+		ROOT: '/content',
+		FEED: '/content/feed',
+		DISHES: '/content/dishes',
+		FOOD: '/content/food'
+	}
 };
 
 export const createRoute = (route: string, params: object, search?: string) => {

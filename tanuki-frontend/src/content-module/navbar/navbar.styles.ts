@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const ProfileLink = styled.span`
-	font-variant: all-small-caps;
-`;
-
 export default styled.div`
 	display: grid;
 	grid-auto-columns: max-content;

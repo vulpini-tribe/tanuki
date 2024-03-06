@@ -73,50 +73,39 @@ const CalendarFeed = () => {
 	}, []);
 
 	return (
-		<Root>
-			<Box p="3">
-				<Heading size="3" as="h1">
-					Calendar Feed
-				</Heading>
-			</Box>
+		<Box pt="5" pr="6" pb="2" pl="2">
+			<Grid flow="row" rows="min-content" gap="3">
+				{Object.entries(months)
+					.reverse()
+					.map(([key, month]) => {
+						const testMonth = DateTime.fromFormat(key, 'MM-yyyy');
+						const isCurrentYear = testMonth.year === today.year;
 
-			<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 48px)' }}>
-				<Box pt="5" pr="6" pb="2" pl="2">
-					<Grid flow="row" rows="min-content" gap="3">
-						{/* months */}
-						{Object.entries(months)
-							.reverse()
-							.map(([key, month]) => {
-								const testMonth = DateTime.fromFormat(key, 'MM-yyyy');
-								const isCurrentYear = testMonth.year === today.year;
+						return (
+							<Box key={key} mb="4">
+								<Heading size="4" mb="3" as="h2" style={{ textAlign: 'right' }}>
+									{testMonth.toLocaleString({ month: 'long', year: isCurrentYear ? undefined : 'numeric' })}
+								</Heading>
 
-								return (
-									<Box key={key} mb="4">
-										<Heading size="4" mb="3" as="h2" style={{ textAlign: 'right' }}>
-											{testMonth.toLocaleString({ month: 'long', year: isCurrentYear ? undefined : 'numeric' })}
-										</Heading>
+								<Month>
+									{Object.entries(month).map(([weekKey, days]) => {
+										return (
+											<Week key={weekKey}>
+												{days.map((day, i) => {
+													if (!day) return <Day key={Math.random()} />;
+													if (!day.hasSame(testMonth, 'month')) return null;
 
-										<Month>
-											{Object.entries(month).map(([weekKey, days]) => {
-												return (
-													<Week key={weekKey}>
-														{days.map((day, i) => {
-															if (!day) return <Day key={Math.random()} />;
-															if (!day.hasSame(testMonth, 'month')) return null;
-
-															return <Day key={day.toFormat('DD.MM.yyyy')}>{day.toFormat('d')}</Day>;
-														})}
-													</Week>
-												);
-											})}
-										</Month>
-									</Box>
-								);
-							})}
-					</Grid>
-				</Box>
-			</ScrollArea>
-		</Root>
+													return <Day key={day.toFormat('DD.MM.yyyy')}>{day.toFormat('d')}</Day>;
+												})}
+											</Week>
+										);
+									})}
+								</Month>
+							</Box>
+						);
+					})}
+			</Grid>
+		</Box>
 	);
 };
 
