@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 
 import axios, { getErrCode } from '@axios';
 import { toggleAuth } from '../store';
+import { setProfile, clearProfile } from '@src/content-module/profile/store';
 
 type LoginCreds = {
 	email: string;
@@ -17,24 +18,32 @@ type RegisterCreds = {
 
 // Get user's profile & check if user has a valid token
 const fetchUserRequest = async () => {
-	const request = await axios({ method: 'get', url: `/users/me` })
-		.then((data) => {
-			if (request.status === 200) {
-				toggleAuth(true);
-			}
+	try {
+		const request = await axios({ method: 'get', url: `/users/me` });
 
-			return data;
-		})
-		.catch((err) => {
-			// in case of error
-			if (getErrCode(err) === 401) {
-				toggleAuth(false);
-			}
+		if (request.status === 200) {
+			toggleAuth(true);
 
-			return err;
-		});
+			setProfile({
+				id: 'a4075817-f4da-4780-8241-bf22b881e9b3',
+				email: 'mail@alena.red',
+				avatar_url: 'https://lh3.googleusercontent.com/ogw/AF2bZyhyrF9zZEDVaKiizjQIhIFNpYuJEDDXd_sIqYi8Bw=s64-c-mo',
+				nickname: 'Keira',
+				units: 'metric',
+				language: 'en-US',
+				theme: 'light',
+				mode: 'loss'
+			});
+		}
 
-	return request;
+		return request;
+	} catch (err) {
+		if (getErrCode(err) === 401) {
+			toggleAuth(false);
+		}
+
+		return err;
+	}
 };
 
 // Login request
@@ -87,6 +96,8 @@ const fetchSignOutRequest = async () => {
 			url: `/auth/sign-out`
 		});
 
+		toggleAuth(false);
+		clearProfile();
 		toast.success('Done. See you soon');
 
 		return request;

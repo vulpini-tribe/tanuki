@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Flex, Button, Grid, Text, Checkbox } from '@radix-ui/themes';
 
 import ROUTES from '@routes';
@@ -20,7 +19,7 @@ const SignUpPage = () => {
 		request.mutate(values);
 	};
 
-	const isDisabled = !isRead || !form.isValid || request.isFetching;
+	const isDisabled = !isRead || !form.isValid || request.isPending;
 
 	return (
 		<Root method="post" noValidate onSubmit={form.submit(onSubmit)} onChange={form.revalidate}>
@@ -44,7 +43,7 @@ const SignUpPage = () => {
 						</Text>
 
 						<Button type="submit" size="2" disabled={isDisabled}>
-							{request.isFetching ? <DotsHorizontalIcon /> : 'Register'}
+							{request.isPending ? '•••' : 'Register'}
 						</Button>
 					</TabsActions>
 				</Grid>

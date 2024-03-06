@@ -1,14 +1,14 @@
 import React from 'react';
 
-import type { Props } from './auth-module.d';
-
+import Authorized from './authorized';
 import NotAuthorized from './not-authorized';
+
 import { useUnit } from 'effector-react';
 import { $authStore } from './store';
 
 import { useUser } from '@src/auth-module';
 
-const AuthModuleRoot = ({ children }: Props) => {
+const AuthModuleRoot = ({ children }: React.PropsWithChildren<unknown>) => {
 	const authStore = useUnit($authStore);
 
 	const user = useUser({
@@ -19,9 +19,9 @@ const AuthModuleRoot = ({ children }: Props) => {
 
 	switch (true) {
 		case authStore.isAuthorized:
-			return children;
+			return <Authorized>{children}</Authorized>;
 		case user.isLoading:
-			return <div>Loading ...</div>;
+			return <div>LOADING •••</div>;
 		default:
 			return <NotAuthorized />;
 	}

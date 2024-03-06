@@ -2,15 +2,14 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTES from '@routes';
+
+import Profile from './profile';
 import IndexModule from './index-module';
-import { Heading } from '@radix-ui/themes';
 
 const ContentModule = () => {
 	return (
 		<div>
-			<Heading mb="2" size="8" weight="bold">
-				Content Module
-			</Heading>
+			<Profile />
 
 			<Routes>
 				<Route path={ROUTES.INDEX.ROOT} element={<IndexModule />} />

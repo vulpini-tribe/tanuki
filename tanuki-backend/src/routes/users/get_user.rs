@@ -1,7 +1,6 @@
 use crate::errors::reg_errors;
 use actix_web::{Error, HttpResponse};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 
 #[derive(Deserialize, Serialize, Debug)]
 struct User {

@@ -5,7 +5,7 @@ import ROUTES from '@routes';
 import { useLogin } from '@src/auth-module';
 import useSignIn from './hooks/useSignIn';
 
-import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading, Checkbox } from '@radix-ui/themes';
+import { Grid, TextField, IconButton, Flex, Button, Text, Tooltip, Heading } from '@radix-ui/themes';
 import { InfoCircledIcon, EyeClosedIcon, EyeOpenIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 
 const SignInPage = () => {
@@ -97,13 +97,13 @@ const SignInPage = () => {
 				</Grid>
 				{/* Password | End */}
 
-				<Grid flow="column" columns="2fr 5fr" mt="4" align="center" gap="6">
+				<Grid flow="column" columns="2fr 5fr" mt="4" align="center" gap="4">
 					<Button asChild radius="small" variant="surface" size="3" highContrast>
 						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
 					</Button>
 
 					<Button type="submit" radius="small" variant="solid" size="3" disabled={isSubmitBtnDisabled}>
-						{request.isPending ? '...' : 'Login'}
+						{request.isPending ? '•••' : 'Login'}
 					</Button>
 				</Grid>
 			</form>
