@@ -1,40 +1,5 @@
 import styled from 'styled-components';
 
-export const MainContent = styled.div`
-	position: fixed;
-	top: calc(80px + var(--space-3) + var(--space-3));
-	right: var(--space-3);
-	bottom: var(--space-3);
-	left: calc(400px + var(--space-3) + var(--space-3));
-
-	padding: var(--space-3);
-	background-color: var(--slate-2);
-	border-radius: var(--radius-3);
-
-	@media (width <= 768px) {
-		width: 100%;
-		right: var(--space-2);
-		left: var(--space-2);
-		bottom: var(--space-2);
-		z-index: 1;
-	}
-`;
-
-export const Feed = styled.div`
-	position: fixed;
-	top: var(--space-3);
-	bottom: var(--space-3);
-	left: var(--space-3);
-	width: 400px;
-	padding: var(--space-3);
-	background-color: var(--slate-2);
-	border-radius: var(--radius-3);
-
-	@media (width <= 768px) {
-		width: 100%;
-	}
-`;
-
 export const NavbarS = styled.div``;
 
 export const SettingsEntry = styled.div`

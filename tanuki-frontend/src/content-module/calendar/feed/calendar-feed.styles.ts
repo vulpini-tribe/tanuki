@@ -42,13 +42,4 @@ export const Day = styled.div<{ $fromNextMonth?: boolean; $isToday?: boolean }>`
 	}}
 `;
 
-export default styled.div`
-	position: fixed;
-	top: var(--space-3);
-	bottom: var(--space-3);
-	left: var(--space-3);
-	width: 400px;
-	padding: var(--space-3);
-	background-color: var(--slate-2);
-	border-radius: var(--radius-3);
-`;
+export default styled.div``;

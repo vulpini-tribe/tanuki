@@ -1,60 +1,29 @@
 import React from 'react';
-import { useWindowSize } from 'usehooks-ts';
-import { Outlet, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
+import { Outlet, Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTES from '@routes';
 
-import CalendarFeed from './calendar-feed';
-import Profile from './profile';
+import CalendarFeed from './calendar/feed';
+import CalendarMain from './calendar/main';
+import CalendarWidgets from './calendar/widgets';
+
 import NavBar from './navbar';
-import DishesFeed from './dishes';
+import DishesFeed from './dishes-feed';
+import Profile from './navbar/profile';
 import FoodFeed from './food-feed';
-import Settings from './settings';
-import { Box, Button, Heading, ScrollArea } from '@radix-ui/themes';
-import { SettingsEntry, Feed, NavbarS, MainContent } from './content-module.styles';
-import { NavLink } from 'react-router-dom';
+import UtilsPage from './utils-page';
 
-const titles = {
-	[ROUTES.CONTENT.FEED]: 'Calendar Feed',
-	[ROUTES.CONTENT.DISHES]: 'Dishes',
-	[ROUTES.CONTENT.FOOD]: 'Food'
-};
-
-const useFeedTitle = () => {
-	const location = useLocation();
-
-	return titles[location.pathname] || 'Feed';
-};
+import { NavbarS, SettingsEntry } from './content-module.styles';
 
 const ContentModule = () => {
-	const title = useFeedTitle();
-	const { width = 0 } = useWindowSize();
-	const [searchParams] = useSearchParams();
-
 	return (
-		<div>
-			<Feed>
-				<Box p="3">
-					<Heading size="3" as="h1">
-						{title}
-					</Heading>
-				</Box>
+		<>
+			<Outlet />
 
-				<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 48px)' }}>
-					<Outlet />
-				</ScrollArea>
+			<CalendarMain />
 
-				{searchParams.get('date') && (
-					<MainContent>
-						<ScrollArea scrollbars="vertical" style={{ height: '100%' }}>
-							<div>{searchParams.get('date')}</div>
-
-							<NavLink to={ROUTES.CONTENT.FEED}>Back</NavLink>
-						</ScrollArea>
-					</MainContent>
-				)}
-			</Feed>
-		</div>
+			<CalendarWidgets />
+		</>
 	);
 };
 
@@ -70,7 +39,7 @@ const TestTEst = () => {
 					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
 				</Route>
 
-				<Route path={ROUTES.UTILS.ROOT} element={<Settings />} />
+				<Route path={ROUTES.UTILS.ROOT} element={<UtilsPage />} />
 
 				<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
 			</Routes>
