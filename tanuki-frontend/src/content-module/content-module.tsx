@@ -3,9 +3,7 @@ import { Outlet, Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTES from '@routes';
 
-import CalendarFeed from './calendar/feed';
-import CalendarMain from './calendar/main';
-import CalendarWidgets from './calendar/widgets';
+import CalendarIndex from './calendar';
 
 import NavBar from './navbar';
 import DishesFeed from './dishes-feed';
@@ -17,27 +15,14 @@ import { NavbarS, SettingsEntry } from './content-module.styles';
 
 const ContentModule = () => {
 	return (
-		<>
-			<Outlet />
-
-			<CalendarMain />
-
-			<CalendarWidgets />
-		</>
-	);
-};
-
-const TestTEst = () => {
-	return (
 		<div>
 			<Routes>
-				<Route path={ROUTES.CONTENT.ROOT} element={<ContentModule />}>
-					<Route path={ROUTES.CONTENT.FEED} element={<CalendarFeed />} />
-					<Route path={ROUTES.CONTENT.DISHES} element={<DishesFeed />} />
-					<Route path={ROUTES.CONTENT.FOOD} element={<FoodFeed />} />
+				<Route path={ROUTES.CONTENT.ROOT} element={<CalendarIndex />} />
+				{/* <Route path={ROUTES.CONTENT.DISHES} element={<DishesFeed />} /> */}
+				{/* <Route path={ROUTES.CONTENT.FOOD} element={<FoodFeed />} /> */}
 
-					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
-				</Route>
+				{/* <Route index path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} /> */}
+				{/* </Route> */}
 
 				<Route path={ROUTES.UTILS.ROOT} element={<UtilsPage />} />
 
@@ -52,4 +37,4 @@ const TestTEst = () => {
 	);
 };
 
-export default TestTEst;
+export default ContentModule;
