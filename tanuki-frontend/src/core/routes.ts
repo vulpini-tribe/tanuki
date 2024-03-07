@@ -4,6 +4,8 @@ const DISHES = '/dishes';
 const FOOD = '/food';
 const SETTINGS = '/settings';
 
+const CONTENT = '/content';
+
 const ROUTES = {
 	ROOT: '/',
 	AUTH: {
@@ -34,10 +36,10 @@ const ROUTES = {
 	CREDITS: '/credits',
 
 	CONTENT: {
-		ROOT: '/content',
-		FEED: '/content/feed',
-		DISHES: '/content/dishes',
-		FOOD: '/content/food'
+		ROOT: CONTENT,
+		FEED: `${CONTENT}/feed`,
+		DISHES: `${CONTENT}/dishes`,
+		FOOD: `${CONTENT}/food`
 	}
 };
 

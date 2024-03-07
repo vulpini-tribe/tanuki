@@ -10,7 +10,7 @@ import DishesFeed from './dishes';
 import FoodFeed from './food-feed';
 import Settings from './settings';
 import { Box, Heading, ScrollArea } from '@radix-ui/themes';
-import { SettingsEntry, Feed } from './content-module.styles';
+import { SettingsEntry, Feed, NavbarS } from './content-module.styles';
 
 const titles = {
 	[ROUTES.CONTENT.FEED]: 'Calendar Feed',
@@ -38,13 +38,6 @@ const ContentModule = () => {
 
 				<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 48px)' }}>
 					<Outlet />
-					{/* <Routes>
-						<Route path={ROUTES.CONTENT.FEED} element={<CalendarFeed />} />
-						<Route path={ROUTES.CONTENT.DISHES} element={<DishesFeed />} />
-						<Route path={ROUTES.CONTENT.FOOD} element={<FoodFeed />} />
-
-						<Route path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
-					</Routes> */}
 				</ScrollArea>
 			</Feed>
 		</div>
@@ -55,21 +48,21 @@ const TestTEst = () => {
 	return (
 		<div>
 			<Routes>
-				<Route path={`${ROUTES.CONTENT.ROOT}`} element={<ContentModule />}>
+				<Route path={ROUTES.CONTENT.ROOT} element={<ContentModule />}>
 					<Route path={ROUTES.CONTENT.FEED} element={<CalendarFeed />} />
 					<Route path={ROUTES.CONTENT.DISHES} element={<DishesFeed />} />
 					<Route path={ROUTES.CONTENT.FOOD} element={<FoodFeed />} />
 
-					<Route path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
+					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
 				</Route>
 
 				<Route path={ROUTES.SETTINGS.ROOT} element={<Settings />} />
 
-				<Route path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
+				<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
 			</Routes>
 
 			<SettingsEntry>
-				<NavBar />
+				<NavBar as={NavbarS} />
 				<Profile />
 			</SettingsEntry>
 		</div>

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Interval, DateTime } from 'luxon';
-import { Grid, Box, Heading, ScrollArea } from '@radix-ui/themes';
+import { Grid, Box, Heading } from '@radix-ui/themes';
 
-import Root, { Month, Week, Day } from './calendar-feed.styles';
+import { Month, Week, Day } from './calendar-feed.styles';
 
 const today = DateTime.now();
 
-const calcDaysMatrix = (week) => {
+const calcDaysMatrix = (week: DateTime) => {
 	const lastDay = week.endOf('week');
 	const firstDay = week.startOf('week');
 
@@ -18,8 +18,9 @@ const calcDaysMatrix = (week) => {
 		if (!day) return null;
 
 		const isCurrentMonth = day.hasSame(lastDay, 'month');
+		const isCurrentMonth2 = day.hasSame(firstDay, 'month');
 
-		return isCurrentMonth ? day : null;
+		return isCurrentMonth || isCurrentMonth2 ? day : null;
 	});
 };
 
@@ -27,7 +28,7 @@ const calcWeeksMatrix = (month: DateTime) => {
 	const lastDay = month.endOf('month');
 	const firstDay = month.startOf('month');
 
-	const test = {};
+	const test: { [key: number]: DateTime[] } = {};
 	const weeks = Interval.fromDateTimes(firstDay.startOf('week'), lastDay.endOf('week'))
 		.splitBy({ weeks: 1 })
 		.map((d) => d.start);
@@ -36,6 +37,7 @@ const calcWeeksMatrix = (month: DateTime) => {
 		if (!week) return;
 
 		const key = week.weekNumber.toString();
+		// @ts-ignore
 		test[key] = calcDaysMatrix(week);
 	});
 
@@ -61,6 +63,7 @@ const calcMonthMatrix = (month: DateTime) => {
 		if (!month) return;
 
 		const key = month.toFormat('MM-yyyy');
+		// @ts-ignore
 		months[key] = calcWeeksMatrix(month);
 	});
 
@@ -88,18 +91,30 @@ const CalendarFeed = () => {
 								</Heading>
 
 								<Month>
-									{Object.entries(month).map(([weekKey, days]) => {
-										return (
-											<Week key={weekKey}>
-												{days.map((day, i) => {
-													if (!day) return <Day key={Math.random()} />;
-													if (!day.hasSame(testMonth, 'month')) return null;
+									{Object.entries(month)
+										.reverse()
+										.map(([weekKey, days]) => {
+											return (
+												<Week key={weekKey}>
+													{days.map((day: DateTime) => {
+														if (!day) return <Day key={Math.random()} />;
+														const fromNextMonth = !day.hasSame(testMonth, 'month');
+														const isAfterToday = day > today;
+														const isToday = day.hasSame(today, 'day');
 
-													return <Day key={day.toFormat('DD.MM.yyyy')}>{day.toFormat('d')}</Day>;
-												})}
-											</Week>
-										);
-									})}
+														return (
+															<Day
+																key={day.toISODate()}
+																$fromNextMonth={fromNextMonth || isAfterToday}
+																$isToday={isToday}
+															>
+																{day.toFormat('d')}
+															</Day>
+														);
+													})}
+												</Week>
+											);
+										})}
 								</Month>
 							</Box>
 						);

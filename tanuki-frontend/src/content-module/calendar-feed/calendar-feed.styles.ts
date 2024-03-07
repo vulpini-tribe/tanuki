@@ -14,7 +14,32 @@ export const Week = styled.div`
 	text-align: center;
 `;
 
-export const Day = styled.div``;
+export const Day = styled.div<{ $fromNextMonth?: boolean; $isToday?: boolean }>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	min-width: 36px;
+	height: 36px;
+	min-height: 36px;
+
+	${(props) => {
+		if (props.$fromNextMonth) {
+			return `
+				color: var(--slate-6);
+			`;
+		}
+	}}
+
+	${(props) => {
+		if (props.$isToday) {
+			return `
+				background-color: var(--slate-6);
+				border-radius: 50px;
+			`;
+		}
+	}}
+`;
 
 export default styled.div`
 	position: fixed;

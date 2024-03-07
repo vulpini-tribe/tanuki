@@ -6,9 +6,9 @@ import ROUTES from '@routes';
 
 import Root from './navbar.styles';
 
-const NavBar = () => {
+const NavBar = (props) => {
 	return (
-		<Root>
+		<Root {...props}>
 			<NavLink to={ROUTES.CONTENT.FEED}>
 				<Button variant="outline" size="2" tabIndex={-1}>
 					Home
