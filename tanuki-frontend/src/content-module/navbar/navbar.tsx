@@ -27,9 +27,9 @@ const NavBar = (props) => {
 				</Button>
 			</NavLink>
 
-			<NavLink to={ROUTES.SETTINGS.ROOT}>
+			<NavLink to={ROUTES.UTILS.ROOT}>
 				<Button variant="outline" size="2" tabIndex={-1}>
-					Settings
+					Utils
 				</Button>
 			</NavLink>
 		</Root>

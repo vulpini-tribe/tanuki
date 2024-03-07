@@ -1,5 +1,6 @@
 import React from 'react';
-import { Outlet, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useWindowSize } from 'usehooks-ts';
+import { Outlet, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 
 import ROUTES from '@routes';
 
@@ -9,8 +10,9 @@ import NavBar from './navbar';
 import DishesFeed from './dishes';
 import FoodFeed from './food-feed';
 import Settings from './settings';
-import { Box, Heading, ScrollArea } from '@radix-ui/themes';
-import { SettingsEntry, Feed, NavbarS } from './content-module.styles';
+import { Box, Button, Heading, ScrollArea } from '@radix-ui/themes';
+import { SettingsEntry, Feed, NavbarS, MainContent } from './content-module.styles';
+import { NavLink } from 'react-router-dom';
 
 const titles = {
 	[ROUTES.CONTENT.FEED]: 'Calendar Feed',
@@ -26,6 +28,8 @@ const useFeedTitle = () => {
 
 const ContentModule = () => {
 	const title = useFeedTitle();
+	const { width = 0 } = useWindowSize();
+	const [searchParams] = useSearchParams();
 
 	return (
 		<div>
@@ -39,6 +43,16 @@ const ContentModule = () => {
 				<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 48px)' }}>
 					<Outlet />
 				</ScrollArea>
+
+				{searchParams.get('date') && (
+					<MainContent>
+						<ScrollArea scrollbars="vertical" style={{ height: '100%' }}>
+							<div>{searchParams.get('date')}</div>
+
+							<NavLink to={ROUTES.CONTENT.FEED}>Back</NavLink>
+						</ScrollArea>
+					</MainContent>
+				)}
 			</Feed>
 		</div>
 	);
@@ -56,7 +70,7 @@ const TestTEst = () => {
 					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.FEED} replace />} />
 				</Route>
 
-				<Route path={ROUTES.SETTINGS.ROOT} element={<Settings />} />
+				<Route path={ROUTES.UTILS.ROOT} element={<Settings />} />
 
 				<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
 			</Routes>

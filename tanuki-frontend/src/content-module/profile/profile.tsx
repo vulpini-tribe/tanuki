@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useUnit } from 'effector-react';
 import { NavLink } from 'react-router-dom';
 
 import { Button, Avatar, Text, IconButton, Box, Grid, Tooltip, Popover } from '@radix-ui/themes';
-import { ExitIcon, HamburgerMenuIcon, HomeIcon } from '@radix-ui/react-icons';
+import { ExitIcon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 import ROUTES from '@routes';
 import { useLogout } from '@src/auth-module';
@@ -39,6 +39,7 @@ const Profile = () => {
 										Home
 									</Button>
 								</NavLink>
+
 								<NavLink to={ROUTES.CONTENT.FOOD}>
 									<Button variant="ghost" size="2" tabIndex={-1}>
 										Food
@@ -51,7 +52,7 @@ const Profile = () => {
 									</Button>
 								</NavLink>
 
-								<NavLink to={ROUTES.SETTINGS.ROOT}>
+								<NavLink to={ROUTES.UTILS.ROOT}>
 									<Button variant="ghost" size="2" tabIndex={-1}>
 										Settings
 									</Button>

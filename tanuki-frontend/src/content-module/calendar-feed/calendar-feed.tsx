@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
 import { Interval, DateTime } from 'luxon';
+import { NavLink, useSearchParams } from 'react-router-dom';
+
+import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
 
 import { Month, Week, Day } from './calendar-feed.styles';
@@ -71,6 +74,8 @@ const calcMonthMatrix = (month: DateTime) => {
 };
 
 const CalendarFeed = () => {
+	const [searchParams] = useSearchParams();
+
 	const months = useMemo(() => {
 		return calcMonthMatrix(today);
 	}, []);
@@ -98,18 +103,18 @@ const CalendarFeed = () => {
 												<Week key={weekKey}>
 													{days.map((day: DateTime) => {
 														if (!day) return <Day key={Math.random()} />;
+														const isoDay = day.toISODate() || '';
 														const fromNextMonth = !day.hasSame(testMonth, 'month');
 														const isAfterToday = day > today;
 														const isToday = day.hasSame(today, 'day');
+														const isActive = searchParams.get('date') === isoDay && !fromNextMonth;
 
 														return (
-															<Day
-																key={day.toISODate()}
-																$fromNextMonth={fromNextMonth || isAfterToday}
-																$isToday={isToday}
-															>
-																{day.toFormat('d')}
-															</Day>
+															<NavLink key={isoDay} to={createLink(ROUTES.CONTENT.FEED, { date: isoDay })}>
+																<Day $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isToday || isActive}>
+																	{day.toFormat('d')}
+																</Day>
+															</NavLink>
 														);
 													})}
 												</Week>

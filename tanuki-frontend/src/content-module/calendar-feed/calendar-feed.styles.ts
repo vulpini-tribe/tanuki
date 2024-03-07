@@ -22,6 +22,7 @@ export const Day = styled.div<{ $fromNextMonth?: boolean; $isToday?: boolean }>`
 	min-width: 36px;
 	height: 36px;
 	min-height: 36px;
+	color: var(--gray-12);
 
 	${(props) => {
 		if (props.$fromNextMonth) {

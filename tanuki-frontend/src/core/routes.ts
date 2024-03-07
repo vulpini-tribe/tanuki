@@ -1,9 +1,6 @@
+import QS from 'qs';
 const AUTH = '/auth';
-const INDEX = '/main';
-const DISHES = '/dishes';
-const FOOD = '/food';
-const SETTINGS = '/settings';
-
+const UTILS = '/utils';
 const CONTENT = '/content';
 
 const ROUTES = {
@@ -18,17 +15,8 @@ const ROUTES = {
 		VALIDATE: `${AUTH}/validate`
 		// SIGN_2FA: `${AUTH}/sign_2fa`
 	},
-	INDEX: {
-		ROOT: INDEX
-	},
-	DISHES: {
-		ROOT: DISHES
-	},
-	FOOD: {
-		ROOT: FOOD
-	},
-	SETTINGS: {
-		ROOT: SETTINGS
+	UTILS: {
+		ROOT: UTILS
 	},
 	FORBIDDEN: '/403',
 	NOT_FOUND: '/404',
@@ -49,6 +37,12 @@ export const createRoute = (route: string, params: object, search?: string) => {
 	}, route);
 
 	return `${formattedRoute}${search ? search : ''}`;
+};
+
+export const createLinkWithQuery = (pathname: string, query: { [key: string]: string }) => {
+	const search = QS.stringify(query);
+
+	return `${pathname}?${search}`;
 };
 
 export default ROUTES;
