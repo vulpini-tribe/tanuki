@@ -97,7 +97,7 @@ const SignInPage = () => {
 				</Grid>
 				{/* Password | End */}
 
-				<Grid flow="column" columns="2fr 5fr" mt="4" align="center" gap="4">
+				<Grid flow="column" columns="5fr 7fr" mt="4" align="center" gap="4">
 					<Button asChild radius="small" variant="surface" size="3" highContrast>
 						<NavLink to={ROUTES.AUTH.SIGN_UP}>Sign up</NavLink>
 					</Button>
