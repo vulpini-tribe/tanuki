@@ -1,14 +1,13 @@
 import React from 'react';
 
-import WeightGraph from './weight-graph';
 import { SharedWidgets } from '../../shared';
 
-const CalendarWidgets = () => {
+const FoodWidgets = () => {
 	return (
 		<SharedWidgets>
-			<WeightGraph />
+			<h1>Food Widgets</h1>
 		</SharedWidgets>
 	);
 };
 
-export default CalendarWidgets;
+export default FoodWidgets;
