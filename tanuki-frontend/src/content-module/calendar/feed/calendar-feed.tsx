@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DateTime } from 'luxon';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 
 import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
@@ -13,6 +13,16 @@ import { Month, Week, Day } from './calendar-feed.styles';
 const CalendarFeed = () => {
 	const months = useDayMatrix();
 	const [searchParams] = useSearchParams();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (searchParams.get('date')) return;
+
+		const isoDay = today.toISODate();
+		const link = createLink(ROUTES.CONTENT.FEED, { date: isoDay });
+
+		navigate(link);
+	}, []);
 
 	return (
 		<SharedFeed>
@@ -41,12 +51,11 @@ const CalendarFeed = () => {
 															const isoDay = day.toISODate() || '';
 															const fromNextMonth = !day.hasSame(testMonth, 'month');
 															const isAfterToday = day > today;
-															const isToday = day.hasSame(today, 'day');
 															const isActive = searchParams.get('date') === isoDay && !fromNextMonth;
 
 															return (
 																<NavLink key={isoDay} to={createLink(ROUTES.CONTENT.FEED, { date: isoDay })}>
-																	<Day $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isToday || isActive}>
+																	<Day $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isActive}>
 																		{day.toFormat('d')}
 																	</Day>
 																</NavLink>
