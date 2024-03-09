@@ -117,6 +117,8 @@ pub async fn register(
 
     if is_rollback_needed == true {
         rollback(pg_transaction).await?;
+
+        return Err(reg_errors::system(reg_errors::DEFAULT_MSG))?;
     } else {
         commit(pg_transaction).await?;
     }
