@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "categories" (
   "name" TEXT,
   "description" TEXT,
   "color" TEXT,
-  "icons_list" TEXT[],
+  "icon" TEXT,
 
   PRIMARY KEY ("id")
 );
@@ -19,10 +19,10 @@ CREATE TABLE IF NOT EXISTS "foods" (
   "name" TEXT NOT NULL,
   "photo" TEXT,
   "kcal_100" FLOAT(2) NOT NULL,
-  "protein_100" FLOAT(2) NOT NULL,
-  "fat_100" FLOAT(2) NOT NULL,
-  "carbs_100" FLOAT(2) NOT NULL,
-  "portion_weight" FLOAT(2) NOT NULL,
+  "protein_100" FLOAT(2) NOT NULL DEFAULT 0,
+  "fat_100" FLOAT(2) NOT NULL DEFAULT 0,
+  "carbs_100" FLOAT(2) NOT NULL DEFAULT 0,
+  "portion_weight" FLOAT(2) NOT NULL DEFAULT 100,
 
   PRIMARY KEY ("id"),
   FOREIGN KEY("category_id") REFERENCES "categories"("id") ON DELETE CASCADE

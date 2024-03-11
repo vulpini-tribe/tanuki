@@ -21,9 +21,14 @@ CREATE TABLE IF NOT EXISTS "cooking_steps" (
 );
 
 CREATE TABLE cooking_steps_food_used_bridge (
-  "cooking_step_id" UUID NOT NULL REFERENCES "cooking_steps"("id") ON UPDATE CASCADE ON DELETE CASCADE,
-  "food_id" UUID NOT NULL REFERENCES "foods"("id") ON UPDATE CASCADE,
-  CONSTRAINT "fk_cooking_steps_food_used_bridge" PRIMARY KEY ("cooking_step_id", "food_id")
+  "step_id" UUID NOT NULL
+  REFERENCES "cooking_steps"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+
+  "food_id" UUID NOT NULL
+  REFERENCES "foods"("id") ON UPDATE CASCADE,
+
+  CONSTRAINT "fk_cooking_steps_food_used_bridge"
+  PRIMARY KEY ("step_id", "food_id")
 );
 
 CREATE INDEX IF NOT EXISTS "foods_id_index" ON "foods"("id");
@@ -46,9 +51,14 @@ CREATE TABLE IF NOT EXISTS "dishes" (
 );
 
 CREATE TABLE dishes_cooking_steps_bridge (
-  "dish_id" UUID NOT NULL REFERENCES "dishes"("id") ON UPDATE CASCADE ON DELETE CASCADE,
-  "step_id" UUID NOT NULL REFERENCES "cooking_steps"("id") ON UPDATE CASCADE,
-  CONSTRAINT "fk_dishes_cooking_steps_bridge" PRIMARY KEY ("dish_id", "step_id")
+  "dish_id" UUID NOT NULL
+  REFERENCES "dishes"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+
+  "step_id" UUID NOT NULL
+  REFERENCES "cooking_steps"("id") ON UPDATE CASCADE,
+
+  CONSTRAINT "fk_dishes_cooking_steps_bridge"
+  PRIMARY KEY ("dish_id", "step_id")
 );
 
 CREATE INDEX IF NOT EXISTS "dishes_id_index" ON "dishes"("id");

@@ -53,8 +53,8 @@ diesel::table! {
 }
 
 diesel::table! {
-    cooking_steps_food_used_bridge (cooking_step_id, food_id) {
-        cooking_step_id -> Uuid,
+    cooking_steps_food_used_bridge (step_id, food_id) {
+        step_id -> Uuid,
         food_id -> Uuid,
     }
 }
@@ -182,7 +182,7 @@ diesel::table! {
 }
 
 diesel::joinable!(cooking_steps -> foods (food_used));
-diesel::joinable!(cooking_steps_food_used_bridge -> cooking_steps (cooking_step_id));
+diesel::joinable!(cooking_steps_food_used_bridge -> cooking_steps (step_id));
 diesel::joinable!(cooking_steps_food_used_bridge -> foods (food_id));
 diesel::joinable!(dishes -> cooking_steps (steps));
 diesel::joinable!(dishes_cooking_steps_bridge -> cooking_steps (step_id));
