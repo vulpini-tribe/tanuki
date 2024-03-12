@@ -6,16 +6,19 @@ import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
 
 const today = DateTime.now();
-import { useDayMatrix } from './hooks';
+import { useDayMatrix, useGetCategrories } from './hooks';
 import { SharedFeed } from '../../shared';
 import { Month, Week, Day } from './calendar-feed.styles';
 
 const CalendarFeed = () => {
 	const months = useDayMatrix();
 	const [searchParams] = useSearchParams();
+	const request = useGetCategrories();
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		request.refetch();
+
 		if (searchParams.get('date')) return;
 
 		const isoDay = today.toISODate();

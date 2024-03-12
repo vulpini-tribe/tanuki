@@ -1,4 +1,6 @@
 use crate::errors::reg_errors;
+use crate::utils::session_user_id;
+
 use actix_web::{Error, HttpResponse};
 use serde::{Deserialize, Serialize};
 
@@ -25,16 +27,5 @@ pub async fn get_user(session: actix_session::Session) -> Result<HttpResponse, E
                 "You are not authenticated. Please login. 1",
             ))
         }
-    }
-}
-
-#[tracing::instrument(name = "Get user_id from session.", skip(session))]
-async fn session_user_id(session: &actix_session::Session) -> Result<uuid::Uuid, String> {
-    match session.get(crate::types::USER_ID_KEY) {
-        Ok(user_id) => match user_id {
-            Some(id) => Ok(id),
-            None => Err("".to_string()),
-        },
-        Err(_) => Err("".to_string()),
     }
 }

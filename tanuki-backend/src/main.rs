@@ -8,7 +8,7 @@ pub mod utils;
 use log;
 extern crate diesel;
 use actix_web::{self, web, App, HttpServer};
-use routes::{auth, health, users};
+use routes::{auth, categories, health, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -49,6 +49,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(data_providers.clone())
             .service(auth::_routes::get_routes())
             .service(users::_routes::get_routes())
+            .service(categories::_routes::get_routes())
             .service(health::_routes::get_routes())
     })
     .bind((env_config.hostname, env_config.port))?

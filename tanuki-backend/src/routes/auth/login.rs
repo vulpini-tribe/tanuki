@@ -30,7 +30,7 @@ pub async fn login(
     }
 
     // get user_id by email from db
-    let mut pg_connection = dp
+    let pg_connection = dp
         .pg
         .acquire()
         .await
