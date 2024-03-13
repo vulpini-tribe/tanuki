@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -6,26 +6,50 @@ import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
 
 const today = DateTime.now();
-import { useDayMatrix, useGetCategrories } from './hooks';
+import { useDayMatrix, useGetHistory } from './hooks';
 import { SharedFeed } from '../../shared';
 import { Month, Week, Day } from './calendar-feed.styles';
 
 const CalendarFeed = () => {
+	const [from, setFrom] = useState('');
+	const [to, setTo] = useState('');
 	const months = useDayMatrix();
 	const [searchParams] = useSearchParams();
-	const request = useGetCategrories();
+	const request = useGetHistory({ from, to });
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		request.refetch();
+		const queryDate = searchParams.get('date');
 
-		if (searchParams.get('date')) return;
+		if (queryDate) {
+			const dateFromQuery = DateTime.fromISO(queryDate as string);
+
+			const nextFrom = DateTime.now();
+			let nextTo = dateFromQuery.startOf('month');
+
+			const difference = nextFrom.diff(nextTo, 'days').days;
+
+			if (difference < 180) {
+				nextTo = nextFrom.minus({ days: 180 }).startOf('month');
+			}
+
+			setFrom(nextFrom.toISODate() as string);
+			setTo(nextTo.toISODate() as string);
+
+			return;
+		}
 
 		const isoDay = today.toISODate();
 		const link = createLink(ROUTES.CONTENT.FEED, { date: isoDay });
 
 		navigate(link);
 	}, []);
+
+	useEffect(() => {
+		if (!from || !to) return;
+
+		request.refetch();
+	}, [from, to]);
 
 	return (
 		<SharedFeed>

@@ -14,8 +14,6 @@ const useGetCategories = () => {
 		retry: 1
 	});
 
-	console.log(request);
-
 	return request;
 };
 

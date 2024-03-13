@@ -47,6 +47,10 @@ CREATE TABLE IF NOT EXISTS "history_entries" (
   "id" UUID NOT NULL DEFAULT gen_random_uuid(),
   "user_id" UUID NOT NULL,
   "day" TEXT NOT NULL,
+  -- average weight at day
+  "weight" REAL,
+  -- total calories consumed at the day
+  "calories" REAL,
   "consumed_food" UUID,
 
   PRIMARY KEY ("id"),
@@ -66,4 +70,4 @@ CREATE TABLE IF NOT EXISTS "history_entry_consumed_food_bridge" (
   PRIMARY KEY ("history_entry_id", "consumed_food_id")
 );
 
-CREATE INDEX IF NOT EXISTS "idx_history_entry_user_id_id" ON "history_entries"("id", "user_id");
+CREATE INDEX IF NOT EXISTS "idx_history_entry_user_id_id" ON "history_entries"("id", "user_id", "day");
