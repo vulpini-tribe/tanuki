@@ -14,7 +14,7 @@ export const Week = styled.div`
 	text-align: center;
 `;
 
-export const Day = styled.div<{ $fromNextMonth?: boolean; $isToday?: boolean }>`
+export const Day = styled.div<{ $isDisabled?: boolean; $fromNextMonth?: boolean; $isToday?: boolean }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -37,6 +37,16 @@ export const Day = styled.div<{ $fromNextMonth?: boolean; $isToday?: boolean }>`
 			return `
 				background-color: var(--slate-6);
 				border-radius: 50px;
+			`;
+		}
+	}}
+
+	${(props) => {
+		if (props.$isDisabled) {
+			return `
+				color: var(--gray-6);
+				pointer-events: none;
+				cursor: not-allowed;
 			`;
 		}
 	}}

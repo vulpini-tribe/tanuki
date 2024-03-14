@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { DateTime } from 'luxon';
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -6,50 +6,25 @@ import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
 
 const today = DateTime.now();
-import { useDayMatrix, useGetHistory } from './hooks';
+import { useDayMatrix } from './hooks';
 import { SharedFeed } from '../../shared';
 import { Month, Week, Day } from './calendar-feed.styles';
 
 const CalendarFeed = () => {
-	const [from, setFrom] = useState('');
-	const [to, setTo] = useState('');
 	const months = useDayMatrix();
-	const [searchParams] = useSearchParams();
-	const request = useGetHistory({ from, to });
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
 	useEffect(() => {
-		const queryDate = searchParams.get('date');
+		const activeDate = searchParams.get('date');
 
-		if (queryDate) {
-			const dateFromQuery = DateTime.fromISO(queryDate as string);
-
-			const nextFrom = DateTime.now();
-			let nextTo = dateFromQuery.startOf('month');
-
-			const difference = nextFrom.diff(nextTo, 'days').days;
-
-			if (difference < 180) {
-				nextTo = nextFrom.minus({ days: 180 }).startOf('month');
-			}
-
-			setFrom(nextFrom.toISODate() as string);
-			setTo(nextTo.toISODate() as string);
-
-			return;
-		}
+		if (activeDate) return;
 
 		const isoDay = today.toISODate();
 		const link = createLink(ROUTES.CONTENT.FEED, { date: isoDay });
 
 		navigate(link);
 	}, []);
-
-	useEffect(() => {
-		if (!from || !to) return;
-
-		request.refetch();
-	}, [from, to]);
 
 	return (
 		<SharedFeed>
@@ -75,10 +50,18 @@ const CalendarFeed = () => {
 													<Week key={weekKey}>
 														{days.map((day: DateTime) => {
 															if (!day) return <Day key={Math.random()} />;
+
+															const isAfterToday = day > today;
 															const isoDay = day.toISODate() || '';
 															const fromNextMonth = !day.hasSame(testMonth, 'month');
-															const isAfterToday = day > today;
 															const isActive = searchParams.get('date') === isoDay && !fromNextMonth;
+															if (isAfterToday) {
+																return (
+																	<Day key={isoDay} $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isActive}>
+																		{day.toFormat('d')}
+																	</Day>
+																);
+															}
 
 															return (
 																<NavLink key={isoDay} to={createLink(ROUTES.CONTENT.FEED, { date: isoDay })}>

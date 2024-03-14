@@ -1,4 +1,4 @@
-import axios, { getErrCode, getErrMessage } from '@axios';
+import axios from '@axios';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetCategories = () => {

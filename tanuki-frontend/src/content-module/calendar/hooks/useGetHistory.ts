@@ -19,8 +19,6 @@ const useGetCategories = ({ from, to }: ParamsT) => {
 		retry: 1
 	});
 
-	console.log(request);
-
 	return request;
 };
 
