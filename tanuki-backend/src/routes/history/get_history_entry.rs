@@ -55,6 +55,15 @@ async fn retrieve_consumed_food_data(
     history_id: uuid::Uuid,
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<Vec<HistoryEntryT>, Error> {
+    // select list of `consumed_food_id`'s related to history_id
+    // let's say it's ['185857cd-e162-427a-b2e2-b894021aa931'], so the next step shall be extractiing consumtion data:
+
+    // select * from food_consumptions WHERE id = '185857cd-e162-427a-b2e2-b894021aa931';
+    // here we can extract meal_type and find ids for `food_list`
+    // select * from food_consumptions_food_id_bridge WHERE food_consumptions_id = '185857cd-e162-427a-b2e2-b894021aa931';
+    // and finally we can select food data
+    // select * from foods WHERE id = 'f1f76880-b2e6-4d65-ba28-f6dc0c9e29db';
+
     match sqlx::query(
         "
         SELECT * FROM history_entry_consumed_food_bridge hecf
