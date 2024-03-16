@@ -5,8 +5,6 @@ CREATE TABLE IF NOT EXISTS "history_entries" (
   "day" TEXT NOT NULL,
   -- average weight at day
   "weight" REAL,
-  -- total calories consumed at the day
-  "calories" REAL,
 
   PRIMARY KEY ("id"),
   FOREIGN KEY ("user_id") REFERENCES "users"("id")

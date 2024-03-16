@@ -37,17 +37,31 @@ pub struct HistoryEntryFull {
     id: uuid::Uuid,
     day: String,
     weight: Option<f32>,
-    calories: Option<f32>,
+    calories: Option<i32>,
     consumed_food: Vec<FoodEntry>,
 }
 
 impl HistoryEntryFull {
+    fn calc_calories(food_entries: &Vec<FoodEntry>) -> i32 {
+        let calories = food_entries
+            .iter()
+            .map(|entry| {
+                let weight = entry.portion_weight;
+                let kcal = entry.kcal_100;
+
+                (weight / 100.0) * kcal
+            })
+            .sum::<f32>();
+
+        calories as i32
+    }
+
     pub fn from_row(row: &sqlx::postgres::PgRow, food_entries: Vec<FoodEntry>) -> Self {
         Self {
             id: row.get("id"),
             day: row.get("day"),
             weight: Some(row.get("weight")),
-            calories: Some(row.get("calories")),
+            calories: Some(Self::calc_calories(&food_entries)),
             consumed_food: food_entries,
         }
     }
