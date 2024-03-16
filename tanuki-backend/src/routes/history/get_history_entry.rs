@@ -2,13 +2,12 @@ use actix_web::{web, Error, HttpResponse};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::Row;
-use std::collections::HashMap;
 
 use crate::errors::reg_errors;
 use crate::service::data_providers::WebDataPool;
 use crate::utils::{acquire_pg_connection, session_user_id};
 
-// const SHARED_USER_ID = "00000000-0000-0000-0000-000000000000";
+const SHARED_USER_ID: &str = "'00000000-0000-0000-0000-000000000000'";
 
 #[tracing::instrument(name = "Get history entry", skip(session, dp))]
 pub async fn get_history_entry(
@@ -49,7 +48,7 @@ impl HistoryEntryFull {
             day: row.get("day"),
             weight: Some(row.get("weight")),
             calories: Some(row.get("calories")),
-            consumed_food: food_entries
+            consumed_food: food_entries,
         }
     }
 }
@@ -88,66 +87,40 @@ async fn retrieve_consumed_food_data(
     history_id: uuid::Uuid,
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<HistoryEntryFull, Error> {
-    // STEP 1: select related foods ids to the day in the history_entry_food_bridge
-    let food_ids =
-        sqlx::query("SELECT food_id FROM history_entry_food_bridge WHERE history_entry_id = $1")
-            .bind(&history_id)
-            .fetch_all(&mut *pg_connection)
-            .await
-            .map_err(|e| {
-                tracing::event!(target: "sqlx", tracing::Level::ERROR, "retrieve_consumed_food_data: {:#?}", e);
-                
-                reg_errors::not_found("Food entries not found.")
-            })?;
+    let history_entry_query = format!("
+        SELECT * FROM history_entry_food_bridge
+        INNER JOIN foods ON history_entry_food_bridge.food_id = foods.id
+        INNER JOIN history_entries ON history_entry_food_bridge.history_entry_id = history_entries.id
+        WHERE history_entry_food_bridge.history_entry_id = $1
+        AND (history_entries.user_id = $2 OR history_entries.user_id = {})
+    ", SHARED_USER_ID);
 
-    let food_ids: Vec<uuid::Uuid> = food_ids
-        .iter()
-        .map(|row| row.get("food_id"))
-        .collect();
-
-    // STEP 2: Match food ids with the real food entries
-    let query = format!(
-        "SELECT * FROM foods WHERE id IN ({})",
-        food_ids
-            .iter()
-            .map(|id| format!("'{}'", id))
-            .collect::<Vec<String>>()
-            .join(",")
-    );
-
-    let food_entries = sqlx::query(&query)
+    let history_entry = sqlx::query(&history_entry_query)
+        .bind(&history_id)
+        .bind(&user_id)
         .fetch_all(&mut *pg_connection)
         .await
         .map_err(|e| {
             tracing::event!(target: "sqlx", tracing::Level::ERROR, "retrieve_consumed_food_data: {:#?}", e);
-            
+
             reg_errors::not_found("Food entries not found.")
         })?;
 
-    let food_entries: Vec<FoodEntry> = food_entries
+    let food_entries = history_entry
         .iter()
-        .map(|row| FoodEntry::from_row(row))
-        .collect();
+        .map(|row| {
+            let food_entry = FoodEntry::from_row(row);
 
-    // STEP 3: select * from history_entries where user_id = $1 and id = $2
-    let history_entry = match sqlx::query(
-        "
-        SELECT * FROM history_entries WHERE user_id = $1 AND id = $2
-    ",
-    )
-    .bind(&user_id)
-    .bind(&history_id)
-    .fetch_one(&mut *pg_connection)
-    .await
-    {
-        Ok(row) => HistoryEntryFull::from_row(&row, food_entries),
-        Err(e) => {
-            tracing::event!(target: "sqlx", tracing::Level::ERROR, "retrieve_consumed_food_data: {:#?}", e);
+            food_entry
+        })
+        .collect::<Vec<FoodEntry>>();
 
-            return Err(reg_errors::not_found("History entry not found."));
-        }
+    let row = match history_entry.get(0) {
+        Some(row) => row,
+        None => return Err(reg_errors::not_found("History entry not found.")),
     };
 
+    let history_entry = HistoryEntryFull::from_row(&row, food_entries);
 
     Ok(history_entry)
 }
