@@ -8,6 +8,8 @@ use crate::errors::reg_errors;
 use crate::service::data_providers::WebDataPool;
 use crate::utils::{acquire_pg_connection, session_user_id};
 
+// const SHARED_USER_ID = "00000000-0000-0000-0000-000000000000";
+
 #[tracing::instrument(name = "Get history entry", skip(session, dp))]
 pub async fn get_history_entry(
     id: web::Path<uuid::Uuid>,
