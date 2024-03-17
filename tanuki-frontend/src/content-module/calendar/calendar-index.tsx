@@ -6,7 +6,7 @@ import CalendarFeed from './feed';
 import CalendarMain from './main';
 import CalendarWidgets from './widgets';
 
-import { useGetHistory, useGetHistoryEntry } from './hooks';
+import { useGetHistory } from './hooks';
 
 type HistoryDayT = {
 	id: string;
@@ -52,7 +52,7 @@ const CalendarIndex = () => {
 
 	const history_days_list = getHistoryReq.data?.data?.data || [];
 
-	const history_days_map = history_days_list.reduce((acc, item: HistoryDayT) => {
+	const history_days_map = history_days_list.reduce((acc: { [key: string]: HistoryDayT }, item: HistoryDayT) => {
 		return {
 			...acc,
 			[item.day]: item
@@ -69,7 +69,7 @@ const CalendarIndex = () => {
 
 	return (
 		<>
-			<CalendarFeed />
+			<CalendarFeed from={from} to={to} setFrom={setFrom} setTo={setTo} />
 			<CalendarMain {...activeDayInfo} />
 			<CalendarWidgets />
 		</>

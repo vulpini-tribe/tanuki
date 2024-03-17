@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { Interval, DateTime } from 'luxon';
 
-const today = DateTime.now();
-
 const calcDaysMatrix = (week: DateTime) => {
 	const lastDay = week.endOf('week');
 	const firstDay = week.startOf('week');
@@ -41,13 +39,10 @@ const calcWeeksMatrix = (month: DateTime) => {
 	return test;
 };
 
-const calcMonthMatrix = (month: DateTime) => {
+const calcMonthMatrix = (from: DateTime, to: DateTime) => {
 	// Get range for work with | Start
-	const today = DateTime.now();
-	const endDate = today.minus({ months: 6 });
-
-	const lastDay = today.endOf('month');
-	const firstDay = endDate.startOf('month');
+	const lastDay = from.endOf('month');
+	const firstDay = to.startOf('month');
 	// Get range for work with | End
 
 	const months: { [key: string]: DateTime } = {};
@@ -67,12 +62,16 @@ const calcMonthMatrix = (month: DateTime) => {
 	return months;
 };
 
-const useDayMatrix = () => {
-	const dayMatrix = useMemo(() => {
-		return calcMonthMatrix(today);
-	}, []);
+const useDayMatrix = (from: string, to: string) => {
+	const rawMatrix = useMemo(() => {
+		return calcMonthMatrix(DateTime.fromISO(from), DateTime.fromISO(to));
+	}, [from, to]);
 
-	return dayMatrix;
+	const matrix = useMemo(() => {
+		return Object.entries(rawMatrix).reverse();
+	}, [rawMatrix]);
+
+	return matrix;
 };
 
 export default useDayMatrix;
