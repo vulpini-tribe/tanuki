@@ -9,9 +9,15 @@ import Root from './navbar.styles';
 const NavBar = (props) => {
 	return (
 		<Root {...props}>
-			<NavLink to={ROUTES.CONTENT.FEED}>
+			<NavLink to={ROUTES.CONTENT.ROOT}>
 				<Button variant="outline" size="2" tabIndex={-1}>
 					Home
+				</Button>
+			</NavLink>
+
+			<NavLink to={ROUTES.CONTENT.FEED}>
+				<Button variant="outline" size="2" tabIndex={-1}>
+					Feed
 				</Button>
 			</NavLink>
 

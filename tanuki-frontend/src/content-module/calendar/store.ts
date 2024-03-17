@@ -2,7 +2,7 @@ import { createEvent, createStore } from 'effector';
 import QS from 'qs';
 import { DateTime } from 'luxon';
 
-export const MIN_DATE = '2022-01-01';
+export const MIN_DATE = '2010-01-01';
 const today = DateTime.local().toISODate();
 const minimalDate = DateTime.fromISO(MIN_DATE);
 
@@ -11,9 +11,10 @@ let activeDate = DateTime.fromISO(parsedDate).isValid ? parsedDate : today;
 activeDate = DateTime.fromISO(activeDate) < minimalDate ? MIN_DATE : activeDate;
 
 const toDate =
-	activeDate === today
-		? (DateTime.fromISO(activeDate).minus({ days: 180 }).startOf('month').toISODate() as string)
-		: (DateTime.fromISO(activeDate).startOf('month').toISODate() as string);
+	// activeDate === today
+	DateTime.fromISO(today).minus({ days: 180 }) < DateTime.fromISO(activeDate)
+		? DateTime.fromISO(activeDate).minus({ days: 180 }).startOf('month')
+		: DateTime.fromISO(activeDate).startOf('month');
 
 type PartialHistoryEntry = {
 	id: string;
@@ -34,7 +35,7 @@ export const setTo = createEvent<CalendarStore['to']>();
 
 export const $calendarStore = createStore<CalendarStore>({
 	from: today,
-	to: toDate,
+	to: toDate.toISODate() as string,
 	activeDate,
 	allHistoryEntries: []
 });

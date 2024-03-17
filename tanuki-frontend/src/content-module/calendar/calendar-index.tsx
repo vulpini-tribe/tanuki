@@ -5,7 +5,6 @@ import { $calendarStore } from './store';
 
 import CalendarFeed from './feed';
 import CalendarMain from './main';
-import CalendarWidgets from './widgets';
 
 import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { useGetHistory } from './hooks';
@@ -55,7 +54,6 @@ const CalendarIndex = () => {
 		<>
 			<CalendarFeed />
 			<CalendarMain {...activeDayInfo} />
-			<CalendarWidgets />
 		</>
 	);
 };
