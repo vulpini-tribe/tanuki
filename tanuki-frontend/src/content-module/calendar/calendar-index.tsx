@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { DateTime } from 'luxon';
+import React, { useEffect, useMemo } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import { $calendarStore } from './store';
 
 import CalendarFeed from './feed';
 import CalendarMain from './main';
 import CalendarWidgets from './widgets';
 
+import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { useGetHistory } from './hooks';
 
 type HistoryDayT = {
@@ -16,39 +18,23 @@ type HistoryDayT = {
 };
 
 const CalendarIndex = () => {
-	const [to, setTo] = useState('');
-	const [from, setFrom] = useState('');
 	const [searchParams] = useSearchParams();
+	const calendarStore = useUnit($calendarStore);
+	const navigate = useNavigate();
 
-	const getHistoryReq = useGetHistory({ from, to });
+	const getHistoryReq = useGetHistory();
 
 	useEffect(() => {
 		const queryDate = searchParams.get('date');
 
-		if (!queryDate) {
-			return;
+		if (queryDate !== calendarStore.activeDate) {
+			const link = createLink(ROUTES.CONTENT.FEED, { date: calendarStore.activeDate });
+
+			navigate(link);
 		}
-
-		const dateFromQuery = DateTime.fromISO(queryDate as string);
-
-		const nextFrom = DateTime.now();
-		let nextTo = dateFromQuery.startOf('month');
-
-		const difference = nextFrom.diff(nextTo, 'days').days;
-
-		if (difference < 180) {
-			nextTo = nextFrom.minus({ days: 180 }).startOf('month');
-		}
-
-		setFrom(nextFrom.toISODate() as string);
-		setTo(nextTo.toISODate() as string);
-	}, []);
-
-	useEffect(() => {
-		if (!from || !to) return;
 
 		getHistoryReq.refetch();
-	}, [from, to]);
+	}, [calendarStore.from, calendarStore.to]);
 
 	const history_days_list = getHistoryReq.data?.data?.data || [];
 
@@ -65,11 +51,9 @@ const CalendarIndex = () => {
 		return history_days_map[queryDate || ''] || {};
 	}, [history_days_map, searchParams]);
 
-	console.log(history_days_map);
-
 	return (
 		<>
-			<CalendarFeed from={from} to={to} setFrom={setFrom} setTo={setTo} />
+			<CalendarFeed />
 			<CalendarMain {...activeDayInfo} />
 			<CalendarWidgets />
 		</>

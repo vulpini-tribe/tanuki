@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DateTime } from 'luxon';
-import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
+import { useUnit } from 'effector-react';
+import { $calendarStore, setFrom, setTo, MIN_DATE } from '../store';
 
 import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { Grid, Box, Heading } from '@radix-ui/themes';
@@ -11,25 +13,15 @@ import { useDayMatrix } from './hooks';
 import { SharedFeed } from '../../shared';
 import { Month, Week, Day } from './calendar-feed.styles';
 
-type Props = {
-	from: string;
-	to: string;
-	setFrom: (from: string) => void;
-	setTo: (to: string) => void;
-};
+const HeaderContent = () => {
+	const { from, to } = useUnit($calendarStore);
 
-const HeaderContent = ({ from, to, setFrom, setTo }) => {
-	const onFromHd = (e) => {
-		setFrom(e.target.value);
-	};
-
-	const onToHd = (e) => {
-		setTo(e.target.value);
-	};
+	const onFromHd = (e: React.ChangeEvent<HTMLInputElement>) => setFrom(e.target.value);
+	const onToHd = (e: React.ChangeEvent<HTMLInputElement>) => setTo(e.target.value);
 
 	const onAllTimeHd = () => {
 		setFrom(today.toISODate());
-		setTo('1970-01-01');
+		setTo(MIN_DATE);
 	};
 
 	const onYearHd = () => {
@@ -64,24 +56,13 @@ const HeaderContent = ({ from, to, setFrom, setTo }) => {
 	);
 };
 
-const CalendarFeed = ({ from, to, setFrom, setTo }: Props) => {
+const CalendarFeed = () => {
+	const { from, to } = useUnit($calendarStore);
 	const months = useDayMatrix(from, to);
-	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
-	useEffect(() => {
-		const activeDate = searchParams.get('date');
-
-		if (activeDate) return;
-
-		const isoDay = today.toISODate();
-		const link = createLink(ROUTES.CONTENT.FEED, { date: isoDay });
-
-		navigate(link);
-	}, []);
-
 	return (
-		<SharedFeed header={<HeaderContent from={from} to={to} setFrom={setFrom} setTo={setTo} />}>
+		<SharedFeed header={<HeaderContent />}>
 			<Box pt="5" pr="6" pl="2">
 				<Grid flow="row" rows="min-content" gap="3">
 					{months.map(([key, month]) => {
