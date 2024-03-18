@@ -1,25 +1,30 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 import { useStoreMap } from 'effector-react';
+import { DateTime } from 'luxon';
 
-import ROUTES from '@routes';
-import { $calendarStore } from '../store';
+import { $calendarStore, dayDataSelector } from '../store';
+
+import { Heading } from '@radix-ui/themes';
 
 import { SharedMain } from '../../shared';
 import { useGetHistoryEntry } from './hooks';
 
-const CalendarMain = () => {
-	const dayData = useStoreMap($calendarStore, ({ activeDate, allHistoryEntries, fullHistoryEntries }) => {
-		const partialDayData = allHistoryEntries[activeDate] || {};
-		const fullDayData = fullHistoryEntries[partialDayData.id] || {};
+const useDate = (date: string) => {
+	const today = DateTime.local();
+	const day = DateTime.fromISO(date);
 
-		return {
-			...partialDayData,
-			...fullDayData
-		};
-	});
+	if (day.get('year') === today.get('year')) {
+		return day.toFormat('MMMM d');
+	}
+
+	return day.toFormat('MMMM d, yyyy');
+};
+
+const CalendarMain = () => {
+	const dayData = useStoreMap($calendarStore, dayDataSelector);
 
 	const getEntryReq = useGetHistoryEntry(dayData.id);
+	const formattedDay = useDate(dayData.day);
 
 	useEffect(() => {
 		if (!dayData.id) return;
@@ -28,11 +33,12 @@ const CalendarMain = () => {
 	}, [dayData.id]);
 
 	console.log(dayData);
+
 	return (
 		<SharedMain>
-			<div>{dayData.id}</div>
+			<Heading>{formattedDay}</Heading>
 
-			<NavLink to={ROUTES.CONTENT.FEED}>Back</NavLink>
+			<div>Add meal</div>
 		</SharedMain>
 	);
 };

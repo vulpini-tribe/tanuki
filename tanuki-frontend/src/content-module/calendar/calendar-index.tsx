@@ -5,6 +5,7 @@ import { $calendarStore } from './store';
 
 import CalendarFeed from './feed';
 import CalendarMain from './main';
+import FeedWidgets from './widgets';
 
 import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { useGetHistory } from './hooks';
@@ -32,6 +33,7 @@ const CalendarIndex = () => {
 		<>
 			<CalendarFeed />
 			<CalendarMain />
+			<FeedWidgets />
 		</>
 	);
 };

@@ -120,3 +120,19 @@ $calendarStore.on(setTo, (store, nextValue) => {
 
 	return nextStore;
 });
+
+export const dayDataSelector = (store: CalendarStore) => {
+	const partialDayData = store.allHistoryEntries[store.activeDate] || {};
+	const fullDayData = store.fullHistoryEntries[partialDayData.id] || {};
+
+	const _ = {
+		...partialDayData,
+		...fullDayData
+	};
+
+	if (!_.day) {
+		_.day = store.activeDate;
+	}
+
+	return _;
+};
