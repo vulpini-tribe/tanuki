@@ -6,7 +6,6 @@ pub struct HistoryEntry {
     id: uuid::Uuid,
     day: String,
     weight: f32,
-    calories: f32,
 }
 
 impl HistoryEntry {
@@ -15,7 +14,6 @@ impl HistoryEntry {
             id: row.get("id"),
             day: row.get("day"),
             weight: row.get("weight"),
-            calories: row.get("calories"),
         }
     }
 }

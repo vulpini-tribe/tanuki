@@ -32,6 +32,7 @@ type ConsumedFoodT = {
 	photo: string;
 	portion_weight: number;
 	protein_100: number;
+	datetime: unknown;
 };
 
 type FullHistoryEntry = {
@@ -79,7 +80,15 @@ $calendarStore.on(setActiveDate, (store, nextValue) => {
 // uuid & data
 $calendarStore.on(setFullHistoryEntry, (store, { id, data }) => {
 	const nextStore = { ...store };
-	nextStore.fullHistoryEntries[id] = data;
+
+	nextStore.fullHistoryEntries[id] = {
+		...data,
+		consumed_food: data.consumed_food.map((item) => ({
+			...item,
+			datetime: DateTime.fromISO(item.datetime as string)
+		}))
+	};
+
 	return nextStore;
 });
 

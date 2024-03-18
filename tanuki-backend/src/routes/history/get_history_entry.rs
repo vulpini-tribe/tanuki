@@ -78,6 +78,7 @@ pub struct FoodEntry {
     fat_100: f32,
     carbs_100: f32,
     portion_weight: f32,
+    datetime: String,
 }
 
 impl FoodEntry {
@@ -92,6 +93,7 @@ impl FoodEntry {
             fat_100: row.get("fat_100"),
             carbs_100: row.get("carbs_100"),
             portion_weight: row.get("portion_weight"),
+            datetime: row.get("datetime"),
         }
     }
 }

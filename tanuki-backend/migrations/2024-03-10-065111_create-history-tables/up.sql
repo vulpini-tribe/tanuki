@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS "history_entries" (
 CREATE TABLE IF NOT EXISTS "history_entry_food_bridge" (
   "history_entry_id" UUID NOT NULL,
   "food_id" UUID NOT NULL,
+  "datetime" TEXT NOT NULL,
 
   CONSTRAINT "fk_history_entry_id"
   FOREIGN KEY ("history_entry_id") REFERENCES "history_entries"("id"),

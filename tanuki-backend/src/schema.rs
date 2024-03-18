@@ -54,7 +54,6 @@ diesel::table! {
         user_id -> Uuid,
         day -> Text,
         weight -> Nullable<Float4>,
-        calories -> Nullable<Float4>,
     }
 }
 
@@ -62,6 +61,7 @@ diesel::table! {
     history_entry_food_bridge (history_entry_id, food_id) {
         history_entry_id -> Uuid,
         food_id -> Uuid,
+        datetime -> Text,
     }
 }
 
