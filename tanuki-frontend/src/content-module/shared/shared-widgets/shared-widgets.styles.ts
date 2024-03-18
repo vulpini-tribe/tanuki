@@ -6,7 +6,4 @@ export default styled.div`
 	right: var(--space-3);
 	bottom: var(--space-3);
 	width: 400px;
-	padding: var(--space-3);
-	background-color: var(--slate-2);
-	border-radius: var(--radius-3);
 `;

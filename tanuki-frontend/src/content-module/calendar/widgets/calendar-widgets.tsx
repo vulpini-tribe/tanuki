@@ -6,15 +6,21 @@ import { ParentSize } from '@visx/responsive';
 import { Pie } from '@visx/shape';
 import { scaleOrdinal } from '@visx/scale';
 import { Group } from '@visx/group';
+import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
 
-import { Heading, Box, Grid } from '@radix-ui/themes';
+import { Heading, Box, Grid, Text } from '@radix-ui/themes';
 
 import { SharedWidgets } from '../../shared';
 
-import { WidgetWrap } from './widgets.styles';
+import { WidgetWrap, Path } from './widgets.styles';
 
-const DonutChart = ({ width, height }) => {
+const DonutChart = ({ width, height }: { width: number; height: number }) => {
 	const dayData = useStoreMap($calendarStore, dayDataSelector);
+
+	const { tooltipOpen, tooltipLeft, tooltipTop, tooltipData, hideTooltip, showTooltip } = useTooltip();
+	const { containerRef, TooltipInPortal } = useTooltipInPortal({
+		scroll: true
+	});
 
 	const nutrients = useMemo(() => {
 		const consumedFood = dayData.consumed_food || [];
@@ -38,10 +44,12 @@ const DonutChart = ({ width, height }) => {
 		];
 	}, [dayData.consumed_food]);
 
-	const getBrowserColor = scaleOrdinal({
-		domain: nutrients.map((d) => d.label),
-		range: ['var(--blue-6)', 'var(--amber-6)', 'var(--violet-6)']
-	});
+	const getNutrientsColor = useMemo(() => {
+		return scaleOrdinal({
+			domain: nutrients.map((d) => d.label),
+			range: ['var(--blue-6)', 'var(--amber-6)', 'var(--violet-6)']
+		});
+	}, [nutrients]);
 
 	const donutThickness = 40;
 	const margin = { top: 10, right: 10, bottom: 10, left: 10 };
@@ -52,21 +60,54 @@ const DonutChart = ({ width, height }) => {
 	const centerX = innerWidth / 2;
 
 	return (
-		<svg width={width} height={height}>
-			<Group top={centerY + margin.top} left={centerX + margin.left}>
-				<Pie data={nutrients} pieValue={(d) => d.value} outerRadius={radius} innerRadius={radius - donutThickness}>
-					{({ arcs, path, pie }) => (
-						<g>
-							{arcs.map((arc, i) => (
-								<g key={`pie-arc-${i}`}>
-									<path className={`arc${i}`} d={path(arc)} fill={getBrowserColor(arc.data.label)} />
+		<>
+			<svg width={width} height={height} ref={containerRef}>
+				<Group top={centerY + margin.top} left={centerX + margin.left}>
+					<Pie data={nutrients} pieValue={(d) => d.value} outerRadius={radius} innerRadius={radius - donutThickness}>
+						{({ arcs, path, pie }) => {
+							return (
+								<g>
+									{arcs.map((arc, i) => {
+										const [x, y] = path.centroid(arc);
+
+										return (
+											<g key={`pie-arc-${i}`}>
+												<Path
+													d={path(arc) || ''}
+													fill={getNutrientsColor(arc.data)}
+													onMouseEnter={() =>
+														showTooltip({
+															tooltipData: arc.data,
+															tooltipLeft: x,
+															tooltipTop: y
+														})
+													}
+													onMouseLeave={hideTooltip}
+												/>
+											</g>
+										);
+									})}
 								</g>
-							))}
-						</g>
-					)}
-				</Pie>
-			</Group>
-		</svg>
+							);
+						}}
+					</Pie>
+				</Group>
+			</svg>
+
+			{tooltipOpen && (
+				<div
+					style={{
+						position: 'absolute',
+						top: (tooltipTop || 0) + height / 2,
+						left: (tooltipLeft || 0) + width / 2,
+						pointerEvents: 'none',
+						background: 'rgba(0,0,0,0.3)'
+					}}
+				>
+					{tooltipData?.label ?? ''}: {tooltipData?.value ?? ''}
+				</div>
+			)}
+		</>
 	);
 };
 
@@ -75,9 +116,11 @@ const CalendarWidgets = () => {
 
 	return (
 		<SharedWidgets>
-			<Grid p="4" gap="2" mr="1" ml="1" asChild>
+			<Grid p="4" gap="3" mr="1" ml="1" asChild>
 				<WidgetWrap>
-					<Heading>Nutrients</Heading>
+					<Heading size="4" color="gray">
+						Nutrients
+					</Heading>
 
 					<Box style={{ width: '100%', height: '200px' }}>
 						<ParentSize>{(parent) => <DonutChart width={parent.width} height={parent.height} />}</ParentSize>
@@ -85,14 +128,25 @@ const CalendarWidgets = () => {
 				</WidgetWrap>
 			</Grid>
 
-			{Boolean(dayData.weight) && (
-				<Grid mt="6" p="4" gap="2" mr="1" ml="1" asChild>
+			<Grid flow="column" mt="3" gap="3" ml="1" mr="1" columns="1fr 1fr">
+				<Box p="4" asChild>
 					<WidgetWrap>
-						<Heading>Weight</Heading>
-						{dayData.weight.toFixed(2)} kg
+						<Heading size="4" mb="3" color="gray">
+							Weight
+						</Heading>
+						<Text size="6">{dayData.weight?.toFixed(2)} kg</Text>
 					</WidgetWrap>
-				</Grid>
-			)}
+				</Box>
+
+				<Box p="4" asChild>
+					<WidgetWrap>
+						<Heading size="4" mb="3" color="gray">
+							Consumed
+						</Heading>
+						<Text size="6">{dayData.calories} kcal</Text>
+					</WidgetWrap>
+				</Box>
+			</Grid>
 		</SharedWidgets>
 	);
 };
