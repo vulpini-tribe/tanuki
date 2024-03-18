@@ -1,23 +1,36 @@
 import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useStoreMap } from 'effector-react';
 
 import ROUTES from '@routes';
+import { $calendarStore } from '../store';
 
 import { SharedMain } from '../../shared';
 import { useGetHistoryEntry } from './hooks';
 
-const CalendarMain = ({ id }) => {
-	const getEntryReq = useGetHistoryEntry(id);
+const CalendarMain = () => {
+	const dayData = useStoreMap($calendarStore, ({ activeDate, allHistoryEntries, fullHistoryEntries }) => {
+		const partialDayData = allHistoryEntries[activeDate] || {};
+		const fullDayData = fullHistoryEntries[partialDayData.id] || {};
+
+		return {
+			...partialDayData,
+			...fullDayData
+		};
+	});
+
+	const getEntryReq = useGetHistoryEntry(dayData.id);
 
 	useEffect(() => {
-		if (!id) return;
+		if (!dayData.id) return;
 
 		getEntryReq.refetch();
-	}, [id]);
+	}, [dayData.id]);
 
+	console.log(dayData);
 	return (
 		<SharedMain>
-			<div>{id}</div>
+			<div>{dayData.id}</div>
 
 			<NavLink to={ROUTES.CONTENT.FEED}>Back</NavLink>
 		</SharedMain>
