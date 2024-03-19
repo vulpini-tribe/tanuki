@@ -1,9 +1,11 @@
 import React from 'react';
 
+import Categories from '../categories';
+
 const UtilsPage = () => {
 	return (
 		<div>
-			<h1>Utils</h1>
+			<Categories />
 		</div>
 	);
 };

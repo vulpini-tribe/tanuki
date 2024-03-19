@@ -23,33 +23,33 @@ INSERT INTO user_profile ("id", "user_id", "theme", "language", "units", "nickna
 
 
 -- categories table | Start
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c1c3b0aa-d823-4845-a15d-b4c4e2360003', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Baked', '🍈', '#E093B2') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('7e14e867-9a7a-44ae-a3b1-2a39057308fa', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Cereals', '🍕', '#EC9455') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('66d25983-a6ee-4b3b-9b45-679cda9a33ae', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Dairy', '🍗', '#B9A88D') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('cf4fdebe-234f-40ae-ac48-ea631cde7b7c', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Fruit', '🥤', '#BE93E4') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('f6a0b120-3723-4962-852b-de6cfe72b909', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Tuber', '🍷', '#CF91D8') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('456303ee-3fc0-411c-9aea-75ca440832cf', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Vegetable', '🫕', '#C2A499') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c2f683a1-85cb-44fb-b521-46aae7a7f7dc', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Mushroom', '🥦', '#8DB654') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('ded62802-936f-4087-aa4c-6aced8322b73', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Nuts', '🧊', '#BE93E4') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c9fc5daf-7c58-450c-a2e4-e3b656c4ee5d', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Seeds', '🍼', '#EC9455') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('1c2a3617-ebc3-4368-a2bf-9b2b27ce9f5d', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Legumes', '🥯', '#EC9455') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('baffc64d-a01c-471f-8149-6e21653c286b', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Meat', '🍉', '#3DB9CF') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('03eee3ff-ea47-4cff-96a9-99d9da37a173', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Seafood', '🍑', '#3DB9CF') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('b3e17021-0c77-44f3-9d57-4b7f6b711b2e', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Grains', '🧃', '#CF91D8') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('f8a78cac-358f-4dbc-9fc9-1c0372a83e36', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Appetizer', '🍽', '#8DA4EF') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('78b343c7-adfe-4adb-8d84-3ee63eda0c4e', '00000000-0000-0000-0000-000000000000', 'Condiment', '🥧', '#DD93C2') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('e3adc74e-f878-4477-a777-6aa53b0a7123', '00000000-0000-0000-0000-000000000000', 'Confectionery', '🫕', '#CEA37E') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('a8e33c44-6dcc-4c55-99f7-e753e6a3e875', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Dessert', '🥯', '#4CBBA5') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('d1400322-a8a4-4def-b8c8-fb9c1c5bb7bf', '00000000-0000-0000-0000-000000000000', 'Dumplings', '🍿', '#D5AE39') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('8452526c-9918-4e6f-8ee6-9e143beda93b', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Fast Food', '🥖', '#B9A88D') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('afea9d63-007b-4350-92a0-da9e725a2538', '00000000-0000-0000-0000-000000000000', 'Noodles', '🧊', '#8DB654') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('731c8c71-e36d-4578-8fe1-8b34beb9fa5a', '00000000-0000-0000-0000-000000000000', 'Pie', '🍯', '#B9A88D') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('508c1fac-2d63-4750-a1f9-01605316f969', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Salads', '🍞', '#56BA9F') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('1b9948f7-099b-428c-ba5c-885a2c1375c5', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Sandwiches', '🎂', '#5EB1EF') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('590fd250-ddee-4859-9e09-7e88be6459d2', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Sauces', '🌭', '#B9A88D') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('0163d53b-dd6d-421c-b35a-ab55cd30b55c', '00000000-0000-0000-0000-000000000000', 'Stew', '🫘', '#AA99EC') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('b5a827d9-ad0c-41ab-9df5-77546f33e02e', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Snack', '🥥', '#E093B2') ON CONFLICT DO NOTHING;
-INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('4748167a-612f-4d1d-a29d-0a76eda8e6f4', '00000000-0000-0000-0000-000000000000', 'Soup', '🧅', '#CF91D8') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c1c3b0aa-d823-4845-a15d-b4c4e2360003', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Baked', '🥖', '#E093B2') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('7e14e867-9a7a-44ae-a3b1-2a39057308fa', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Cereals', '🥣', '#EC9455') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('66d25983-a6ee-4b3b-9b45-679cda9a33ae', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Dairy', '🥛', '#B9A88D') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('cf4fdebe-234f-40ae-ac48-ea631cde7b7c', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Fruit', '🍏', '#BE93E4') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('f6a0b120-3723-4962-852b-de6cfe72b909', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Tuber', '🥔', '#CF91D8') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('456303ee-3fc0-411c-9aea-75ca440832cf', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Vegetable', '🥦', '#C2A499') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c2f683a1-85cb-44fb-b521-46aae7a7f7dc', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Mushroom', '🍄', '#8DB654') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('ded62802-936f-4087-aa4c-6aced8322b73', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Nuts', '🥜', '#BE93E4') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('c9fc5daf-7c58-450c-a2e4-e3b656c4ee5d', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Seeds', '🌱', '#EC9455') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('1c2a3617-ebc3-4368-a2bf-9b2b27ce9f5d', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Legumes', '🫛', '#EC9455') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('baffc64d-a01c-471f-8149-6e21653c286b', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Meat', '🍗', '#3DB9CF') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('03eee3ff-ea47-4cff-96a9-99d9da37a173', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Seafood', '🦀', '#3DB9CF') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('b3e17021-0c77-44f3-9d57-4b7f6b711b2e', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Grains', '🌾', '#CF91D8') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('f8a78cac-358f-4dbc-9fc9-1c0372a83e36', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Appetizer', '🍽️', '#8DA4EF') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('78b343c7-adfe-4adb-8d84-3ee63eda0c4e', '00000000-0000-0000-0000-000000000000', 'Condiment', '🧂', '#DD93C2') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('e3adc74e-f878-4477-a777-6aa53b0a7123', '00000000-0000-0000-0000-000000000000', 'Confectionery', '🍭', '#CEA37E') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('a8e33c44-6dcc-4c55-99f7-e753e6a3e875', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Dessert', '🍰', '#4CBBA5') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('d1400322-a8a4-4def-b8c8-fb9c1c5bb7bf', '00000000-0000-0000-0000-000000000000', 'Dumplings', '🥟', '#D5AE39') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('8452526c-9918-4e6f-8ee6-9e143beda93b', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Fast Food', '🍔', '#B9A88D') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('afea9d63-007b-4350-92a0-da9e725a2538', '00000000-0000-0000-0000-000000000000', 'Noodles', '🍜', '#8DB654') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('731c8c71-e36d-4578-8fe1-8b34beb9fa5a', '00000000-0000-0000-0000-000000000000', 'Pie', '🥧', '#B9A88D') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('508c1fac-2d63-4750-a1f9-01605316f969', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Salads', '🥗', '#56BA9F') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('1b9948f7-099b-428c-ba5c-885a2c1375c5', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Sandwiches', '🥪', '#5EB1EF') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('590fd250-ddee-4859-9e09-7e88be6459d2', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Sauces', '🥫', '#B9A88D') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('0163d53b-dd6d-421c-b35a-ab55cd30b55c', '00000000-0000-0000-0000-000000000000', 'Stew', '🥘', '#AA99EC') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('b5a827d9-ad0c-41ab-9df5-77546f33e02e', '87a1bd29-7953-493e-a3bf-10aafa648278', 'Snack', '🥠', '#E093B2') ON CONFLICT DO NOTHING;
+INSERT INTO categories ("id", "user_id", "category_name", "icon", "color") VALUES ('4748167a-612f-4d1d-a29d-0a76eda8e6f4', '00000000-0000-0000-0000-000000000000', 'Soup', '🍲', '#CF91D8') ON CONFLICT DO NOTHING;
 -- categories table | End
 
 

@@ -2,6 +2,7 @@ import QS from 'qs';
 const AUTH = '/auth';
 const UTILS = '/utils';
 const CONTENT = '/content';
+const CATEGORIES = '/categories';
 
 const ROUTES = {
 	ROOT: '/',
