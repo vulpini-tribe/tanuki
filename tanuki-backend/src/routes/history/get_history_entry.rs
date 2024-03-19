@@ -121,10 +121,15 @@ async fn retrieve_consumed_food_data(
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<HistoryEntryFull, Error> {
     let history_entry_query = format!("
-        SELECT * FROM history_entry_food_bridge
+        SELECT
+        history_entry_food_bridge.history_entry_id as id, history_entries.day, history_entries.weight,
+            categories.id as category_id, categories.color, categories.category_name, categories.icon,
+            foods.id as food_id, foods.food_name, foods.kcal_100, foods.protein_100, foods.fat_100, foods.carbs_100, foods.portion_weight,
+            history_entry_food_bridge.datetime
+        FROM history_entry_food_bridge
         INNER JOIN foods ON history_entry_food_bridge.food_id = foods.id
         INNER JOIN history_entries ON history_entry_food_bridge.history_entry_id = history_entries.id
-        INNER JOIN categories ON category_id = categories.id
+        INNER JOIN categories ON foods.category_id = categories.id
         WHERE history_entry_food_bridge.history_entry_id = $1
         AND (history_entries.user_id = $2 OR history_entries.user_id = {})
     ", SHARED_USER_ID);
