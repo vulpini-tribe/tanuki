@@ -80,15 +80,15 @@ const CalendarMain = () => {
 	}, test);
 
 	return (
-		<SharedMain>
-			<Heading mb="4">{formattedDay}</Heading>
-
+		<SharedMain header={formattedDay}>
 			{Object.entries(splittedFoodEntries).map(([key, value]) => {
 				if (!value.length) return null;
 
 				return (
-					<Grid flow="row" rows="1fr" mt="4" key={key}>
-						<Heading size="2">{labels[key as LabelsEnum]}</Heading>
+					<Grid flow="row" rows="1fr" mt="5" key={key}>
+						<Heading size="4" mb="1">
+							{labels[key as LabelsEnum]}
+						</Heading>
 
 						{value.map((food) => {
 							return <FoodEntry key={food.id} {...food} />;
