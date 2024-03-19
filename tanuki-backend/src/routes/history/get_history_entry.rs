@@ -122,7 +122,7 @@ async fn retrieve_consumed_food_data(
 ) -> Result<HistoryEntryFull, Error> {
     let history_entry_query = format!("
         SELECT
-        history_entry_food_bridge.history_entry_id as id, history_entries.day, history_entries.weight,
+            history_entry_food_bridge.history_entry_id as id, history_entries.day, history_entries.weight,
             categories.id as category_id, categories.color, categories.category_name, categories.icon,
             foods.id as food_id, foods.food_name, foods.kcal_100, foods.protein_100, foods.fat_100, foods.carbs_100, foods.portion_weight,
             history_entry_food_bridge.datetime

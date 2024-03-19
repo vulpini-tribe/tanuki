@@ -29,7 +29,7 @@ type CategoryT = {
 	color: string;
 };
 
-type ConsumedFoodT = {
+export type ConsumedFoodT = {
 	carbs_100: number;
 	category: CategoryT;
 	fat_100: number;

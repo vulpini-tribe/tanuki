@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const FoodRow = styled.div`
+export default styled.div`
 	border-radius: var(--radius-1);
 	transition: background-color 0.15s ease-out;
 
