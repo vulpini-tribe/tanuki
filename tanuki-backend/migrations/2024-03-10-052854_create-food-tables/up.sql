@@ -2,7 +2,7 @@
 -- categories
 CREATE TABLE IF NOT EXISTS "categories" (
   "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-  "name" TEXT,
+  "category_name" TEXT,
   "description" TEXT,
   "color" TEXT,
   "icon" TEXT,
@@ -12,15 +12,14 @@ CREATE TABLE IF NOT EXISTS "categories" (
   FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS "categories_id_name_index" ON "categories"("id", "name");
+CREATE INDEX IF NOT EXISTS "categories_id_name_index" ON "categories"("id", "category_name");
 
 -- foods
 CREATE TABLE IF NOT EXISTS "foods" (
   "id" UUID NOT NULL DEFAULT gen_random_uuid(),
   "user_id" UUID NOT NULL,
   "category_id" UUID NOT NULL,
-  "name" TEXT NOT NULL,
-  "photo" TEXT,
+  "food_name" TEXT NOT NULL,
   "kcal_100" FLOAT(2) NOT NULL,
   "protein_100" FLOAT(2) NOT NULL DEFAULT 0,
   "fat_100" FLOAT(2) NOT NULL DEFAULT 0,

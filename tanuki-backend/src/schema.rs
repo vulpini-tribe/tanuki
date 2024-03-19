@@ -25,7 +25,7 @@ pub mod sql_types {
 diesel::table! {
     categories (id) {
         id -> Uuid,
-        name -> Nullable<Text>,
+        category_name -> Nullable<Text>,
         description -> Nullable<Text>,
         color -> Nullable<Text>,
         icon -> Nullable<Text>,
@@ -38,8 +38,7 @@ diesel::table! {
         id -> Uuid,
         user_id -> Uuid,
         category_id -> Uuid,
-        name -> Text,
-        photo -> Nullable<Text>,
+        food_name -> Text,
         kcal_100 -> Float4,
         protein_100 -> Float4,
         fat_100 -> Float4,

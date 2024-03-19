@@ -22,14 +22,20 @@ export type PartialHistoryEntry = {
 	calories: number;
 };
 
+type CategoryT = {
+	name: string;
+	icon: string;
+	id: string;
+	color: string;
+};
+
 type ConsumedFoodT = {
 	carbs_100: number;
-	category_id: string;
+	category: CategoryT;
 	fat_100: number;
 	id: string;
 	kcal_100: number;
 	name: string;
-	photo: string;
 	portion_weight: number;
 	protein_100: number;
 	datetime: unknown;

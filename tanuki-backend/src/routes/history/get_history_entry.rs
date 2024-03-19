@@ -70,9 +70,8 @@ impl HistoryEntryFull {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FoodEntry {
     id: uuid::Uuid,
-    category_id: uuid::Uuid,
+    category: Category,
     name: String,
-    photo: Option<String>,
     kcal_100: f32,
     protein_100: f32,
     fat_100: f32,
@@ -84,16 +83,34 @@ pub struct FoodEntry {
 impl FoodEntry {
     pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
         Self {
-            id: row.get("id"),
-            category_id: row.get("category_id"),
-            name: row.get("name"),
-            photo: row.get("photo"),
+            id: row.get("food_id"),
+            category: Category::from_row(row),
+            name: row.get("food_name"),
             kcal_100: row.get("kcal_100"),
             protein_100: row.get("protein_100"),
             fat_100: row.get("fat_100"),
             carbs_100: row.get("carbs_100"),
             portion_weight: row.get("portion_weight"),
             datetime: row.get("datetime"),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Category {
+    id: uuid::Uuid,
+    color: String,
+    icon: String,
+    name: String,
+}
+
+impl Category {
+    pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
+        Self {
+            id: row.get("category_id"),
+            color: row.get("color"),
+            name: row.get("category_name"),
+            icon: row.get("icon"),
         }
     }
 }
@@ -107,6 +124,7 @@ async fn retrieve_consumed_food_data(
         SELECT * FROM history_entry_food_bridge
         INNER JOIN foods ON history_entry_food_bridge.food_id = foods.id
         INNER JOIN history_entries ON history_entry_food_bridge.history_entry_id = history_entries.id
+        INNER JOIN categories ON category_id = categories.id
         WHERE history_entry_food_bridge.history_entry_id = $1
         AND (history_entries.user_id = $2 OR history_entries.user_id = {})
     ", SHARED_USER_ID);

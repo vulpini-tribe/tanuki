@@ -38,9 +38,9 @@ const DonutChart = ({ width, height }: { width: number; height: number }) => {
 		}, 0);
 
 		return [
-			{ label: 'carbs', value: totalCarbs },
-			{ label: 'fats', value: totalFats },
-			{ label: 'protein', value: totalProtein }
+			{ label: 'carbs', value: totalCarbs.toFixed(0) },
+			{ label: 'fats', value: totalFats.toFixed(0) },
+			{ label: 'protein', value: totalProtein.toFixed(0) }
 		];
 	}, [dayData.consumed_food]);
 
