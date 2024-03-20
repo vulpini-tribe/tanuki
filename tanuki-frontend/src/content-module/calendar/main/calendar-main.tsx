@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStoreMap } from 'effector-react';
 import { DateTime } from 'luxon';
 
 import { $calendarStore, dayDataSelector } from '../store';
 
 import { PlusIcon } from '@radix-ui/react-icons';
-import { Button, Grid, Heading } from '@radix-ui/themes';
+import { Button, Grid, Heading, Dialog } from '@radix-ui/themes';
 
 import { SharedMain } from '../../shared';
 import { useGetHistoryEntry } from './hooks';
 import FoodEntry from './food-entry';
 
 import type { ConsumedFoodT } from '../store';
+import AddMeal from './add-meal';
 
 const useDate = (date: string) => {
 	const today = DateTime.local();
@@ -40,6 +41,8 @@ const labels = {
 type LabelsEnum = keyof typeof labels;
 
 const CalendarMain = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const test: Record<LabelsEnum, ConsumedFoodT[]> = {
 		breakfast: [],
 		branch: [],
@@ -98,9 +101,19 @@ const CalendarMain = () => {
 			})}
 
 			<Grid flow="column" columns="1fr" mt="4">
-				<Button size="3" variant="soft">
-					<PlusIcon width="24" height="24" /> Add Meal
-				</Button>
+				<Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
+					<Dialog.Trigger>
+						<Button size="3" variant="soft">
+							<PlusIcon width="24" height="24" /> Add Meal
+						</Button>
+					</Dialog.Trigger>
+
+					<Dialog.Content>
+						<Dialog.Title>Add Meal</Dialog.Title>
+
+						<AddMeal setIsModalOpen={setIsModalOpen} />
+					</Dialog.Content>
+				</Dialog.Root>
 			</Grid>
 		</SharedMain>
 	);
