@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Grid, Flex, Button, Dialog, Text, TextField, Separator, Select } from '@radix-ui/themes';
+import { SearchSelect } from '@ui';
+import { Grid, Flex, Button, Dialog, Text, TextField, Separator } from '@radix-ui/themes';
 import { useForm } from './hooks';
 
 const AddMeal = ({ setIsModalOpen }) => {
@@ -39,13 +40,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 							Category
 						</Text>
 
-						<Select.Root>
-							<Select.Trigger />
-
-							<Select.Content>
-								<TextField.Input id="rwst" placeholder="Bread" />
-							</Select.Content>
-						</Select.Root>
+						<SearchSelect />
 					</label>
 
 					<label>
@@ -53,13 +48,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 							Food preset
 						</Text>
 
-						<Select.Root defaultValue="apple">
-							<Select.Trigger />
-							<Select.Content>
-								<Select.Item value="apple">Apple</Select.Item>
-								<Select.Item value="orange">Orange</Select.Item>
-							</Select.Content>
-						</Select.Root>
+						<SearchSelect />
 					</label>
 				</Grid>
 				<Separator size="4" />
