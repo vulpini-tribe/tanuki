@@ -31,4 +31,4 @@ CREATE TABLE IF NOT EXISTS "foods" (
   FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS "foods_id_index" ON "foods"("id");
+CREATE INDEX IF NOT EXISTS "foods_id_name_index" ON "foods"("id", "food_name");

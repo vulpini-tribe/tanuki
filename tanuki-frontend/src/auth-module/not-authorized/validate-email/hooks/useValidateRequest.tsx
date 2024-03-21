@@ -4,9 +4,6 @@ import { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import axios, { getErrCode, getErrMessage } from '@axios';
 
-// @ts-ignore
-const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-
 const useValidateRequest = () => {
 	const token = useRef<string>();
 
@@ -15,7 +12,7 @@ const useValidateRequest = () => {
 		queryFn: () =>
 			axios({
 				method: 'post',
-				url: `${apiUrl}/auth/validate`,
+				url: `/auth/validate`,
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},

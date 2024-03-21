@@ -5,6 +5,8 @@ use sqlx::Row;
 
 use crate::errors::reg_errors;
 use crate::service::data_providers::WebDataPool;
+use crate::types::food::FoodEntry;
+
 use crate::utils::{acquire_pg_connection, session_user_id};
 
 const SHARED_USER_ID: &str = "'00000000-0000-0000-0000-000000000000'";
@@ -63,54 +65,6 @@ impl HistoryEntryFull {
             weight: Some(row.get("weight")),
             calories: Some(Self::calc_calories(&food_entries)),
             consumed_food: food_entries,
-        }
-    }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct FoodEntry {
-    id: uuid::Uuid,
-    category: Category,
-    name: String,
-    kcal_100: f32,
-    protein_100: f32,
-    fat_100: f32,
-    carbs_100: f32,
-    portion_weight: f32,
-    datetime: String,
-}
-
-impl FoodEntry {
-    pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
-        Self {
-            id: row.get("food_id"),
-            category: Category::from_row(row),
-            name: row.get("food_name"),
-            kcal_100: row.get("kcal_100"),
-            protein_100: row.get("protein_100"),
-            fat_100: row.get("fat_100"),
-            carbs_100: row.get("carbs_100"),
-            portion_weight: row.get("portion_weight"),
-            datetime: row.get("datetime"),
-        }
-    }
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Category {
-    id: uuid::Uuid,
-    color: String,
-    icon: String,
-    name: String,
-}
-
-impl Category {
-    pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
-        Self {
-            id: row.get("category_id"),
-            color: row.get("color"),
-            name: row.get("category_name"),
-            icon: row.get("icon"),
         }
     }
 }

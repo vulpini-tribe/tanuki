@@ -40,7 +40,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 							Category
 						</Text>
 
-						<SearchSelect />
+						{/* <SearchSelect /> */}
 					</label>
 
 					<label>

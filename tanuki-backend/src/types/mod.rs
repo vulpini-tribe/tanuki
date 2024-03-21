@@ -1,5 +1,6 @@
 pub mod auth;
 pub mod categories;
+pub mod food;
 pub mod history;
 pub mod tokens;
 

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 // import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Command } from 'cmdk';
-import { DropdownMenu, TextField, Button } from '@radix-ui/themes';
+import { DropdownMenu, Button } from '@radix-ui/themes';
+
+import useSearch from './useSearch';
 
 const data = [
 	{ label: 'Apple', value: 'apple' },
@@ -20,6 +22,12 @@ const data = [
 const SearchSelect = () => {
 	const [value, setValue] = React.useState(data[0].value);
 	const [open, setOpen] = React.useState(false);
+
+	const searchRequest = useSearch();
+
+	useEffect(() => {
+		searchRequest.refetch();
+	}, []);
 
 	const onSelect = (nextValue: string) => {
 		setOpen(false);
