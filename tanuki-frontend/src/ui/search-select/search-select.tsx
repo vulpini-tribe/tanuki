@@ -7,51 +7,44 @@ import { DropdownMenu, Button } from '@radix-ui/themes';
 
 import useSearch from './useSearch';
 
-const data = [
-	{ label: 'Apple', value: 'apple' },
-	{ label: 'Banana', value: 'banana' },
-	{ label: 'Orange', value: 'orange' },
-	{ label: 'Pineapple', value: 'pineapple' },
-	{ label: 'Strawberry', value: 'strawberry' },
-	{ label: 'Watermelon', value: 'watermelon' },
-	{ label: 'Grape', value: 'grape' },
-	{ label: 'Kiwi', value: 'kiwi' },
-	{ label: 'Mango', value: 'mango' }
-];
-
 const SearchSelect = () => {
-	const [value, setValue] = React.useState(data[0].value);
+	const [searchQuery, setSearchQuery] = React.useState('');
 	const [open, setOpen] = React.useState(false);
 
-	const searchRequest = useSearch();
+	const searchRequest = useSearch(searchQuery);
+
+	console.log(searchRequest);
 
 	useEffect(() => {
+		if (!searchQuery) return;
+
 		searchRequest.refetch();
-	}, []);
+	}, [searchQuery]);
 
 	const onSelect = (nextValue: string) => {
 		setOpen(false);
-		setValue(nextValue);
 	};
+
+	const data = searchRequest?.data?.data?.data || [];
 
 	return (
 		<DropdownMenu.Root open={open} onOpenChange={setOpen}>
 			<DropdownMenu.Trigger>
-				<Button>{data.find((item) => item.value === value)?.label}</Button>
+				<Button>{searchQuery}</Button>
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Content>
 				<Command>
 					<div>
 						<MagnifyingGlassIcon aria-hidden width="20px" height="20px" />
-						<Command.Input />
+						<Command.Input value={searchQuery} onValueChange={setSearchQuery} />
 					</div>
 
 					<Command.List>
 						{data.map((item) => {
 							return (
-								<Command.Item className="DropdownMenuItem" key={item.value} onSelect={() => onSelect(item.value)}>
-									{item.label}
+								<Command.Item className="DropdownMenuItem" key={item.id} onSelect={() => onSelect(item.id)}>
+									{item.name}
 								</Command.Item>
 							);
 						})}

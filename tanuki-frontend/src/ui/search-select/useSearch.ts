@@ -1,16 +1,13 @@
 import axios from '@axios';
 import { useQuery } from '@tanstack/react-query';
 
-const useSearch = () => {
+const useSearch = (searchQuery: string = '') => {
 	const request = useQuery({
 		queryKey: ['/search-food'],
 		queryFn: () =>
 			axios({
 				method: 'get',
-				url: `/food/search?query=fel`,
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				}
+				url: `/food/search?query=${searchQuery}`
 			}),
 		gcTime: 0,
 		enabled: false,
