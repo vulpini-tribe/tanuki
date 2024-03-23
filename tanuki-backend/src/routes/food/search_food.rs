@@ -45,7 +45,7 @@ async fn search_for_data(
 ) -> Result<Vec<FoodSearchEntry>, Error> {
     let search_query = format!(
         "
-        SELECT id, food_name FROM foods WHERE food_name % $1
+        SELECT id, food_name FROM foods WHERE food_name %> $1
         AND (foods.user_id = $2 OR foods.user_id = {}) LIMIT 10;
         ",
         SHARED_USER_ID

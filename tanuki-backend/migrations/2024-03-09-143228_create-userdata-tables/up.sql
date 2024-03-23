@@ -1,4 +1,7 @@
 -- Your SQL goes here
+-- extensions
+CREATE EXTENSION pg_trgm;
+
 -- users table
 CREATE TABLE  IF NOT EXISTS "users" (
   "id" UUID NOT NULL DEFAULT gen_random_uuid(),

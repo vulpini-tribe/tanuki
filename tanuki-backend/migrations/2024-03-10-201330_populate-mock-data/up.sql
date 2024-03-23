@@ -1,8 +1,5 @@
 -- Your SQL goes here
 
--- extensions
-CREATE EXTENSION pg_trgm;
-
 
 -- user | start
 INSERT INTO users ("id", "email", "password", "is_active", "is_staff", "is_superuser", "with_full_access", "date_joined") VALUES ('87a1bd29-7953-493e-a3bf-10aafa648278', 'mail@alena.red', '$argon2id$v=19$m=19456,t=2,p=1$ahbTDXjRsUvSRF6pk1roiQ$hDHdoG6v065wOUnnBqIVpY2YxHayrZX18nOFuo+hZDg', true, true, true, true, '2020-03-09 22:08:03.000101+00') ON CONFLICT DO NOTHING;
