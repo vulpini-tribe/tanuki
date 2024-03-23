@@ -48,7 +48,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 							Food preset
 						</Text>
 
-						<SearchSelect />
+						<SearchSelect endpoint="/food/search" />
 					</label>
 				</Grid>
 				<Separator size="4" />
