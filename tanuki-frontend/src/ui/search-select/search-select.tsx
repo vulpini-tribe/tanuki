@@ -1,58 +1,102 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDebounce } from '@react-hooks-library/core';
 
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-// import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Command } from 'cmdk';
-import { DropdownMenu, Button } from '@radix-ui/themes';
+import { DropdownMenu, Button, Text, TextField } from '@radix-ui/themes';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import useSearch from './useSearch';
+import type { Props, SearchEntry } from './search-select.d';
 
-const SearchSelect = () => {
-	const [searchQuery, setSearchQuery] = React.useState('');
-	const [open, setOpen] = React.useState(false);
+const SearchSelect = ({ onChange, labelKey, valueKey }: Props) => {
+	const [searchQuery, setSearchQuery] = useState('');
+	const debouncedQuery = useDebounce(searchQuery, 500);
 
-	const searchRequest = useSearch(searchQuery);
+	const [isMenuOpen, setMenuOpen] = useState(false);
+	const [value, setValue] = useState<SearchEntry>({});
 
-	console.log(searchRequest);
+	const testRef = React.useRef(null);
+
+	const searchRequest = useSearch(debouncedQuery);
 
 	useEffect(() => {
-		if (!searchQuery) return;
+		if (!debouncedQuery) return;
 
 		searchRequest.refetch();
-	}, [searchQuery]);
+	}, [debouncedQuery]);
 
-	const onSelect = (nextValue: string) => {
-		setOpen(false);
-	};
+	useEffect(() => {
+		if (!isMenuOpen) return;
+
+		window.setTimeout(() => {
+			testRef.current?.focus();
+		}, 0);
+	}, [isMenuOpen]);
 
 	const data = searchRequest?.data?.data?.data || [];
 
+	const commandItems = useMemo(() => {
+		const items = data.map((item: SearchEntry) => {
+			const key = item[valueKey];
+			const label = item[labelKey];
+
+			return (
+				<Command.Item key={key} onSelect={() => onSelect(item)}>
+					{label}
+				</Command.Item>
+			);
+		});
+
+		return items;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, labelKey, valueKey]);
+
+	const onSelect = (nextValue: SearchEntry) => {
+		setValue(nextValue);
+		onChange(nextValue);
+		setMenuOpen(false);
+	};
+
 	return (
-		<DropdownMenu.Root open={open} onOpenChange={setOpen}>
+		<DropdownMenu.Root open={isMenuOpen} onOpenChange={setMenuOpen}>
 			<DropdownMenu.Trigger>
-				<Button>{searchQuery}</Button>
+				<Text>{value[labelKey] || 'no value'}</Text>
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Content>
 				<Command>
 					<div>
-						<MagnifyingGlassIcon aria-hidden width="20px" height="20px" />
-						<Command.Input value={searchQuery} onValueChange={setSearchQuery} />
+						<Command.Input value={searchQuery} onValueChange={setSearchQuery} asChild>
+							<TextField.Root>
+								<TextField.Slot>
+									<MagnifyingGlassIcon aria-hidden width="20px" height="20px" />
+								</TextField.Slot>
+
+								<TextField.Input
+									ref={testRef}
+									id="email"
+									type="email"
+									required
+									placeholder="E-Mail"
+									autoComplete="email"
+									radius="small"
+									size="1"
+								/>
+							</TextField.Root>
+						</Command.Input>
 					</div>
 
-					<Command.List>
-						{data.map((item) => {
-							return (
-								<Command.Item className="DropdownMenuItem" key={item.id} onSelect={() => onSelect(item.id)}>
-									{item.name}
-								</Command.Item>
-							);
-						})}
-					</Command.List>
+					<Command.List>{commandItems}</Command.List>
 				</Command>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	);
+};
+
+SearchSelect.defaultProps = {
+	onChange: () => {},
+	labelKey: 'name',
+	valueKey: 'id'
 };
 
 export default SearchSelect;

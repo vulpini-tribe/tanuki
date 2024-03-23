@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const useSearch = (searchQuery: string = '') => {
 	const request = useQuery({
-		queryKey: ['/search-food'],
+		queryKey: ['/search-food', searchQuery],
 		queryFn: () =>
 			axios({
 				method: 'get',
@@ -12,6 +12,7 @@ const useSearch = (searchQuery: string = '') => {
 		gcTime: 0,
 		enabled: false,
 		retry: 1
+		// staleTime: 500
 	});
 
 	return request;
