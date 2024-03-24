@@ -55,6 +55,7 @@ const SearchSelect = ({ initValue, onChange, labelKey, valueKey, endpoint }: Pro
 		setValue(nextValue);
 		onChange(nextValue);
 		setMenuOpen(false);
+		setSearchQuery('');
 	};
 
 	const onOpenChange = (nextValue: boolean) => {
