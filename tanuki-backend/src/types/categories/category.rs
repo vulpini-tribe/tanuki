@@ -31,3 +31,18 @@ impl Category {
         }
     }
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct CategorySearchEntry {
+    pub id: uuid::Uuid,
+    pub name: String,
+}
+
+impl CategorySearchEntry {
+    pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
+        Self {
+            id: row.get("id"),
+            name: row.get("category_name"),
+        }
+    }
+}

@@ -20,8 +20,6 @@ const SearchSelect = ({ initValue, onChange, labelKey, valueKey, endpoint }: Pro
 	const searchRequest = useSearch(debouncedQuery, endpoint);
 
 	useEffect(() => {
-		if (!debouncedQuery) return;
-
 		searchRequest.refetch();
 	}, [debouncedQuery]);
 

@@ -1,3 +1,3 @@
 mod category;
 
-pub use category::Category;
+pub use category::{Category, CategorySearchEntry};

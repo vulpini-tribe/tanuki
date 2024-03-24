@@ -37,10 +37,10 @@ const AddMeal = ({ setIsModalOpen }) => {
 				<Grid flow="column" columns="1fr 1fr" gap="3">
 					<label>
 						<Text size="2" mb="1" weight="bold" as="div">
-							Category
+							Tag
 						</Text>
 
-						{/* <SearchSelect /> */}
+						<SearchSelect endpoint="/categories/search" />
 					</label>
 
 					<label>
