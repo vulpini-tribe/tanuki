@@ -9,10 +9,10 @@ import { DropdownMenu, Button, TextField, ScrollArea, Box, Text } from '@radix-u
 import useSearch from './useSearch';
 import type { Props, SearchEntry } from './search-select.d';
 
-const SearchSelect = ({ onChange, labelKey, valueKey, endpoint }: Props) => {
+const SearchSelect = ({ initValue, onChange, labelKey, valueKey, endpoint }: Props) => {
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const [isMenuOpen, setMenuOpen] = useState(false);
-	const [value, setValue] = useState<SearchEntry>({});
+	const [value, setValue] = useState<SearchEntry>(initValue);
 
 	const [searchQuery, setSearchQuery] = useState('');
 	const debouncedQuery = useDebounce(searchQuery, 500);
@@ -119,7 +119,8 @@ const SearchSelect = ({ onChange, labelKey, valueKey, endpoint }: Props) => {
 SearchSelect.defaultProps = {
 	onChange: () => {},
 	labelKey: 'name',
-	valueKey: 'id'
+	valueKey: 'id',
+	initValue: {}
 };
 
 export default SearchSelect;

@@ -3,6 +3,7 @@ export type Props = {
 	labelKey: string;
 	valueKey: string;
 	endpoint: string;
+	initValue: SearchEntry;
 };
 
 export type SearchEntry = Record<string, string>;
