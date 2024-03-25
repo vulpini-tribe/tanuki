@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SearchSelect } from '@ui';
 import { Grid, Flex, Button, Dialog, Text, TextField, Separator } from '@radix-ui/themes';
 import { useForm } from './hooks';
+import { useGetFoodEntry } from '../hooks';
 
 const AddMeal = ({ setIsModalOpen }) => {
 	const form = useForm();
+	const [foodPresetId, setFoodPresetId] = useState('');
+	const foodEntryRequest = useGetFoodEntry(foodPresetId);
+
+	useEffect(() => {
+		if (!foodPresetId) return;
+
+		foodEntryRequest.refetch();
+	}, [foodPresetId]);
+
+	useEffect(() => {
+		if (!foodEntryRequest.data) return;
+
+		const { kcal_100, name, portion_weight, protein_100, fat_100, carbs_100 } = foodEntryRequest.data;
+
+		form.setValue('calories', kcal_100);
+		form.setValue('name', name);
+		form.setValue('weight', portion_weight);
+		form.setValue('proteins', protein_100);
+		form.setValue('fats', fat_100);
+		form.setValue('carbs', carbs_100);
+	}, [foodEntryRequest.data]);
+
+	const onFoodPresetChangeHd = (value: Record<string, string>) => {
+		setFoodPresetId(value.id);
+	};
 
 	const onSubmit = () => {
 		const values = form.getValues();
@@ -37,7 +63,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 				<Grid flow="column" columns="1fr 1fr" gap="3">
 					<label>
 						<Text size="2" mb="1" weight="bold" as="div">
-							Tag
+							Category Preset
 						</Text>
 
 						<SearchSelect endpoint="/categories/search" />
@@ -48,7 +74,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 							Food preset
 						</Text>
 
-						<SearchSelect endpoint="/food/search" />
+						<SearchSelect endpoint="/food/search" onChange={onFoodPresetChangeHd} />
 					</label>
 				</Grid>
 				<Separator size="4" />

@@ -5,3 +5,6 @@ pub use add_food::add_food;
 
 mod search_food;
 pub use search_food::search_food;
+
+mod get_food;
+pub use get_food::get_food;

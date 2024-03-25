@@ -5,7 +5,7 @@ use sqlx::Row;
 
 use crate::errors::reg_errors;
 use crate::service::data_providers::WebDataPool;
-use crate::types::food::FoodEntry;
+use crate::types::food::HistoryFoodEntry;
 
 use crate::utils::{acquire_pg_connection, session_user_id};
 
@@ -40,11 +40,11 @@ pub struct HistoryEntryFull {
     day: String,
     weight: Option<f32>,
     calories: Option<i32>,
-    consumed_food: Vec<FoodEntry>,
+    consumed_food: Vec<HistoryFoodEntry>,
 }
 
 impl HistoryEntryFull {
-    fn calc_calories(food_entries: &Vec<FoodEntry>) -> i32 {
+    fn calc_calories(food_entries: &Vec<HistoryFoodEntry>) -> i32 {
         let calories = food_entries
             .iter()
             .map(|entry| {
@@ -58,7 +58,7 @@ impl HistoryEntryFull {
         calories as i32
     }
 
-    pub fn from_row(row: &sqlx::postgres::PgRow, food_entries: Vec<FoodEntry>) -> Self {
+    pub fn from_row(row: &sqlx::postgres::PgRow, food_entries: Vec<HistoryFoodEntry>) -> Self {
         Self {
             id: row.get("id"),
             day: row.get("day"),
@@ -102,11 +102,11 @@ async fn retrieve_consumed_food_data(
     let food_entries = history_entry
         .iter()
         .map(|row| {
-            let food_entry = FoodEntry::from_row(row);
+            let food_entry = HistoryFoodEntry::from_row(row);
 
             food_entry
         })
-        .collect::<Vec<FoodEntry>>();
+        .collect::<Vec<HistoryFoodEntry>>();
 
     let row = match history_entry.get(0) {
         Some(row) => row,

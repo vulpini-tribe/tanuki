@@ -21,7 +21,7 @@ impl Category {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct FoodEntry {
+pub struct HistoryFoodEntry {
     pub id: uuid::Uuid,
     pub category: Category,
     pub name: String,
@@ -33,7 +33,7 @@ pub struct FoodEntry {
     pub datetime: String,
 }
 
-impl FoodEntry {
+impl HistoryFoodEntry {
     pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
         Self {
             id: row.get("food_id"),
@@ -45,6 +45,31 @@ impl FoodEntry {
             carbs_100: row.get("carbs_100"),
             portion_weight: row.get("portion_weight"),
             datetime: row.get("datetime"),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct FoodEntryRaw {
+    pub id: uuid::Uuid,
+    pub name: String,
+    pub kcal_100: f32,
+    pub protein_100: f32,
+    pub fat_100: f32,
+    pub carbs_100: f32,
+    pub portion_weight: f32,
+}
+
+impl FoodEntryRaw {
+    pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
+        Self {
+            id: row.get("id"),
+            name: row.get("food_name"),
+            kcal_100: row.get("kcal_100"),
+            protein_100: row.get("protein_100"),
+            fat_100: row.get("fat_100"),
+            carbs_100: row.get("carbs_100"),
+            portion_weight: row.get("portion_weight"),
         }
     }
 }

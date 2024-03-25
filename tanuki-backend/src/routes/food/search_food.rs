@@ -22,8 +22,6 @@ pub async fn search_food(
 ) -> Result<HttpResponse, Error> {
     let query = query_data.into_inner();
 
-    println!("Query: {:#?}", query);
-
     let user_id: Result<_, _> = match session_user_id(&session).await {
         Ok(user_id) => Ok(user_id),
         Err(_) => Err(reg_errors::not_authenticated(

@@ -77,6 +77,7 @@ const useFormHook = () => {
 
 		submit: handleSubmit,
 		setError,
+		setValue,
 		getValues,
 		errors: formState.errors,
 		calcCalories,
