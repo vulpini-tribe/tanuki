@@ -23,18 +23,18 @@ const DonutChart = ({ width, height }: { width: number; height: number }) => {
 	});
 
 	const nutrients = useMemo(() => {
-		const consumedFood = dayData.consumed_food || [];
+		const consumedFood = dayData.meals || [];
 
 		const totalCarbs = consumedFood.reduce((acc, food) => {
-			return acc + food.carbs_100 * (food.portion_weight / 100);
+			return acc + food.carbs * (food.weight / 100);
 		}, 0);
 
 		const totalFats = consumedFood.reduce((acc, food) => {
-			return acc + food.fat_100 * (food.portion_weight / 100);
+			return acc + food.fats * (food.weight / 100);
 		}, 0);
 
 		const totalProtein = consumedFood.reduce((acc, food) => {
-			return acc + food.protein_100 * (food.portion_weight / 100);
+			return acc + food.proteins * (food.weight / 100);
 		}, 0);
 
 		return [
@@ -42,7 +42,7 @@ const DonutChart = ({ width, height }: { width: number; height: number }) => {
 			{ label: 'fats', value: totalFats.toFixed(0) },
 			{ label: 'protein', value: totalProtein.toFixed(0) }
 		];
-	}, [dayData.consumed_food]);
+	}, [dayData.meals]);
 
 	const getNutrientsColor = useMemo(() => {
 		return scaleOrdinal({

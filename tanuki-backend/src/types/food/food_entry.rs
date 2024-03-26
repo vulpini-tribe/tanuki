@@ -23,28 +23,26 @@ impl Category {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct HistoryFoodEntry {
     pub id: uuid::Uuid,
-    pub category: Category,
     pub name: String,
-    pub kcal_100: f32,
-    pub protein_100: f32,
-    pub fat_100: f32,
-    pub carbs_100: f32,
-    pub portion_weight: f32,
-    pub datetime: String,
+    pub proteins: f32,
+    pub fats: f32,
+    pub carbs: f32,
+    pub weight: f32,
+    pub icon: String,
+    pub color: String,
 }
 
 impl HistoryFoodEntry {
     pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
         Self {
-            id: row.get("food_id"),
-            category: Category::from_row(row),
-            name: row.get("food_name"),
-            kcal_100: row.get("kcal_100"),
-            protein_100: row.get("protein_100"),
-            fat_100: row.get("fat_100"),
-            carbs_100: row.get("carbs_100"),
-            portion_weight: row.get("portion_weight"),
-            datetime: row.get("datetime"),
+            id: row.get("id"),
+            name: row.get("name"),
+            proteins: row.get("proteins"),
+            fats: row.get("fats"),
+            carbs: row.get("carbs"),
+            weight: row.get("weight"),
+            icon: row.get("icon"),
+            color: row.get("color"),
         }
     }
 }

@@ -49,14 +49,18 @@ async fn retrieve_history_entries_from_db(
     to: String,
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<Vec<HistoryEntry>, Error> {
-    match sqlx::query(
-        "SELECT * FROM history_entries WHERE user_id = ($1) AND \"day\" >= ($2) AND \"day\" <= ($3);",
-    )
-    .bind(&user_id)
-    .bind(&to)
-    .bind(&from)
-    .fetch_all(pg_connection)
-    .await
+    let query = "
+        SELECT day FROM history_entries
+        WHERE user_id = ($1) AND \"day\" >= ($2) AND \"day\" <= ($3)
+        GROUP BY day;
+    ";
+
+    match sqlx::query(query)
+        .bind(&user_id)
+        .bind(&to)
+        .bind(&from)
+        .fetch_all(pg_connection)
+        .await
     {
         Ok(rows) => {
             let categories = rows

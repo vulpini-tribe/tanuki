@@ -13,11 +13,11 @@ const SHARED_USER_ID: &str = "'00000000-0000-0000-0000-000000000000'";
 
 #[tracing::instrument(name = "Get history entry", skip(session, dp))]
 pub async fn get_history_entry(
-    id: web::Path<uuid::Uuid>,
+    day: web::Path<String>,
     session: actix_session::Session,
     dp: web::Data<WebDataPool>,
 ) -> Result<HttpResponse, Error> {
-    let history_id = id.into_inner();
+    let day = day.into_inner();
 
     let user_id = match session_user_id(&session).await {
         Ok(user_id) => Ok(user_id),
@@ -29,7 +29,7 @@ pub async fn get_history_entry(
     let user_id = user_id?;
     let mut pg_connection = acquire_pg_connection(dp).await?;
 
-    let data = retrieve_consumed_food_data(user_id, history_id.clone(), &mut pg_connection).await?;
+    let data = retrieve_consumed_food_data(user_id, day.clone(), &mut pg_connection).await?;
 
     Ok(HttpResponse::Ok().json(json!({ "data": data })))
 }
@@ -38,9 +38,8 @@ pub async fn get_history_entry(
 pub struct HistoryEntryFull {
     id: uuid::Uuid,
     day: String,
-    weight: Option<f32>,
     calories: Option<i32>,
-    consumed_food: Vec<HistoryFoodEntry>,
+    meals: Vec<HistoryFoodEntry>,
 }
 
 impl HistoryEntryFull {
@@ -48,8 +47,8 @@ impl HistoryEntryFull {
         let calories = food_entries
             .iter()
             .map(|entry| {
-                let weight = entry.portion_weight;
-                let kcal = entry.kcal_100;
+                let weight = entry.weight;
+                let kcal = entry.proteins * 4.0 + entry.fats * 9.0 + entry.carbs * 4.0;
 
                 (weight / 100.0) * kcal
             })
@@ -62,34 +61,28 @@ impl HistoryEntryFull {
         Self {
             id: row.get("id"),
             day: row.get("day"),
-            weight: Some(row.get("weight")),
             calories: Some(Self::calc_calories(&food_entries)),
-            consumed_food: food_entries,
+            meals: food_entries,
         }
     }
 }
 
 async fn retrieve_consumed_food_data(
     user_id: uuid::Uuid,
-    history_id: uuid::Uuid,
+    day: String,
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<HistoryEntryFull, Error> {
-    let history_entry_query = format!("
-        SELECT
-            history_entry_food_bridge.history_entry_id as id, history_entries.day, history_entries.weight,
-            categories.id as category_id, categories.color, categories.category_name, categories.icon,
-            foods.id as food_id, foods.food_name, foods.kcal_100, foods.protein_100, foods.fat_100, foods.carbs_100, foods.portion_weight,
-            history_entry_food_bridge.datetime
-        FROM history_entry_food_bridge
-        INNER JOIN foods ON history_entry_food_bridge.food_id = foods.id
-        INNER JOIN history_entries ON history_entry_food_bridge.history_entry_id = history_entries.id
-        INNER JOIN categories ON foods.category_id = categories.id
-        WHERE history_entry_food_bridge.history_entry_id = $1
-        AND (history_entries.user_id = $2 OR history_entries.user_id = {})
-    ", SHARED_USER_ID);
+    let history_entry_query = format!(
+        "
+            SELECT * FROM history_entries
+            WHERE day = $1
+            AND (user_id = $2 OR user_id = {})
+        ",
+        SHARED_USER_ID
+    );
 
     let history_entry = sqlx::query(&history_entry_query)
-        .bind(&history_id)
+        .bind(&day)
         .bind(&user_id)
         .fetch_all(&mut *pg_connection)
         .await

@@ -7,41 +7,34 @@ import type { ConsumedFoodT } from '../../store';
 
 type Props = ConsumedFoodT;
 
-const FoodEntry = ({ name, category, protein_100, fat_100, carbs_100, kcal_100, portion_weight }: Props) => {
+const MealEntry = (props: Props) => {
 	const protein = useMemo(() => {
-		return (protein_100 * (portion_weight / 100)).toFixed(0);
-	}, [protein_100, portion_weight]);
+		return (props.proteins * (props.weight / 100)).toFixed(0);
+	}, [props.proteins, props.weight]);
 
 	const fat = useMemo(() => {
-		return (fat_100 * (portion_weight / 100)).toFixed(0);
-	}, [fat_100, portion_weight]);
+		return (props.fats * (props.weight / 100)).toFixed(0);
+	}, [props.fats, props.weight]);
 
 	const carbs = useMemo(() => {
-		return (carbs_100 * (portion_weight / 100)).toFixed(0);
-	}, [carbs_100, portion_weight]);
+		return (props.carbs * (props.weight / 100)).toFixed(0);
+	}, [props.carbs, props.weight]);
 
 	const totalCalories = useMemo(() => {
-		return (kcal_100 * (portion_weight / 100)).toFixed(0);
-	}, [kcal_100, portion_weight]);
+		return (protein * 4 + fat * 9 + carbs * 4).toFixed(0);
+	}, [protein, fat, carbs]);
 
 	return (
 		<Grid asChild p="3">
 			<Root>
 				<Grid flow="column" columns="min-content 1fr" gap="3">
-					<Tooltip content={category.name}>
-						<Box>
-							<Avatar
-								size="4"
-								style={{ border: `2px solid ${category.color}` }}
-								fallback={category.icon}
-								radius="full"
-							/>
-						</Box>
-					</Tooltip>
+					<Box>
+						<Avatar size="4" style={{ border: `2px solid ${props.color}` }} fallback={props.icon} radius="full" />
+					</Box>
 
 					<Grid flow="row" gap="2">
 						<Grid flow="column" columns="1fr max-content" gap="2">
-							<Text size="3">{name}</Text>
+							<Text size="3">{props.name}</Text>
 
 							<Grid flow="column" columns="min-content" gap="1" align="end">
 								<Text size="2">{totalCalories}</Text>
@@ -78,7 +71,7 @@ const FoodEntry = ({ name, category, protein_100, fat_100, carbs_100, kcal_100, 
 								<Tooltip content="Portion Weight">
 									<Badge size="1" color="green">
 										<Box>
-											<Text size="2">{portion_weight}</Text>&thinsp;<Text size="1">g</Text>
+											<Text size="2">{props.weight}</Text>&thinsp;<Text size="1">g</Text>
 										</Box>
 									</Badge>
 								</Tooltip>
@@ -91,4 +84,4 @@ const FoodEntry = ({ name, category, protein_100, fat_100, carbs_100, kcal_100, 
 	);
 };
 
-export default React.memo(FoodEntry);
+export default React.memo(MealEntry);

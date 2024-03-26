@@ -187,9 +187,6 @@ INSERT INTO "foods" ("id", "user_id", "name", "proteins", "fats", "carbs", "port
 
 
 
-
-
-
 -- history_entries | start
 INSERT INTO "history_entries" ("id", "day", "user_id", "weight", "name", "proteins", "fats", "carbs", "icon", "color") VALUES
 	('88ddb4e7-6938-4a92-a037-df90f8bed8ed', '2024-03-25', '87a1bd29-7953-493e-a3bf-10aafa648278', '175', 'purus', '15', '7', '20', '🍜', '#8DB654'),

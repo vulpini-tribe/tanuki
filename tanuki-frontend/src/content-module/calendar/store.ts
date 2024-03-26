@@ -16,10 +16,7 @@ const toDate =
 		: DateTime.fromISO(activeDate).startOf('month');
 
 export type PartialHistoryEntry = {
-	id: string;
 	day: string;
-	weight: number;
-	calories: number;
 };
 
 type CategoryT = {
@@ -46,7 +43,7 @@ type FullHistoryEntry = {
 	day: string;
 	weight: number;
 	calories: number;
-	consumed_food: ConsumedFoodT[];
+	meals: ConsumedFoodT[];
 };
 
 type CalendarStore = {
@@ -61,7 +58,7 @@ export const setFrom = createEvent<CalendarStore['from']>();
 export const setTo = createEvent<CalendarStore['to']>();
 export const setHistoryEntries = createEvent<PartialHistoryEntry[]>();
 export const setActiveDate = createEvent<CalendarStore['activeDate']>();
-export const setFullHistoryEntry = createEvent<{ id: PartialHistoryEntry['id']; data: FullHistoryEntry }>();
+export const setFullHistoryEntry = createEvent<{ day: PartialHistoryEntry['day']; data: FullHistoryEntry }>();
 
 export const $calendarStore = createStore<CalendarStore>({
 	from: today,
@@ -84,12 +81,12 @@ $calendarStore.on(setActiveDate, (store, nextValue) => {
 });
 
 // uuid & data
-$calendarStore.on(setFullHistoryEntry, (store, { id, data }) => {
+$calendarStore.on(setFullHistoryEntry, (store, { day, data }) => {
 	const nextStore = { ...store };
 
-	nextStore.fullHistoryEntries[id] = {
+	nextStore.fullHistoryEntries[day] = {
 		...data,
-		consumed_food: data.consumed_food.map((item) => ({
+		meals: data.meals.map((item) => ({
 			...item,
 			datetime: DateTime.fromISO(item.datetime as string)
 		}))
@@ -129,7 +126,7 @@ $calendarStore.on(setTo, (store, nextValue) => {
 
 export const dayDataSelector = (store: CalendarStore) => {
 	const partialDayData = store.allHistoryEntries[store.activeDate] || {};
-	const fullDayData = store.fullHistoryEntries[partialDayData.id] || {};
+	const fullDayData = store.fullHistoryEntries[partialDayData.day] || {};
 
 	const _ = {
 		...partialDayData,

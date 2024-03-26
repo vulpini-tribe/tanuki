@@ -53,16 +53,16 @@ const CalendarMain = () => {
 
 	const dayData = useStoreMap($calendarStore, dayDataSelector);
 
-	const getEntryReq = useGetHistoryEntry(dayData.id);
+	const getEntryReq = useGetHistoryEntry(dayData.day);
 	const formattedDay = useDate(dayData.day);
 
-	const foodEntries = dayData.consumed_food || [];
+	const foodEntries = dayData.meals || [];
 
 	useEffect(() => {
-		if (!dayData.id) return;
+		if (!dayData.day) return;
 
 		getEntryReq.refetch();
-	}, [dayData.id]);
+	}, [dayData.day]);
 
 	const splittedFoodEntries = foodEntries.reduce((acc, food: ConsumedFoodT) => {
 		const hour = (food.datetime as DateTime).get('hour');
