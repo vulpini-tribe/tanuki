@@ -77,4 +77,5 @@ sqlx = { version = "0.7.3", features = [
   "postgres",
   "uuid",
   "runtime-tokio-rustls",
+  "chrono",
 ] }

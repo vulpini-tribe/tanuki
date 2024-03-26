@@ -30,6 +30,7 @@ pub struct HistoryFoodEntry {
     pub weight: f32,
     pub icon: String,
     pub color: String,
+    pub created_at: chrono::DateTime<chrono::Utc>,
 }
 
 impl HistoryFoodEntry {
@@ -43,6 +44,7 @@ impl HistoryFoodEntry {
             weight: row.get("weight"),
             icon: row.get("icon"),
             color: row.get("color"),
+            created_at: row.get("created_at"),
         }
     }
 }

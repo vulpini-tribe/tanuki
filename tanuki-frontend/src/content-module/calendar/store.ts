@@ -88,7 +88,7 @@ $calendarStore.on(setFullHistoryEntry, (store, { day, data }) => {
 		...data,
 		meals: data.meals.map((item) => ({
 			...item,
-			datetime: DateTime.fromISO(item.datetime as string)
+			datetime: DateTime.fromISO(item.created_at as string)
 		}))
 	};
 
