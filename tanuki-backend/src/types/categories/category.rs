@@ -15,7 +15,7 @@ pub struct Category {
 impl Category {
     pub fn from_row(row: &PgRow) -> Self {
         let id: uuid::Uuid = row.get("id");
-        let name: String = row.get("name");
+        let name: String = row.get("category_name");
         let description: Option<String> = row.get("description");
         let color: Option<String> = row.get("color");
         let icon: Option<String> = row.get("icon");

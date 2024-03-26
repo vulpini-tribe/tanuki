@@ -1,5 +1,5 @@
 export type Props = {
-	onChange: (value: unknown) => void;
+	onChange: (value: SearchEntry) => void;
 	labelKey: string;
 	valueKey: string;
 	endpoint: string;

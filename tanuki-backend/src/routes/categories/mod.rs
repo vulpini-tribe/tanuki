@@ -5,3 +5,6 @@ pub use get_categories::get_categories;
 
 mod search_category;
 pub use search_category::search_category;
+
+mod get_category;
+pub use get_category::get_category;

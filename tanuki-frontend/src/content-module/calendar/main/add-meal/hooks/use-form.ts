@@ -11,6 +11,7 @@ type FormFields = {
 	carbs?: number;
 	weight: number;
 	icon?: string;
+	color?: string;
 };
 
 type FormKeys = keyof FormFields;
@@ -22,7 +23,8 @@ const schema = yup.object().shape({
 	fats: yup.number(),
 	carbs: yup.number(),
 	weight: yup.number().required('Weight is required').min(0, 'Weight must be greater than 0'),
-	icon: yup.string()
+	icon: yup.string(),
+	color: yup.string()
 });
 
 const useFormHook = () => {
@@ -74,6 +76,7 @@ const useFormHook = () => {
 			}
 		}),
 		icon: register('icon'),
+		color: register('color'),
 
 		submit: handleSubmit,
 		setError,
