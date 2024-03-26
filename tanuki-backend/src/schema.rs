@@ -25,10 +25,9 @@ pub mod sql_types {
 diesel::table! {
     categories (id) {
         id -> Uuid,
-        category_name -> Nullable<Text>,
-        description -> Nullable<Text>,
-        color -> Nullable<Text>,
+        name -> Nullable<Text>,
         icon -> Nullable<Text>,
+        color -> Nullable<Text>,
         user_id -> Nullable<Uuid>,
     }
 }
@@ -36,14 +35,12 @@ diesel::table! {
 diesel::table! {
     foods (id) {
         id -> Uuid,
-        user_id -> Uuid,
-        category_id -> Uuid,
-        food_name -> Text,
-        kcal_100 -> Float4,
-        protein_100 -> Float4,
-        fat_100 -> Float4,
-        carbs_100 -> Float4,
+        name -> Text,
+        proteins -> Float4,
+        fats -> Float4,
+        carbs -> Float4,
         portion_weight -> Float4,
+        user_id -> Uuid,
     }
 }
 
@@ -52,15 +49,14 @@ diesel::table! {
         id -> Uuid,
         user_id -> Uuid,
         day -> Text,
-        weight -> Nullable<Float4>,
-    }
-}
-
-diesel::table! {
-    history_entry_food_bridge (history_entry_id, food_id) {
-        history_entry_id -> Uuid,
-        food_id -> Uuid,
-        datetime -> Text,
+        name -> Text,
+        proteins -> Float4,
+        fats -> Float4,
+        carbs -> Float4,
+        weight -> Float4,
+        icon -> Nullable<Text>,
+        color -> Nullable<Text>,
+        created_at -> Nullable<Timestamptz>,
     }
 }
 
@@ -112,11 +108,8 @@ diesel::table! {
 }
 
 diesel::joinable!(categories -> users (user_id));
-diesel::joinable!(foods -> categories (category_id));
 diesel::joinable!(foods -> users (user_id));
 diesel::joinable!(history_entries -> users (user_id));
-diesel::joinable!(history_entry_food_bridge -> foods (food_id));
-diesel::joinable!(history_entry_food_bridge -> history_entries (history_entry_id));
 diesel::joinable!(user_goals -> users (user_id));
 diesel::joinable!(user_profile -> users (user_id));
 
@@ -124,7 +117,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     categories,
     foods,
     history_entries,
-    history_entry_food_bridge,
     user_goals,
     user_profile,
     users,
