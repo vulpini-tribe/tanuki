@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useStoreMap } from 'effector-react';
 import { DateTime } from 'luxon';
 
-import { $calendarStore, dayDataSelector } from '../store';
+import $feedStore, { dayDataSelector } from '@pages/feed/store';
 
 import { PlusIcon } from '@radix-ui/react-icons';
-import { Button, Grid, Heading, Dialog } from '@radix-ui/themes';
+import { Button, Box, Grid, Heading, Dialog, ScrollArea } from '@radix-ui/themes';
 
-import { SharedMain } from '../../shared';
 import { useGetHistoryEntry } from './hooks';
 import FoodEntry from './food-entry';
 
-import type { ConsumedFoodT } from '../store';
+import type { MealEntryT } from '@pages/feed/types.d';
 import AddMeal from './add-meal';
+import Root from './calendar-main.styles';
 
 const useDate = (date: string) => {
 	const today = DateTime.local();
@@ -43,7 +43,7 @@ type LabelsEnum = keyof typeof labels;
 const CalendarMain = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const test: Record<LabelsEnum, ConsumedFoodT[]> = {
+	const test: Record<LabelsEnum, MealEntryT[]> = {
 		breakfast: [],
 		branch: [],
 		lunch: [],
@@ -51,7 +51,7 @@ const CalendarMain = () => {
 		dinner: []
 	};
 
-	const dayData = useStoreMap($calendarStore, dayDataSelector);
+	const dayData = useStoreMap($feedStore, dayDataSelector);
 
 	const getEntryReq = useGetHistoryEntry(dayData.day);
 	const formattedDay = useDate(dayData.day);
@@ -64,7 +64,7 @@ const CalendarMain = () => {
 		getEntryReq.refetch();
 	}, [dayData.day]);
 
-	const splittedFoodEntries = foodEntries.reduce((acc, food: ConsumedFoodT) => {
+	const splittedFoodEntries = foodEntries.reduce((acc, food: MealEntryT) => {
 		const hour = (food.datetime as DateTime).get('hour');
 
 		if (hour >= DINNER_HOURS) {
@@ -83,39 +83,45 @@ const CalendarMain = () => {
 	}, test);
 
 	return (
-		<SharedMain header={formattedDay}>
-			{Object.entries(splittedFoodEntries).map(([key, value]) => {
-				if (!value.length) return null;
+		<Root>
+			<Heading mb="2">{formattedDay}</Heading>
 
-				return (
-					<Grid flow="row" rows="1fr" mt="5" key={key}>
-						<Heading size="4" mb="1">
-							{labels[key as LabelsEnum]}
-						</Heading>
+			<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 40px)' }}>
+				<Box pt="2">
+					{Object.entries(splittedFoodEntries).map(([key, value]) => {
+						if (!value.length) return null;
 
-						{value.map((food) => {
-							return <FoodEntry key={food.id} {...food} />;
-						})}
+						return (
+							<Grid flow="row" rows="1fr" mt="5" key={key}>
+								<Heading size="4" mb="1">
+									{labels[key as LabelsEnum]}
+								</Heading>
+
+								{value.map((food) => {
+									return <FoodEntry key={food.id} {...food} />;
+								})}
+							</Grid>
+						);
+					})}
+
+					<Grid flow="column" columns="1fr" mt="4">
+						<Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
+							<Dialog.Trigger>
+								<Button size="3" variant="soft">
+									<PlusIcon width="24" height="24" /> Add Meal
+								</Button>
+							</Dialog.Trigger>
+
+							<Dialog.Content>
+								<Dialog.Title>Add Meal</Dialog.Title>
+
+								<AddMeal setIsModalOpen={setIsModalOpen} />
+							</Dialog.Content>
+						</Dialog.Root>
 					</Grid>
-				);
-			})}
-
-			<Grid flow="column" columns="1fr" mt="4">
-				<Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
-					<Dialog.Trigger>
-						<Button size="3" variant="soft">
-							<PlusIcon width="24" height="24" /> Add Meal
-						</Button>
-					</Dialog.Trigger>
-
-					<Dialog.Content>
-						<Dialog.Title>Add Meal</Dialog.Title>
-
-						<AddMeal setIsModalOpen={setIsModalOpen} />
-					</Dialog.Content>
-				</Dialog.Root>
-			</Grid>
-		</SharedMain>
+				</Box>
+			</ScrollArea>
+		</Root>
 	);
 };
 

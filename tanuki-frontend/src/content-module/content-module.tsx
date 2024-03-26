@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTES from '@routes';
 
-import CalendarIndex from './calendar';
+import { FeedPage } from '@pages';
 import DishesIndex from './dishes';
 import Food from './food';
 import HomePage from './home-page';
@@ -19,7 +19,7 @@ const ContentModule = () => {
 		<div>
 			<Routes>
 				<Route path={ROUTES.CONTENT.ROOT} element={<HomePage />} />
-				<Route path={ROUTES.CONTENT.FEED} element={<CalendarIndex />} />
+				<Route path={ROUTES.CONTENT.FEED} element={<FeedPage />} />
 				<Route path={ROUTES.CONTENT.DISHES} element={<DishesIndex />} />
 				<Route path={ROUTES.CONTENT.FOOD} element={<Food />} />
 

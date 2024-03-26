@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useStoreMap } from 'effector-react';
-import { $calendarStore, dayDataSelector } from '../store';
+import $feedStore, { dayDataSelector } from '@pages/feed/store';
 
 import { ParentSize } from '@visx/responsive';
 import { Pie } from '@visx/shape';
@@ -8,14 +8,12 @@ import { scaleOrdinal } from '@visx/scale';
 import { Group } from '@visx/group';
 import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
 
-import { Heading, Box, Grid, Text } from '@radix-ui/themes';
+import { Heading, Box, Grid, Text, ScrollArea } from '@radix-ui/themes';
 
-import { SharedWidgets } from '../../shared';
-
-import { WidgetWrap, Path } from './widgets.styles';
+import Root, { WidgetWrap, Path } from './widgets.styles';
 
 const DonutChart = ({ width, height }: { width: number; height: number }) => {
-	const dayData = useStoreMap($calendarStore, dayDataSelector);
+	const dayData = useStoreMap($feedStore, dayDataSelector);
 
 	const { tooltipOpen, tooltipLeft, tooltipTop, tooltipData, hideTooltip, showTooltip } = useTooltip();
 	const { containerRef, TooltipInPortal } = useTooltipInPortal({
@@ -112,42 +110,44 @@ const DonutChart = ({ width, height }: { width: number; height: number }) => {
 };
 
 const CalendarWidgets = () => {
-	const dayData = useStoreMap($calendarStore, dayDataSelector);
+	const dayData = useStoreMap($feedStore, dayDataSelector);
 
 	return (
-		<SharedWidgets>
-			<Grid p="4" gap="3" mr="1" ml="1" asChild>
-				<WidgetWrap>
-					<Heading size="4" color="gray">
-						Nutrients
-					</Heading>
+		<Root>
+			<ScrollArea scrollbars="vertical" style={{ height: '100%' }}>
+				<Grid p="4" gap="3" mr="1" ml="1" asChild>
+					<WidgetWrap>
+						<Heading size="4" color="gray">
+							Nutrients
+						</Heading>
 
-					<Box style={{ width: '100%', height: '200px' }}>
-						<ParentSize>{(parent) => <DonutChart width={parent.width} height={parent.height} />}</ParentSize>
+						<Box style={{ width: '100%', height: '200px' }}>
+							<ParentSize>{(parent) => <DonutChart width={parent.width} height={parent.height} />}</ParentSize>
+						</Box>
+					</WidgetWrap>
+				</Grid>
+
+				<Grid flow="column" mt="3" gap="3" ml="1" mr="1" columns="1fr 1fr">
+					<Box p="4" asChild>
+						<WidgetWrap>
+							<Heading size="4" mb="3" color="gray">
+								Weight
+							</Heading>
+							<Text size="6">{dayData.weight?.toFixed(2)} kg</Text>
+						</WidgetWrap>
 					</Box>
-				</WidgetWrap>
-			</Grid>
 
-			<Grid flow="column" mt="3" gap="3" ml="1" mr="1" columns="1fr 1fr">
-				<Box p="4" asChild>
-					<WidgetWrap>
-						<Heading size="4" mb="3" color="gray">
-							Weight
-						</Heading>
-						<Text size="6">{dayData.weight?.toFixed(2)} kg</Text>
-					</WidgetWrap>
-				</Box>
-
-				<Box p="4" asChild>
-					<WidgetWrap>
-						<Heading size="4" mb="3" color="gray">
-							Consumed
-						</Heading>
-						<Text size="6">{dayData.calories} kcal</Text>
-					</WidgetWrap>
-				</Box>
-			</Grid>
-		</SharedWidgets>
+					<Box p="4" asChild>
+						<WidgetWrap>
+							<Heading size="4" mb="3" color="gray">
+								Consumed
+							</Heading>
+							<Text size="6">{dayData.calories} kcal</Text>
+						</WidgetWrap>
+					</Box>
+				</Grid>
+			</ScrollArea>
+		</Root>
 	);
 };
 

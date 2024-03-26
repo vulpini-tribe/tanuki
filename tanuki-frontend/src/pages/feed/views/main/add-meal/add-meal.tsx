@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SearchSelect } from '@ui';
 import { Grid, Flex, Button, Dialog, Text, TextField, Separator } from '@radix-ui/themes';
 import { useForm } from './hooks';
-import { useGetFoodEntry, useGetCategory } from '../hooks';
+import { useGetFoodEntry, useGetCategory } from '@pages/feed/views/main/hooks';
 
 const AddMeal = ({ setIsModalOpen }) => {
 	const form = useForm();

@@ -2,10 +2,10 @@ import axios from '@axios';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useUnit } from 'effector-react';
-import { $calendarStore, setHistoryEntries } from '../store';
+import $feedStore, { setHistoryEntries } from '../store';
 
 const useGetCategories = () => {
-	const { from, to } = useUnit($calendarStore);
+	const { from, to } = useUnit($feedStore);
 
 	const request = useQuery({
 		queryKey: ['/history'],

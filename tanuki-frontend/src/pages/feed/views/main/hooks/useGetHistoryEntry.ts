@@ -2,7 +2,7 @@ import axios from '@axios';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { setFullHistoryEntry } from '../../store';
+import { setFullHistoryEntry } from '@pages/feed/store';
 
 const useGetHistoryEntry = (day: string) => {
 	const request = useQuery({

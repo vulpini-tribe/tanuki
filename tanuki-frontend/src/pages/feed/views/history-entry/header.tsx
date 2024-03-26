@@ -1,14 +1,15 @@
 import React from 'react';
 import { DateTime } from 'luxon';
 import { useUnit } from 'effector-react';
-import { $calendarStore, setFrom, setTo, MIN_DATE } from '../store';
+import $feedStore, { setFrom, setTo } from '@pages/feed/store';
+import { MIN_DATE } from '@pages/feed/constants';
 
 import { Grid, Flex, Badge, TextField } from '@radix-ui/themes';
 
 const today = DateTime.now();
 
 const HeaderContent = () => {
-	const { from, to } = useUnit($calendarStore);
+	const { from, to } = useUnit($feedStore);
 
 	const onFromHd = (e: React.ChangeEvent<HTMLInputElement>) => setFrom(e.target.value);
 	const onToHd = (e: React.ChangeEvent<HTMLInputElement>) => setTo(e.target.value);

@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { Grid, Box, Badge, Tooltip, Text, Avatar } from '@radix-ui/themes';
 import Root from './food-entry.styles';
 
-import type { ConsumedFoodT } from '../../store';
+import type { MealEntryT } from '@pages/feed/store';
 
-type Props = ConsumedFoodT;
+type Props = MealEntryT;
 
 const MealEntry = (props: Props) => {
 	const protein = useMemo(() => {
