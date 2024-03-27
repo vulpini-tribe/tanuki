@@ -33,6 +33,6 @@ export default styled.div`
 		top: auto;
 		right: var(--space-3);
 		bottom: calc(var(--space-3));
-		left: calc(400px + var(--space-3) + var(--space-3));
+		left: calc(300px + var(--space-3) + var(--space-3));
 	}
 `;

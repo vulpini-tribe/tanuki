@@ -5,12 +5,8 @@ export default styled.div`
 	top: var(--space-3);
 	bottom: var(--space-3);
 	left: var(--space-3);
-	width: 400px;
+	width: 300px;
 	padding: var(--space-3);
 	background-color: var(--slate-2);
 	border-radius: var(--radius-3);
-
-	@media (width <= 768px) {
-		width: 100%;
-	}
 `;
