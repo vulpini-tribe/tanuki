@@ -29,7 +29,7 @@ export default styled.div`
 
 	@media (width <= 1280px) {
 		width: auto;
-		height: 300px;
+		height: 220px;
 		top: auto;
 		right: var(--space-3);
 		bottom: calc(var(--space-3));

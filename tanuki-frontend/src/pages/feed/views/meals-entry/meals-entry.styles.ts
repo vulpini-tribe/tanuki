@@ -1,13 +1,4 @@
-/* stylelint-disable declaration-block-no-redundant-longhand-properties */
 import styled from 'styled-components';
-
-// @media (width <= 768px) {
-// 	right: var(--space-2);
-// 	bottom: var(--space-2 - 300px);
-// 	left: var(--space-2);
-// 	z-index: 1;
-// 	width: 100%;
-// }
 
 export default styled.div`
 	position: fixed;
@@ -22,6 +13,6 @@ export default styled.div`
 	@media (width <= 1280px) {
 		top: var(--space-3);
 		right: var(--space-3);
-		bottom: calc(var(--space-3) + 300px);
+		bottom: calc(var(--space-3) + 220px);
 	}
 `;

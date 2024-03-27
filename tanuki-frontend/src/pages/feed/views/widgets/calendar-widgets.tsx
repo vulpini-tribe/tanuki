@@ -121,7 +121,7 @@ const CalendarWidgets = () => {
 			<Root>
 				<ScrollArea scrollbars="horizontal" style={{ height: '100%' }}>
 					<Grid flow="column" mt="3" gap="3" ml="1" mr="1" columns="1fr 1fr 1fr">
-						<Box p="4" asChild>
+						<Box p="2" asChild>
 							<WidgetWrap style={{ height: 200 }}>
 								<ParentSize>{(parent) => <DonutChart width={parent.width} height={parent.height} />}</ParentSize>
 							</WidgetWrap>
