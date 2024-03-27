@@ -40,6 +40,12 @@ const Profile = () => {
 									</Button>
 								</NavLink>
 
+								<NavLink to={ROUTES.CONTENT.FEED}>
+									<Button variant="outline" size="2" tabIndex={-1}>
+										Feed
+									</Button>
+								</NavLink>
+
 								<NavLink to={ROUTES.CONTENT.FOOD}>
 									<Button variant="ghost" size="2" tabIndex={-1}>
 										Food
