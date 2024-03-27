@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import { useUnit } from 'effector-react';
+import { useNavigate } from 'react-router-dom';
+import ROUTES, { createLinkWithQuery as createLink } from '@routes';
+import $feedStore from '@pages/feed/store';
 
 import { SearchSelect } from '@ui';
-import { Grid, Flex, Button, Dialog, Text, TextField, Separator } from '@radix-ui/themes';
+import { Grid, Flex, Button, Text, TextField, Separator } from '@radix-ui/themes';
 import { useForm } from './hooks';
 import { useGetFoodEntry, useGetCategory } from '@pages/feed/views/meals-entry/hooks';
 
-const AddMeal = ({ setIsModalOpen }) => {
+const AddMeal = () => {
+	const { activeDate } = useUnit($feedStore);
 	const form = useForm();
+	const navigate = useNavigate();
 	const [foodPresetId, setFoodPresetId] = useState('');
 	const [categoryPresetId, setCategoryPresetId] = useState('');
 
@@ -59,8 +65,17 @@ const AddMeal = ({ setIsModalOpen }) => {
 	};
 
 	const onCategoryPresetChangeHd = (value: Record<string, string>) => {
-		console.log('onCategoryPresetChangeHd');
 		setCategoryPresetId(value.id);
+	};
+
+	const navToList = (e) => {
+		e.preventDefault();
+
+		const link = createLink(ROUTES.CONTENT.FEED, {
+			date: activeDate
+		});
+
+		navigate(link);
 	};
 
 	const onSubmit = () => {
@@ -79,6 +94,11 @@ const AddMeal = ({ setIsModalOpen }) => {
 		} else {
 			delete values.consumed_at;
 		}
+
+		values.proteins = Number.parseFloat(`${values.proteins}`);
+		values.fats = Number.parseFloat(`${values.fats}`);
+		values.carbs = Number.parseFloat(`${values.carbs}`);
+		values.weight = Number.parseFloat(`${values.weight}`);
 
 		console.log(values);
 	};
@@ -183,15 +203,15 @@ const AddMeal = ({ setIsModalOpen }) => {
 				</Grid>
 			</Grid>
 
-			<Flex gap="3" mt="4" justify="end">
-				<Dialog.Close>
-					<Button variant="soft" color="gray">
-						Cancel
-					</Button>
-				</Dialog.Close>
+			<Grid flow="column" columns="1fr 2fr" mt="4" gap="4">
+				<Button size="3" variant="soft" color="gray" onClick={navToList} type="reset">
+					Cancel
+				</Button>
 
-				<Button type="submit">Save</Button>
-			</Flex>
+				<Button size="3" variant="soft" type="submit">
+					Save
+				</Button>
+			</Grid>
 		</form>
 	);
 };

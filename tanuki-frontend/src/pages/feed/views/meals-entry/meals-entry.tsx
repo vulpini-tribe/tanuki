@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStoreMap } from 'effector-react';
 import { DateTime } from 'luxon';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 
 import $feedStore, { dayDataSelector } from '@pages/feed/store';
 
 import { PlusIcon } from '@radix-ui/react-icons';
-import { Button, Box, Grid, Heading, Dialog, ScrollArea } from '@radix-ui/themes';
+import { Button, Box, Grid, Heading, ScrollArea } from '@radix-ui/themes';
 
 import { useGetHistoryEntry } from './hooks';
 import FoodEntry from './food-entry';
@@ -40,9 +42,7 @@ const labels = {
 
 type LabelsEnum = keyof typeof labels;
 
-const CalendarMain = () => {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-
+const MealsList = () => {
 	const test: Record<LabelsEnum, MealEntryT[]> = {
 		breakfast: [],
 		branch: [],
@@ -52,17 +52,7 @@ const CalendarMain = () => {
 	};
 
 	const dayData = useStoreMap($feedStore, dayDataSelector);
-
-	const getEntryReq = useGetHistoryEntry(dayData.day);
-	const formattedDay = useDate(dayData.day);
-
 	const foodEntries = dayData.meals || [];
-
-	useEffect(() => {
-		if (!dayData.day) return;
-
-		getEntryReq.refetch();
-	}, [dayData.day]);
 
 	const splittedFoodEntries = foodEntries.reduce((acc, food: MealEntryT) => {
 		const hour = (food.datetime as DateTime).get('hour');
@@ -83,42 +73,68 @@ const CalendarMain = () => {
 	}, test);
 
 	return (
+		<>
+			{Object.entries(splittedFoodEntries).map(([key, value]) => {
+				if (!value.length) return null;
+
+				return (
+					<Grid flow="row" rows="1fr" mt="5" key={key}>
+						<Heading size="4" mb="1">
+							{labels[key as LabelsEnum]}
+						</Heading>
+
+						{value.map((food) => {
+							return <FoodEntry key={food.id} {...food} />;
+						})}
+					</Grid>
+				);
+			})}
+		</>
+	);
+};
+
+const CalendarMain = () => {
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const mode = searchParams.get('mode');
+
+	const dayData = useStoreMap($feedStore, dayDataSelector);
+
+	const getEntryReq = useGetHistoryEntry(dayData.day);
+	const formattedDay = useDate(dayData.day);
+
+	useEffect(() => {
+		if (!dayData.day) return;
+
+		getEntryReq.refetch();
+	}, [dayData.day]);
+
+	const toEditMode = () => {
+		const link = createLink(ROUTES.CONTENT.FEED, {
+			date: dayData.day,
+			mode: 'add'
+		});
+
+		navigate(link);
+	};
+
+	return (
 		<Root>
-			<Heading mb="2">{formattedDay}</Heading>
+			<Heading mb="2">{`${formattedDay} ${mode === 'add' ? ' — Add Meal' : ''}`.trim()}</Heading>
 
 			<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 40px)' }}>
 				<Box pt="2">
-					{Object.entries(splittedFoodEntries).map(([key, value]) => {
-						if (!value.length) return null;
+					{!mode && <MealsList />}
 
-						return (
-							<Grid flow="row" rows="1fr" mt="5" key={key}>
-								<Heading size="4" mb="1">
-									{labels[key as LabelsEnum]}
-								</Heading>
+					{mode === 'add' && <AddMeal />}
 
-								{value.map((food) => {
-									return <FoodEntry key={food.id} {...food} />;
-								})}
-							</Grid>
-						);
-					})}
-
-					<Grid flow="column" columns="1fr" mt="4">
-						<Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
-							<Dialog.Trigger>
-								<Button size="3" variant="soft">
-									<PlusIcon width="24" height="24" /> Add Meal
-								</Button>
-							</Dialog.Trigger>
-
-							<Dialog.Content>
-								<Dialog.Title>Add Meal</Dialog.Title>
-
-								<AddMeal setIsModalOpen={setIsModalOpen} />
-							</Dialog.Content>
-						</Dialog.Root>
-					</Grid>
+					{!mode && (
+						<Grid flow="column" columns="1fr" mt="4">
+							<Button size="3" variant="soft" onClick={toEditMode}>
+								<PlusIcon width="24" height="24" /> Add Meal
+							</Button>
+						</Grid>
+					)}
 				</Box>
 			</ScrollArea>
 		</Root>

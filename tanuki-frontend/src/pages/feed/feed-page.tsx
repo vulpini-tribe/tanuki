@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
-import $feedStore from './store';
+import $feedStore from '@pages/feed/store';
 
 import HistoryEntry from './views/history-entry';
 import MealsEntry from './views/meals-entry';
