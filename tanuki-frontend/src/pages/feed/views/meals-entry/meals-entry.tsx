@@ -12,11 +12,11 @@ import FoodEntry from './food-entry';
 
 import type { MealEntryT } from '@pages/feed/types.d';
 import AddMeal from './add-meal';
-import Root from './calendar-main.styles';
+import Root from './meals-entry.styles';
 
 const useDate = (date: string) => {
-	const today = DateTime.local();
 	const day = DateTime.fromISO(date);
+	const today = DateTime.local();
 
 	if (day.get('year') === today.get('year')) {
 		return day.toFormat('MMMM d');

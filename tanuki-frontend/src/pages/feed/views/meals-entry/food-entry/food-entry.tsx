@@ -3,21 +3,21 @@ import React, { useMemo } from 'react';
 import { Grid, Box, Badge, Tooltip, Text, Avatar } from '@radix-ui/themes';
 import Root from './food-entry.styles';
 
-import type { MealEntryT } from '@pages/feed/store';
+import type { MealEntryT } from '@pages/feed/types.d';
 
 type Props = MealEntryT;
 
 const MealEntry = (props: Props) => {
 	const protein = useMemo(() => {
-		return (props.proteins * (props.weight / 100)).toFixed(0);
+		return props.proteins * (props.weight / 100);
 	}, [props.proteins, props.weight]);
 
 	const fat = useMemo(() => {
-		return (props.fats * (props.weight / 100)).toFixed(0);
+		return props.fats * (props.weight / 100);
 	}, [props.fats, props.weight]);
 
 	const carbs = useMemo(() => {
-		return (props.carbs * (props.weight / 100)).toFixed(0);
+		return props.carbs * (props.weight / 100);
 	}, [props.carbs, props.weight]);
 
 	const totalCalories = useMemo(() => {
@@ -46,7 +46,7 @@ const MealEntry = (props: Props) => {
 							<Tooltip content="Proteins">
 								<Badge size="1" color="violet">
 									<Box>
-										<Text size="2">{protein}</Text>&thinsp;<Text size="1">g</Text>
+										<Text size="2">{protein.toFixed(0)}</Text>&thinsp;<Text size="1">g</Text>
 									</Box>
 								</Badge>
 							</Tooltip>
@@ -54,7 +54,7 @@ const MealEntry = (props: Props) => {
 							<Tooltip content="Fats">
 								<Badge size="1" color="amber">
 									<Box>
-										<Text size="2">{fat}</Text>&thinsp;<Text size="1">g</Text>
+										<Text size="2">{fat.toFixed(0)}</Text>&thinsp;<Text size="1">g</Text>
 									</Box>
 								</Badge>
 							</Tooltip>
@@ -62,7 +62,7 @@ const MealEntry = (props: Props) => {
 							<Tooltip content="Carbs">
 								<Badge size="1" color="blue">
 									<Box>
-										<Text size="2">{carbs}</Text>&thinsp;<Text size="1">g</Text>
+										<Text size="2">{carbs.toFixed(0)}</Text>&thinsp;<Text size="1">g</Text>
 									</Box>
 								</Badge>
 							</Tooltip>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
 
 import { SearchSelect } from '@ui';
 import { Grid, Flex, Button, Dialog, Text, TextField, Separator } from '@radix-ui/themes';
 import { useForm } from './hooks';
-import { useGetFoodEntry, useGetCategory } from '@pages/feed/views/main/hooks';
+import { useGetFoodEntry, useGetCategory } from '@pages/feed/views/meals-entry/hooks';
 
 const AddMeal = ({ setIsModalOpen }) => {
 	const form = useForm();
@@ -65,6 +66,20 @@ const AddMeal = ({ setIsModalOpen }) => {
 	const onSubmit = () => {
 		const values = form.getValues();
 
+		if (values.consumed_at) {
+			const [hours, minutes] = values.consumed_at.split(':');
+
+			values.consumed_at = DateTime.local()
+				.set({
+					hour: Number.parseInt(hours, 10),
+					minute: Number.parseInt(minutes, 10),
+					second: 0
+				})
+				.toISO();
+		} else {
+			delete values.consumed_at;
+		}
+
 		console.log(values);
 	};
 
@@ -82,7 +97,7 @@ const AddMeal = ({ setIsModalOpen }) => {
 
 				<Separator size="4" />
 
-				<Grid flow="column" columns="1fr 1fr" gap="3">
+				<Grid flow="column" columns="1fr 1fr 1fr" gap="3">
 					<label htmlFor="meal_icon">
 						<Text size="2" mb="1" weight="bold">
 							Icon
@@ -96,6 +111,13 @@ const AddMeal = ({ setIsModalOpen }) => {
 						</Text>
 						{/* @todo: moove color picker as separate component */}
 						<TextField.Input type="color" id="meal_color" placeholder="#123ABC" {...form.color} />
+					</label>
+
+					<label htmlFor="meal_consumed_at">
+						<Text size="2" mb="1" weight="bold">
+							Date
+						</Text>
+						<TextField.Input id="meal_consumed_at" type="time" {...form.consumed_at} />
 					</label>
 				</Grid>
 

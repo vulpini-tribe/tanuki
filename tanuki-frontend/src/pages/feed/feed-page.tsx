@@ -4,7 +4,7 @@ import { useUnit } from 'effector-react';
 import $feedStore from './store';
 
 import HistoryEntry from './views/history-entry';
-import DayEntry from './views/main';
+import MealsEntry from './views/meals-entry';
 import WidgetsEntry from './views/widgets';
 
 import ROUTES, { createLinkWithQuery as createLink } from '@routes';
@@ -32,7 +32,7 @@ const CalendarIndex = () => {
 	return (
 		<>
 			<HistoryEntry />
-			<DayEntry />
+			<MealsEntry />
 			<WidgetsEntry />
 		</>
 	);
