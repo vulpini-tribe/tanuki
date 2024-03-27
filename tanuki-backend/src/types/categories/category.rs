@@ -42,7 +42,7 @@ impl CategorySearchEntry {
     pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
         Self {
             id: row.get("id"),
-            name: row.get("category_name"),
+            name: row.get("name"),
         }
     }
 }

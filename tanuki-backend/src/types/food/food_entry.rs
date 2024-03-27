@@ -84,7 +84,7 @@ impl FoodSearchEntry {
     pub fn from_row(row: &sqlx::postgres::PgRow) -> Self {
         Self {
             id: row.get("id"),
-            name: row.get("food_name"),
+            name: row.get("name"),
         }
     }
 }

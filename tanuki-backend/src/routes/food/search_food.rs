@@ -41,13 +41,24 @@ async fn search_for_data(
     query: String,
     pg_connection: &mut sqlx::PgConnection,
 ) -> Result<Vec<FoodSearchEntry>, Error> {
-    let search_query = format!(
+    let search_query_full = format!(
         "
-        SELECT id, food_name FROM foods WHERE food_name %> $1
+        SELECT id, name FROM foods WHERE name %> $1
         AND (foods.user_id = $2 OR foods.user_id = {}) LIMIT 10;
         ",
         SHARED_USER_ID
     );
+
+    let search_query_empty = format!(
+        "SELECT id, name FROM foods WHERE (foods.user_id = $2 OR foods.user_id = {}) LIMIT 10;",
+        SHARED_USER_ID
+    );
+
+    let search_query = if query.is_empty() {
+        search_query_empty
+    } else {
+        search_query_full
+    };
 
     let search_results = sqlx::query(&search_query)
         .bind(&query)

@@ -43,14 +43,14 @@ async fn search_for_data(
 ) -> Result<Vec<CategorySearchEntry>, Error> {
     let search_query_full = format!(
         "
-        SELECT id, category_name FROM categories WHERE category_name %> $1
+        SELECT id, name FROM categories WHERE name %> $1
         AND (categories.user_id = $2 OR categories.user_id = {}) LIMIT 10;
         ",
         SHARED_USER_ID
     );
 
     let search_query_empty = format!(
-        "SELECT id, category_name FROM categories WHERE (categories.user_id = $2 OR categories.user_id = {}) LIMIT 10;",
+        "SELECT id, name FROM categories WHERE (categories.user_id = $2 OR categories.user_id = {}) LIMIT 10;",
         SHARED_USER_ID
     );
 
