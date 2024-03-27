@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { Interval, DateTime } from 'luxon';
 
+type RawMatrixT = Record<string, Record<string, DateTime[]>>;
+type DayMatrixT = [string, Record<string, DateTime[]>][];
+
 const calcDaysMatrix = (week: DateTime) => {
 	const lastDay = week.endOf('week');
 	const firstDay = week.startOf('week');
@@ -19,11 +22,11 @@ const calcDaysMatrix = (week: DateTime) => {
 	});
 };
 
-const calcWeeksMatrix = (month: DateTime) => {
+const calcWeeksMatrix = (month: DateTime): RawMatrixT => {
 	const lastDay = month.endOf('month');
 	const firstDay = month.startOf('month');
 
-	const test: { [key: number]: DateTime[] } = {};
+	const test = {};
 	const weeks = Interval.fromDateTimes(firstDay.startOf('week'), lastDay.endOf('week'))
 		.splitBy({ weeks: 1 })
 		.map((d) => d.start);
@@ -39,13 +42,13 @@ const calcWeeksMatrix = (month: DateTime) => {
 	return test;
 };
 
-const calcMonthMatrix = (from: DateTime, to: DateTime) => {
+const calcMonthMatrix = (from: DateTime, to: DateTime): RawMatrixT => {
 	// Get range for work with | Start
 	const lastDay = from.endOf('month');
 	const firstDay = to.startOf('month');
 	// Get range for work with | End
 
-	const months: { [key: string]: DateTime } = {};
+	const months = {};
 
 	const monthRng = Interval.fromDateTimes(firstDay, lastDay)
 		.splitBy({ months: 1 })
@@ -62,7 +65,7 @@ const calcMonthMatrix = (from: DateTime, to: DateTime) => {
 	return months;
 };
 
-const useDayMatrix = (from: string, to: string) => {
+const useDayMatrix = (from: string, to: string): DayMatrixT => {
 	const rawMatrix = useMemo(() => {
 		return calcMonthMatrix(DateTime.fromISO(from), DateTime.fromISO(to));
 	}, [from, to]);

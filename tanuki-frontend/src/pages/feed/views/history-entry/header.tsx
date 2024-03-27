@@ -1,8 +1,9 @@
 import React from 'react';
 import { DateTime } from 'luxon';
 import { useUnit } from 'effector-react';
-import $feedStore, { setFrom, setTo } from '@pages/feed/store';
+
 import { MIN_DATE } from '@pages/feed/constants';
+import $feedStore, { setFrom, setTo } from '@pages/feed/store';
 
 import { Grid, Flex, Badge, TextField } from '@radix-ui/themes';
 

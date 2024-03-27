@@ -1,1 +1,1 @@
-export { default } from './calendar-feed';
+export { default } from './history-entry';
