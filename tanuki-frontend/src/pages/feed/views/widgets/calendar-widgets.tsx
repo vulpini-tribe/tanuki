@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useStoreMap } from 'effector-react';
 import $feedStore, { dayDataSelector } from '@pages/feed/store';
+import { useWindowSize } from 'usehooks-ts';
 
 import { ParentSize } from '@visx/responsive';
 import { Pie } from '@visx/shape';
@@ -110,7 +111,44 @@ const DonutChart = ({ width, height }: { width: number; height: number }) => {
 };
 
 const CalendarWidgets = () => {
+	const { width = 0 } = useWindowSize();
 	const dayData = useStoreMap($feedStore, dayDataSelector);
+
+	const isSmall = width <= 1280;
+
+	if (isSmall) {
+		return (
+			<Root>
+				<ScrollArea scrollbars="horizontal" style={{ height: '100%' }}>
+					<Grid flow="column" mt="3" gap="3" ml="1" mr="1" columns="1fr 1fr 1fr">
+						<Box p="4" asChild>
+							<WidgetWrap style={{ height: 200 }}>
+								<ParentSize>{(parent) => <DonutChart width={parent.width} height={parent.height} />}</ParentSize>
+							</WidgetWrap>
+						</Box>
+
+						<Box p="4" asChild>
+							<WidgetWrap>
+								<Heading size="4" mb="3" color="gray">
+									Consumed
+								</Heading>
+								<Text size="6">{dayData.calories} kcal</Text>
+							</WidgetWrap>
+						</Box>
+
+						<Box p="4" asChild>
+							<WidgetWrap>
+								<Heading size="4" mb="3" color="gray">
+									Weight
+								</Heading>
+								<Text size="6">{dayData.weight?.toFixed(2)} kg</Text>
+							</WidgetWrap>
+						</Box>
+					</Grid>
+				</ScrollArea>
+			</Root>
+		);
+	}
 
 	return (
 		<Root>
