@@ -28,14 +28,15 @@ const AddMeal = ({ setIsModalOpen }) => {
 	useEffect(() => {
 		if (!foodEntryRequest.data) return;
 
-		const { kcal_100, name, portion_weight, protein_100, fat_100, carbs_100 } = foodEntryRequest.data;
+		const { name, portion_weight, proteins, fats, carbs } = foodEntryRequest.data;
+		const calories = (proteins + fats) * 4 + carbs * 9 * (portion_weight / 100);
 
-		form.setValue('calories', kcal_100);
 		form.setValue('name', name);
 		form.setValue('weight', portion_weight);
-		form.setValue('proteins', protein_100);
-		form.setValue('fats', fat_100);
-		form.setValue('carbs', carbs_100);
+		form.setValue('proteins', proteins);
+		form.setValue('fats', fats);
+		form.setValue('carbs', carbs);
+		form.setValue('calories', calories);
 	}, [foodEntryRequest.data]);
 
 	useEffect(() => {
