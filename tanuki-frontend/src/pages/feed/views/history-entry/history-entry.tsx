@@ -18,7 +18,7 @@ const HistoryEntry = () => {
 			<HeaderContent />
 
 			<ScrollArea scrollbars="vertical" style={{ height: 'calc(100% - 100px)' }}>
-				<Box pt="5" pr="6" pl="2">
+				<Box pt="5" pr="4" pl="2">
 					<Grid flow="row" rows="min-content" gap="3">
 						{months.map(([monthKey, month]) => (
 							<MonthEntry key={monthKey} monthKey={monthKey} month={month} />

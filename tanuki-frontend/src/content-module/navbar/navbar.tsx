@@ -1,43 +1,65 @@
 import React from 'react';
-import { Button } from '@radix-ui/themes';
+import { Flex, IconButton, Tooltip } from '@radix-ui/themes';
 import { NavLink } from 'react-router-dom';
+import {
+	HomeIcon,
+	ActivityLogIcon,
+	CrumpledPaperIcon,
+	CardStackPlusIcon,
+	RulerSquareIcon
+} from '@radix-ui/react-icons';
 
 import ROUTES from '@routes';
 
 import Root from './navbar.styles';
+import Profile from './profile';
 
-const NavBar = (props) => {
+const NavBar = () => {
 	return (
-		<Root {...props}>
-			<NavLink to={ROUTES.CONTENT.ROOT}>
-				<Button variant="outline" size="2" tabIndex={-1}>
-					Home
-				</Button>
-			</NavLink>
+		<Root>
+			<Flex gap="6" direction="column" align="center" grow="1">
+				<Tooltip content="Home">
+					<NavLink to={ROUTES.CONTENT.ROOT}>
+						<IconButton variant="outline" size="2">
+							<HomeIcon />
+						</IconButton>
+					</NavLink>
+				</Tooltip>
 
-			<NavLink to={ROUTES.CONTENT.FEED}>
-				<Button variant="outline" size="2" tabIndex={-1}>
-					Feed
-				</Button>
-			</NavLink>
+				<Tooltip content="Feed">
+					<NavLink to={ROUTES.CONTENT.FEED}>
+						<IconButton variant="outline" size="2">
+							<ActivityLogIcon />
+						</IconButton>
+					</NavLink>
+				</Tooltip>
 
-			<NavLink to={ROUTES.CONTENT.FOOD}>
-				<Button variant="outline" size="2" tabIndex={-1}>
-					Food
-				</Button>
-			</NavLink>
+				<Tooltip content="Food">
+					<NavLink to={ROUTES.CONTENT.FOOD}>
+						<IconButton variant="outline" size="2">
+							<CrumpledPaperIcon />
+						</IconButton>
+					</NavLink>
+				</Tooltip>
 
-			<NavLink to={ROUTES.CONTENT.DISHES}>
-				<Button variant="outline" size="2" tabIndex={-1}>
-					Dishes
-				</Button>
-			</NavLink>
+				<Tooltip content="Dishes">
+					<NavLink to={ROUTES.CONTENT.DISHES}>
+						<IconButton variant="outline" size="2">
+							<CardStackPlusIcon />
+						</IconButton>
+					</NavLink>
+				</Tooltip>
 
-			<NavLink to={ROUTES.UTILS.ROOT}>
-				<Button variant="outline" size="2" tabIndex={-1}>
-					Utils
-				</Button>
-			</NavLink>
+				<Tooltip content="Utils">
+					<NavLink to={ROUTES.UTILS.ROOT}>
+						<IconButton variant="outline" size="2">
+							<RulerSquareIcon />
+						</IconButton>
+					</NavLink>
+				</Tooltip>
+			</Flex>
+
+			<Profile />
 		</Root>
 	);
 };

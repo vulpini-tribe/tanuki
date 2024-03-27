@@ -9,10 +9,7 @@ import Food from './food';
 import HomePage from './home-page';
 
 import NavBar from './navbar';
-import Profile from './navbar/profile';
 import UtilsPage from './utils-page';
-
-import { NavbarS, SettingsEntry } from './content-module.styles';
 
 const ContentModule = () => {
 	return (
@@ -28,10 +25,7 @@ const ContentModule = () => {
 				<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
 			</Routes>
 
-			<SettingsEntry>
-				<NavBar as={NavbarS} />
-				<Profile />
-			</SettingsEntry>
+			<NavBar />
 		</div>
 	);
 };

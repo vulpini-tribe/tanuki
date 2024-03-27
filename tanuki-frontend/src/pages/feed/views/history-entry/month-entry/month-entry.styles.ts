@@ -14,6 +14,6 @@ export const Month = styled.div`
 export const Week = styled.div`
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-	gap: var(--space-3);
+	gap: var(--space-2);
 	text-align: center;
 `;

@@ -14,10 +14,10 @@ export default styled.div<StyledRootProps>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 36px;
-	min-width: 36px;
-	height: 36px;
-	min-height: 36px;
+	width: 34px;
+	min-width: 34px;
+	height: 34px;
+	min-height: 34px;
 	color: var(--gray-12);
 
 	${({ $isToday, $fromNextMonth }) => {
