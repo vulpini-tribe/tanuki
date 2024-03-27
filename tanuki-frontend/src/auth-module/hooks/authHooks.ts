@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 import axios, { getErrCode } from '@axios';
 import { toggleAuth } from '../store';
-import { setProfile, clearProfile } from '@src/content-module/navbar/profile/store';
+import { setProfile, clearProfile } from '@src/content-module/navbar/store';
 
 type LoginCreds = {
 	email: string;

@@ -1,67 +1,82 @@
-import React from 'react';
-import { Flex, IconButton, Tooltip } from '@radix-ui/themes';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import {
-	HomeIcon,
-	ActivityLogIcon,
-	CrumpledPaperIcon,
-	CardStackPlusIcon,
-	RulerSquareIcon
-} from '@radix-ui/react-icons';
-
 import ROUTES from '@routes';
 
-import Root from './navbar.styles';
-import Profile from './profile';
+import { useLogout } from '@src/auth-module';
 
-const NavBar = () => {
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { IconButton, Box, Flex } from '@radix-ui/themes';
+import { HamburgerMenuIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Overlay, MenuItem, Content, CloseButton, TriggerButton } from './navbar.styles';
+
+const Profile = () => {
+	const [isModalOpened, setIsModalOpened] = useState(false);
+	const logout = useLogout({
+		retry: 0
+	});
+
+	const logoutHd = () => {
+		setIsModalOpened(false);
+		logout.mutate({});
+	};
+
+	const onClickHd = () => {
+		setIsModalOpened(false);
+	};
+
 	return (
-		<Root>
-			<Flex gap="6" direction="column" align="center" grow="1">
-				<Tooltip content="Home">
-					<NavLink to={ROUTES.CONTENT.ROOT}>
-						<IconButton variant="outline" size="2">
-							<HomeIcon />
-						</IconButton>
-					</NavLink>
-				</Tooltip>
+		<AlertDialog.Root defaultOpen={false} open={isModalOpened} onOpenChange={setIsModalOpened}>
+			<AlertDialog.Trigger asChild>
+				<TriggerButton>
+					<HamburgerMenuIcon width={32} height={32} />
+				</TriggerButton>
+			</AlertDialog.Trigger>
 
-				<Tooltip content="Feed">
-					<NavLink to={ROUTES.CONTENT.FEED}>
-						<IconButton variant="outline" size="2">
-							<ActivityLogIcon />
-						</IconButton>
-					</NavLink>
-				</Tooltip>
+			<AlertDialog.Portal>
+				<Overlay />
 
-				<Tooltip content="Food">
-					<NavLink to={ROUTES.CONTENT.FOOD}>
-						<IconButton variant="outline" size="2">
-							<CrumpledPaperIcon />
-						</IconButton>
-					</NavLink>
-				</Tooltip>
+				<Content>
+					<Box grow="1">
+						<MenuItem>
+							<NavLink to={ROUTES.CONTENT.ROOT} onClick={onClickHd}>
+								HOME
+							</NavLink>
+						</MenuItem>
 
-				<Tooltip content="Dishes">
-					<NavLink to={ROUTES.CONTENT.DISHES}>
-						<IconButton variant="outline" size="2">
-							<CardStackPlusIcon />
-						</IconButton>
-					</NavLink>
-				</Tooltip>
+						<MenuItem>
+							<NavLink to={ROUTES.CONTENT.FEED} onClick={onClickHd}>
+								MEALS FEED
+							</NavLink>
+						</MenuItem>
 
-				<Tooltip content="Utils">
-					<NavLink to={ROUTES.UTILS.ROOT}>
-						<IconButton variant="outline" size="2">
-							<RulerSquareIcon />
-						</IconButton>
-					</NavLink>
-				</Tooltip>
-			</Flex>
+						<MenuItem>
+							<NavLink to={ROUTES.CONTENT.FOOD} onClick={onClickHd}>
+								FOOD MANAGER
+							</NavLink>
+						</MenuItem>
+					</Box>
 
-			<Profile />
-		</Root>
+					<Flex direction="column" align="end">
+						<MenuItem>
+							<NavLink to={ROUTES.UTILS.ROOT} onClick={onClickHd}>
+								Utils
+							</NavLink>
+						</MenuItem>
+
+						<MenuItem>Profile</MenuItem>
+
+						<MenuItem onClick={logoutHd}>Logout</MenuItem>
+					</Flex>
+
+					<IconButton onClick={() => setIsModalOpened(false)} asChild>
+						<CloseButton>
+							<Cross2Icon width={64} height={64} />
+						</CloseButton>
+					</IconButton>
+				</Content>
+			</AlertDialog.Portal>
+		</AlertDialog.Root>
 	);
 };
 
-export default NavBar;
+export default Profile;

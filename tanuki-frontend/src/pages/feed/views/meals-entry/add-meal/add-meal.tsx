@@ -127,7 +127,7 @@ const AddMeal = () => {
 
 					<label htmlFor="meal_color">
 						<Text size="2" mb="1" weight="bold">
-							Icon
+							Color
 						</Text>
 						{/* @todo: moove color picker as separate component */}
 						<TextField.Input type="color" id="meal_color" placeholder="#123ABC" {...form.color} />
@@ -135,7 +135,7 @@ const AddMeal = () => {
 
 					<label htmlFor="meal_consumed_at">
 						<Text size="2" mb="1" weight="bold">
-							Date
+							Time
 						</Text>
 						<TextField.Input id="meal_consumed_at" type="time" {...form.consumed_at} />
 					</label>
