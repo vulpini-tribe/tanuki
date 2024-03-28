@@ -28,8 +28,20 @@ export const CloseButton = styled.button`
 
 export const TriggerButton = styled.button`
 	position: fixed;
-	top: 1rem;
-	right: 1rem;
+	left: 0;
+	top: var(--space-6);
+
+	background-color: var(--mauve-5);
+	border: none;
+	height: 3rem;
+	border-top-right-radius: var(--radius-2);
+	border-bottom-right-radius: var(--radius-2);
+	cursor: pointer;
+	transition: background-color 0.15s ease-in-out;
+
+	&:hover {
+		background-color: var(--mauve-6);
+	}
 `;
 
 export const MenuItem = styled.h1`

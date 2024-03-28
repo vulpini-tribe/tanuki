@@ -12,12 +12,13 @@ import type { Props } from './day-entry.d';
 const today = DateTime.now();
 
 const DayEntry = ({ day, firstDayOfMonth }: Props) => {
-	const { activeDate } = useUnit($feedStore);
+	const { activeDate, allHistoryEntries } = useUnit($feedStore);
 
 	const isAfterToday = day > today;
 	const isoDay = day.toISODate() || '';
 	const fromNextMonth = !day.hasSame(firstDayOfMonth, 'month');
 	const isActive = activeDate === isoDay && !fromNextMonth;
+	const isDayPresented = Boolean(allHistoryEntries[isoDay]);
 
 	const onSetActiveDay = () => setActiveDate(isoDay);
 
@@ -31,7 +32,7 @@ const DayEntry = ({ day, firstDayOfMonth }: Props) => {
 
 	return (
 		<NavLink to={createLink(ROUTES.CONTENT.FEED, { date: isoDay })} onClick={onSetActiveDay}>
-			<Root $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isActive}>
+			<Root $fromNextMonth={fromNextMonth || isAfterToday} $isToday={isActive} $isDayPresented={isDayPresented}>
 				{day.toFormat('d')}
 			</Root>
 		</NavLink>
