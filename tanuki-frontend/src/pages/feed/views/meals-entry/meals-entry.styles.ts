@@ -10,9 +10,13 @@ export default styled.div`
 	background-color: var(--slate-2);
 	border-radius: var(--radius-3);
 
-	@media (width <= 1280px) {
+	@media (width < 1280px) {
 		top: var(--space-3);
 		right: var(--space-3);
 		bottom: calc(var(--space-3) + 220px);
+	}
+
+	@media (height < 700px) {
+		bottom: var(--space-3);
 	}
 `;

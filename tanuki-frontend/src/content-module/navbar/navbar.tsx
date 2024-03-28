@@ -6,7 +6,7 @@ import { useLogout } from '@src/auth-module';
 
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { IconButton, Box, Flex } from '@radix-ui/themes';
-import { HamburgerMenuIcon, Cross2Icon } from '@radix-ui/react-icons';
+import { Cross2Icon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { Overlay, MenuItem, Content, CloseButton, TriggerButton } from './navbar.styles';
 
 const Profile = () => {
@@ -28,7 +28,7 @@ const Profile = () => {
 		<AlertDialog.Root defaultOpen={false} open={isModalOpened} onOpenChange={setIsModalOpened}>
 			<AlertDialog.Trigger asChild>
 				<TriggerButton>
-					<HamburgerMenuIcon width={32} height={32} />
+					<ChevronRightIcon />
 				</TriggerButton>
 			</AlertDialog.Trigger>
 

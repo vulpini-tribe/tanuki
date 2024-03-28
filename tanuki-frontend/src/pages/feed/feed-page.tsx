@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
 import $feedStore from '@pages/feed/store';
+import { useWindowSize } from 'usehooks-ts';
 
 import HistoryEntry from './views/history-entry';
 import MealsEntry from './views/meals-entry';
@@ -11,6 +12,7 @@ import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import { useGetHistory } from './hooks';
 
 const CalendarIndex = () => {
+	const { width = 0, height = 0 } = useWindowSize();
 	const [searchParams] = useSearchParams();
 	const calendarStore = useUnit($feedStore);
 	const navigate = useNavigate();
@@ -33,7 +35,7 @@ const CalendarIndex = () => {
 		<>
 			<HistoryEntry />
 			<MealsEntry />
-			<WidgetsEntry />
+			{(height >= 700 || width >= 1280) && <WidgetsEntry />}
 		</>
 	);
 };
