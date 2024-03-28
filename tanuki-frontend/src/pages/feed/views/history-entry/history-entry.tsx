@@ -2,12 +2,13 @@ import React from 'react';
 import { useUnit } from 'effector-react';
 
 import { useDayMatrix } from './hooks';
-import $feedStore from '@pages/feed/store';
+import { useWindowSize } from 'usehooks-ts';
+import $feedStore, { setActiveDate } from '@pages/feed/store';
 
 import HeaderContent from './header';
 import MonthEntry from './month-entry';
-import { Grid, Box, ScrollArea } from '@radix-ui/themes';
-import Root from './history-entry.styles';
+import { Grid, Box, ScrollArea, TextField } from '@radix-ui/themes';
+import Root, { SmallRoot } from './history-entry.styles';
 
 const HistoryEntry = () => {
 	const { from, to } = useUnit($feedStore);
@@ -30,4 +31,35 @@ const HistoryEntry = () => {
 	);
 };
 
-export default HistoryEntry;
+const HistoryEntrySmall = () => {
+	const { activeDate } = useUnit($feedStore);
+
+	const onActiveDateChangeHd = (e) => {
+		setActiveDate(e.target.value);
+	};
+
+	return (
+		<SmallRoot>
+			<TextField.Input
+				type="date"
+				placeholder="Date"
+				variant="soft"
+				color="gray"
+				value={activeDate}
+				onChange={onActiveDateChangeHd}
+			/>
+		</SmallRoot>
+	);
+};
+
+const HistoryRouter = () => {
+	const { width = 0 } = useWindowSize();
+
+	if (width >= 740) {
+		return <HistoryEntry />;
+	}
+
+	return <HistoryEntrySmall />;
+};
+
+export default HistoryRouter;

@@ -35,4 +35,8 @@ export default styled.div`
 		bottom: calc(var(--space-3));
 		left: calc(350px + var(--space-3) + var(--space-3));
 	}
+
+	@media (width < 740px) {
+		left: var(--space-3);
+	}
 `;

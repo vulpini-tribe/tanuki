@@ -16,6 +16,12 @@ export default styled.div`
 		bottom: calc(var(--space-3) + 220px);
 	}
 
+	@media (width < 740px) {
+		top: calc(65px + var(--space-3) + var(--space-3));
+		right: var(--space-3);
+		left: var(--space-3);
+	}
+
 	@media (height < 700px) {
 		bottom: var(--space-3);
 	}
