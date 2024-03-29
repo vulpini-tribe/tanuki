@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useStoreMap } from 'effector-react';
 import { DateTime } from 'luxon';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -7,14 +7,14 @@ import ROUTES, { createLinkWithQuery as createLink } from '@routes';
 import $feedStore, { dayDataSelector } from '@pages/feed/store';
 
 import { PlusIcon } from '@radix-ui/react-icons';
-import { Button, Box, Grid, Heading, ScrollArea } from '@radix-ui/themes';
+import { IconButton, Grid, Heading } from '@radix-ui/themes';
 
 import FoodEntry from './food-entry';
 
 import type { MealEntryT } from '@pages/feed/types.d';
 import AddMeal from './add-meal';
 
-import Root from './feed.styles';
+import Root, { AddBtn } from './feed.styles';
 
 const BRANCH_HOURS = 12;
 const LUNCH_HOURS = 14;
@@ -31,7 +31,32 @@ const labels = {
 
 type LabelsEnum = keyof typeof labels;
 
+const AddMealBtn = () => {
+	const navigate = useNavigate();
+	const dayData = useStoreMap($feedStore, dayDataSelector);
+
+	const toEditMode = () => {
+		const link = createLink(ROUTES.CONTENT.FEED, {
+			date: dayData.day,
+			mode: 'add'
+		});
+
+		navigate(link);
+	};
+
+	return (
+		<AddBtn>
+			<IconButton size="3" variant="solid" onClick={toEditMode}>
+				<PlusIcon width="24" height="24" />
+			</IconButton>
+		</AddBtn>
+	);
+};
+
 const Feed = () => {
+	const [searchParams] = useSearchParams();
+	const mode = searchParams.get('mode');
+
 	const test: Record<LabelsEnum, MealEntryT[]> = {
 		breakfast: [],
 		branch: [],
@@ -42,8 +67,6 @@ const Feed = () => {
 
 	const dayData = useStoreMap($feedStore, dayDataSelector);
 	const foodEntries = dayData.meals || [];
-
-	console.log(dayData);
 
 	const splittedFoodEntries = foodEntries.reduce((acc, food: MealEntryT) => {
 		const hour = (food.created_at as DateTime).get('hour');
@@ -63,6 +86,14 @@ const Feed = () => {
 		return acc;
 	}, test);
 
+	if (mode === 'add') {
+		return (
+			<Root>
+				<AddMeal />
+			</Root>
+		);
+	}
+
 	return (
 		<Root>
 			{Object.entries(splittedFoodEntries).map(([key, value]) => {
@@ -80,6 +111,8 @@ const Feed = () => {
 					</Grid>
 				);
 			})}
+
+			<AddMealBtn />
 		</Root>
 	);
 };
