@@ -1,10 +1,12 @@
 import React from 'react';
 
+import Root from './widgets.styles';
+
 const Widgets = () => {
 	return (
-		<div>
+		<Root>
 			<div>Widgets</div>
-		</div>
+		</Root>
 	);
 };
 

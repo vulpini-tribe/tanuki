@@ -1,10 +1,12 @@
 import React from 'react';
 
+import Root from './feed.styles';
+
 const Feed = () => {
 	return (
-		<div>
+		<Root>
 			<div>Feed</div>
-		</div>
+		</Root>
 	);
 };
 

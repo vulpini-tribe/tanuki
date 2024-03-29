@@ -1,4 +1,5 @@
 use actix_web::{web, Error, HttpResponse};
+use rand;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::Row;
@@ -39,6 +40,7 @@ pub struct HistoryEntryFull {
     id: uuid::Uuid,
     day: String,
     calories: Option<i32>,
+    max_calories: Option<i32>,
     meals: Vec<HistoryFoodEntry>,
 }
 
@@ -62,6 +64,7 @@ impl HistoryEntryFull {
             id: row.get("id"),
             day: row.get("day"),
             calories: Some(Self::calc_calories(&food_entries)),
+            max_calories: Some(rand::random::<i32>() % 2000 + 1000),
             meals: food_entries,
         }
     }
