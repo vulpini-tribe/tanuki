@@ -5,7 +5,8 @@ import { DateTime } from 'luxon';
 import $feedStore, { setActiveDate } from '@pages/feed/store';
 
 import { Heading } from '@radix-ui/themes';
-import Root from './date-picker.styles';
+import Root, { DateInput } from './date-picker.styles';
+import { CalendarIcon } from '@radix-ui/react-icons';
 
 const useDate = (date: string) => {
 	const day = DateTime.fromISO(date);
@@ -34,12 +35,12 @@ const DatePicker = () => {
 	};
 
 	return (
-		<Root>
-			<Heading mb="2" onClick={showPicker} role="button">
-				{formattedDay}
-			</Heading>
+		<Root onClick={showPicker} role="button">
+			<Heading>{formattedDay}</Heading>
 
-			<input ref={calendarRef} type="date" style={{ visibility: 'hidden' }} onChange={onDateChange} />
+			<DateInput ref={calendarRef} type="date" onChange={onDateChange} />
+
+			<CalendarIcon width={24} height={24} />
 		</Root>
 	);
 };
