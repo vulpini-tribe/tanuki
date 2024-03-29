@@ -28,7 +28,7 @@ export const CloseButton = styled.button`
 
 export const TriggerButton = styled.button`
 	position: fixed;
-	left: 0;
+	right: 0;
 	top: var(--space-6);
 
 	background-color: var(--mauve-5);

@@ -1,1 +1,1 @@
-export { default } from './calendar-widgets';
+export { default } from './widgets';
