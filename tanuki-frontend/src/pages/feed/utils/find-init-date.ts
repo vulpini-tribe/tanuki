@@ -11,16 +11,7 @@ const find_init_date = () => {
 	let activeDate = DateTime.fromISO(parsedDate).isValid ? parsedDate : today;
 	activeDate = DateTime.fromISO(activeDate) < minimalDate ? MIN_DATE : activeDate;
 
-	const toDate =
-		DateTime.fromISO(today).minus({ days: 180 }) < DateTime.fromISO(activeDate)
-			? DateTime.fromISO(activeDate).minus({ days: 180 }).startOf('month')
-			: DateTime.fromISO(activeDate).startOf('month');
-
-	return {
-		today,
-		activeDate,
-		toDate
-	};
+	return activeDate;
 };
 
 export default find_init_date;

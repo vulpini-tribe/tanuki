@@ -1,7 +1,3 @@
-export type PartialHistoryEntryT = {
-	day: string;
-};
-
 export type MealEntryT = {
 	id: string;
 	name: string;
@@ -11,20 +7,18 @@ export type MealEntryT = {
 	proteins: number;
 	icon: string;
 	color: string;
-	datetime: unknown;
+	created_at: unknown;
 };
 
 export type FullHistoryEntryT = {
 	id: string;
 	day: string;
 	calories: number;
+	max_calories: number;
 	meals: MealEntryT[];
 };
 
 export type FeedStoreT = {
-	from: string;
-	to: string;
 	activeDate: string;
-	allHistoryEntries: Record<string, PartialHistoryEntryT>;
 	fullHistoryEntries: Record<string, FullHistoryEntryT>;
 };

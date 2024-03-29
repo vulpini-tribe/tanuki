@@ -55,7 +55,7 @@ const MealsList = () => {
 	const foodEntries = dayData.meals || [];
 
 	const splittedFoodEntries = foodEntries.reduce((acc, food: MealEntryT) => {
-		const hour = (food.datetime as DateTime).get('hour');
+		const hour = (food.created_at as DateTime).get('hour');
 
 		if (hour >= DINNER_HOURS) {
 			acc.dinner.push(food);

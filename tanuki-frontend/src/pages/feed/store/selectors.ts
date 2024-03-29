@@ -1,17 +1,11 @@
 import type { FeedStoreT } from '../types.d';
 
 export const dayDataSelector = (store: FeedStoreT) => {
-	const partialDayData = store.allHistoryEntries[store.activeDate] || {};
-	const fullDayData = store.fullHistoryEntries[partialDayData.day] || {};
+	const fullDayData = store.fullHistoryEntries[store.activeDate] || {};
 
-	const _ = {
-		...partialDayData,
-		...fullDayData
-	};
-
-	if (!_.day) {
-		_.day = store.activeDate;
+	if (!fullDayData.day) {
+		fullDayData.day = store.activeDate;
 	}
 
-	return _;
+	return fullDayData;
 };
