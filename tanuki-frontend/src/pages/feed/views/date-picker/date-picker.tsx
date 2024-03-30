@@ -30,6 +30,7 @@ const DatePicker = () => {
 	const showPicker = () => {
 		if (!calendarRef.current) return;
 
+		calendarRef.current.focus();
 		calendarRef.current.showPicker();
 	};
 
