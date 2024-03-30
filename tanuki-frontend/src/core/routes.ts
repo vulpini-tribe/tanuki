@@ -2,7 +2,7 @@ import QS from 'qs';
 const AUTH = '/auth';
 const UTILS = '/utils';
 const CONTENT = '/content';
-const CATEGORIES = '/categories';
+const PROFILE = '/profile';
 
 const ROUTES = {
 	ROOT: '/',
@@ -15,6 +15,11 @@ const ROUTES = {
 		SIGN_UP: `${AUTH}/sign_up`,
 		VALIDATE: `${AUTH}/validate`
 		// SIGN_2FA: `${AUTH}/sign_2fa`
+	},
+	PROFILE: {
+		ROOT: PROFILE,
+		EDIT: `${PROFILE}/edit`,
+		SETTINGS: `${PROFILE}/settings`
 	},
 	UTILS: {
 		ROOT: UTILS
