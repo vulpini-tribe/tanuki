@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
 export const AddBtn = styled.div`
-	position: fixed;
-	right: var(--space-4);
-	bottom: calc(60px + var(--space-4));
+	display: grid;
+	grid-auto-flow: column;
+	gap: var(--space-2);
+	align-items: center;
+	justify-content: center;
+	margin-top: var(--space-3);
 `;
 
 export default styled.div`

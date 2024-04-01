@@ -31,33 +31,12 @@ const labels = {
 
 type LabelsEnum = keyof typeof labels;
 
-const AddMealBtn = () => {
-	const navigate = useNavigate();
+const useSplitMeals = () => {
 	const dayData = useStoreMap($feedStore, dayDataSelector);
 
-	const toEditMode = () => {
-		const link = createLink(ROUTES.CONTENT.FEED, {
-			date: dayData.day,
-			mode: 'add'
-		});
+	const foodEntries = dayData.meals || [];
 
-		navigate(link);
-	};
-
-	return (
-		<AddBtn>
-			<IconButton size="3" variant="solid" onClick={toEditMode}>
-				<PlusIcon width="24" height="24" />
-			</IconButton>
-		</AddBtn>
-	);
-};
-
-const Feed = () => {
-	const [searchParams] = useSearchParams();
-	const mode = searchParams.get('mode');
-
-	const test: Record<LabelsEnum, MealEntryT[]> = {
+	const meal_types: Record<LabelsEnum, MealEntryT[]> = {
 		breakfast: [],
 		branch: [],
 		lunch: [],
@@ -65,10 +44,7 @@ const Feed = () => {
 		dinner: []
 	};
 
-	const dayData = useStoreMap($feedStore, dayDataSelector);
-	const foodEntries = dayData.meals || [];
-
-	const splittedFoodEntries = foodEntries.reduce((acc, food: MealEntryT) => {
+	const splittedMeals = foodEntries.reduce((acc, food: MealEntryT) => {
 		const hour = (food.created_at as DateTime).get('hour');
 
 		if (hour >= DINNER_HOURS) {
@@ -84,7 +60,27 @@ const Feed = () => {
 		}
 
 		return acc;
-	}, test);
+	}, meal_types);
+
+	return splittedMeals;
+};
+
+const Feed = () => {
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const dayData = useStoreMap($feedStore, dayDataSelector);
+	const meals = useSplitMeals();
+
+	const mode = searchParams.get('mode');
+
+	const toEditMode = () => {
+		const link = createLink(ROUTES.CONTENT.FEED, {
+			date: dayData.day,
+			mode: 'add'
+		});
+
+		navigate(link);
+	};
 
 	if (mode === 'add') {
 		return (
@@ -96,7 +92,7 @@ const Feed = () => {
 
 	return (
 		<Root>
-			{Object.entries(splittedFoodEntries).map(([key, value]) => {
+			{Object.entries(meals).map(([key, value]) => {
 				if (!value.length) return null;
 
 				return (
@@ -112,7 +108,12 @@ const Feed = () => {
 				);
 			})}
 
-			<AddMealBtn />
+			<IconButton size="3" variant="ghost" onClick={toEditMode} asChild>
+				<AddBtn>
+					<PlusIcon />
+					Add meal
+				</AddBtn>
+			</IconButton>
 		</Root>
 	);
 };

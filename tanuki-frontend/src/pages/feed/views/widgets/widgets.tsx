@@ -27,25 +27,26 @@ const Widgets = () => {
 		return { carbs: totalCarbs, fats: totalFats, proteins: totalProtein };
 	}, [dayData.meals]);
 
-	const carbsCalories = nutrients.carbs * 4;
-	const fatsCalories = nutrients.fats * 9;
-	const proteinsCalories = nutrients.proteins * 4;
+	const carbsCalories = useMemo(() => nutrients.carbs * 4, [nutrients.carbs]);
+	const fatsCalories = useMemo(() => nutrients.fats * 9, [nutrients.fats]);
+	const proteinsCalories = useMemo(() => nutrients.proteins * 4, [nutrients.proteins]);
 
 	const consumedCalories = carbsCalories + fatsCalories + proteinsCalories;
+	const maxCaloriesRaw = Math.abs(dayData.max_calories);
 
-	const overEatenLeft = (dayData.max_calories / consumedCalories) * 100;
-	const isOverEaten = consumedCalories > dayData.max_calories;
-	const maxCalories = isOverEaten ? consumedCalories : dayData.max_calories;
+	const overEatenLeft = (maxCaloriesRaw / consumedCalories) * 100;
+	const isOverEaten = consumedCalories > maxCaloriesRaw;
+	const maxCaloriesLocal = isOverEaten ? consumedCalories : maxCaloriesRaw;
 
 	const coef = isOverEaten ? overEatenLeft : 100;
-	const carbsWidth = (carbsCalories / maxCalories) * coef;
-	const fatsWidth = (fatsCalories / maxCalories) * coef;
-	const proteinsWidth = (proteinsCalories / maxCalories) * coef;
+	const carbsWidth = (carbsCalories / maxCaloriesLocal) * coef;
+	const fatsWidth = (fatsCalories / maxCaloriesLocal) * coef;
+	const proteinsWidth = (proteinsCalories / maxCaloriesLocal) * coef;
 
 	return (
 		<Root>
 			<Text weight="bold">
-				Consumed {consumedCalories.toFixed(0)} / {dayData.max_calories?.toFixed(0)} calories
+				Consumed {consumedCalories.toFixed(0)} / {maxCaloriesRaw?.toFixed(0)} calories
 			</Text>
 			<NutrientsWrap>
 				<Proteins style={{ width: `${proteinsWidth}%` }} />

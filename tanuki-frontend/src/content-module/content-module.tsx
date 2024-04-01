@@ -8,10 +8,10 @@ import Food from './food';
 import HomePage from './home-page';
 
 import NavBar from './navbar';
-import UtilsPage from './utils-page';
 
 const ProfilePage = React.lazy(() => import('@pages/profile'));
 const FeedPage = React.lazy(() => import('@pages/feed'));
+const UtilsPage = React.lazy(() => import('@pages/utils'));
 
 const ContentModule = () => {
 	return (
