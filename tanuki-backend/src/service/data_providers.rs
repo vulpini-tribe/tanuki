@@ -12,9 +12,10 @@ pub struct WebDataPool {
 
 impl WebDataPool {
     fn create_redis() -> r2d2::Pool<RedisConnectionManager> {
-        let redis_url = "rediss://red-cnf1qof109ks73a2a5b0:sKBJhrljdaeKVhHW8MdQoc3ucmgaG8Uc@frankfurt-redis.render.com:6379";
-        let manager =
-            RedisConnectionManager::new(redis_url).expect("Redis connection should be successful");
+        let env_config = service::env::EnvConfig::new();
+
+        let manager = RedisConnectionManager::new(env_config.redis_url)
+            .expect("Redis connection should be successful");
 
         log::info!("[+] Redis connection manager created.");
 
