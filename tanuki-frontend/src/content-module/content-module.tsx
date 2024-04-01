@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import ROUTES from '@routes';
 
-import { FeedPage } from '@pages';
 import DishesIndex from './dishes';
 import Food from './food';
 import HomePage from './home-page';
@@ -11,19 +10,25 @@ import HomePage from './home-page';
 import NavBar from './navbar';
 import UtilsPage from './utils-page';
 
+const ProfilePage = React.lazy(() => import('@pages/profile'));
+const FeedPage = React.lazy(() => import('@pages/feed'));
+
 const ContentModule = () => {
 	return (
 		<div>
-			<Routes>
-				<Route path={ROUTES.CONTENT.ROOT} element={<HomePage />} />
-				<Route path={ROUTES.CONTENT.FEED} element={<FeedPage />} />
-				<Route path={ROUTES.CONTENT.DISHES} element={<DishesIndex />} />
-				<Route path={ROUTES.CONTENT.FOOD} element={<Food />} />
+			<React.Suspense fallback={<>...</>}>
+				<Routes>
+					<Route path={ROUTES.CONTENT.ROOT} element={<HomePage />} />
+					<Route path={ROUTES.CONTENT.FEED} element={<FeedPage />} />
+					<Route path={ROUTES.CONTENT.DISHES} element={<DishesIndex />} />
+					<Route path={ROUTES.CONTENT.FOOD} element={<Food />} />
 
-				<Route path={ROUTES.UTILS.ROOT} element={<UtilsPage />} />
+					<Route path={ROUTES.UTILS.ROOT} element={<UtilsPage />} />
+					<Route path={ROUTES.PROFILE.ROOT} element={<ProfilePage />} />
 
-				<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
-			</Routes>
+					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
+				</Routes>
+			</React.Suspense>
 
 			<NavBar />
 		</div>

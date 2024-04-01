@@ -2,21 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import ROUTES from '@routes';
 
-// import { useLogout } from '@src/auth-module';
-
 import { IconButton, Tooltip } from '@radix-ui/themes';
 import { HomeIcon, ActivityLogIcon, PersonIcon, RulerSquareIcon, HobbyKnifeIcon } from '@radix-ui/react-icons';
 import Root from './navbar.styles';
 
-const Profile = () => {
-	// const logout = useLogout({
-	// 	retry: 0
-	// });
-
-	// const logoutHd = () => {
-	// 	logout.mutate({});
-	// };
-
+const NavBar = () => {
 	return (
 		<Root>
 			<NavLink to={ROUTES.CONTENT.ROOT}>
@@ -52,7 +42,7 @@ const Profile = () => {
 			</NavLink>
 
 			<NavLink to={ROUTES.PROFILE.ROOT}>
-				<Tooltip content="Profile">
+				<Tooltip content="NavBar">
 					<IconButton variant="ghost">
 						<PersonIcon color="green" width={22} height={22} />
 					</IconButton>
@@ -62,4 +52,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default NavBar;
