@@ -9,12 +9,13 @@ import HomePage from './home-page';
 
 import NavBar from './navbar';
 
-const ProfilePage = React.lazy(() => import('@pages/profile'));
 const FeedPage = React.lazy(() => import('@pages/feed'));
 const UtilsPage = React.lazy(() => import('@pages/utils'));
 
+// Profile
+const ProfilePage = React.lazy(() => import('@pages/profile'));
 const Goals = React.lazy(() => import('@pages/profile/goals'));
-import ProfileRoot from '@pages/profile/root';
+const ProfileRoot = React.lazy(() => import('@pages/profile/root'));
 
 const ContentModule = () => {
 	return (

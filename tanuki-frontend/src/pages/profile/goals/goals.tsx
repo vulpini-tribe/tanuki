@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Measurements = () => {
-	return <div>Measurements</div>;
+import { Stepper } from '@ui';
+import Root from './goals.styles';
+
+const Goals = () => {
+	const [currentStep, setCurrentStep] = useState(0);
+
+	return (
+		<Root>
+			<Stepper totalSteps={4} step={currentStep} onChangeStep={setCurrentStep} />
+		</Root>
+	);
 };
 
-export default Measurements;
+export default Goals;
