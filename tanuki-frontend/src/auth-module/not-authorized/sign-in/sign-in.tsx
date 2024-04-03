@@ -36,7 +36,17 @@ const SignInPage = () => {
 						E-Mail
 					</Text>
 
-					<TextField.Root color={form.errors.email && 'ruby'}>
+					<TextField.Root
+						color={form.errors.email && 'ruby'}
+						id="email"
+						type="email"
+						required
+						placeholder="E-Mail"
+						autoComplete="email"
+						{...form.email}
+						radius="small"
+						size="3"
+					>
 						<TextField.Slot>
 							{form.errors.email ? (
 								<Tooltip content={<>{form.errors.email.message}</>}>
@@ -46,17 +56,6 @@ const SignInPage = () => {
 								<PersonIcon />
 							)}
 						</TextField.Slot>
-
-						<TextField.Input
-							id="email"
-							type="email"
-							required
-							placeholder="E-Mail"
-							autoComplete="email"
-							{...form.email}
-							radius="small"
-							size="3"
-						/>
 					</TextField.Root>
 				</Grid>
 				{/* E-Mail | End */}
@@ -67,7 +66,17 @@ const SignInPage = () => {
 						Password
 					</Text>
 
-					<TextField.Root color={form.errors.password && 'ruby'}>
+					<TextField.Root
+						color={form.errors.password && 'ruby'}
+						id="password"
+						required
+						placeholder="Password"
+						autoComplete="current-password"
+						type={isPasswordVisible ? 'text' : 'password'}
+						{...form.password}
+						radius="small"
+						size="3"
+					>
 						<TextField.Slot>
 							{form.errors.password ? (
 								<Tooltip content={<>{form.errors.password.message}</>}>
@@ -78,16 +87,6 @@ const SignInPage = () => {
 							)}
 						</TextField.Slot>
 
-						<TextField.Input
-							id="password"
-							required
-							placeholder="Password"
-							autoComplete="current-password"
-							type={isPasswordVisible ? 'text' : 'password'}
-							{...form.password}
-							radius="small"
-							size="3"
-						/>
 						<TextField.Slot>
 							<IconButton type="button" variant="ghost" onClick={togglePasswordVisibility}>
 								{isPasswordVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}

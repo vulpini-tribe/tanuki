@@ -78,12 +78,10 @@ const SearchSelect = ({ initValue, onChange, labelKey, valueKey, endpoint }: Pro
 				<Command shouldFilter={false}>
 					<Box>
 						<Command.Input value={searchQuery} onValueChange={setSearchQuery} asChild>
-							<TextField.Root>
+							<TextField.Root ref={inputRef} placeholder="Search" radius="small" size="2">
 								<TextField.Slot>
 									<MagnifyingGlassIcon aria-hidden />
 								</TextField.Slot>
-
-								<TextField.Input ref={inputRef} placeholder="Search" radius="small" size="2" />
 							</TextField.Root>
 						</Command.Input>
 					</Box>

@@ -111,7 +111,8 @@ const AddMeal = () => {
 						<Text size="2" mb="1" weight="bold">
 							Title
 						</Text>
-						<TextField.Input id="meal_name" placeholder="Delicious meal" {...form.name} />
+
+						<TextField.Root id="meal_name" placeholder="Delicious meal" {...form.name} />
 					</label>
 				</Grid>
 
@@ -122,7 +123,8 @@ const AddMeal = () => {
 						<Text size="2" mb="1" weight="bold">
 							Icon
 						</Text>
-						<TextField.Input id="meal_icon" placeholder="🍏" {...form.icon} />
+
+						<TextField.Root id="meal_icon" placeholder="🍏" {...form.icon} />
 					</label>
 
 					<label htmlFor="meal_color">
@@ -130,14 +132,15 @@ const AddMeal = () => {
 							Color
 						</Text>
 						{/* @todo: moove color picker as separate component */}
-						<TextField.Input type="color" id="meal_color" placeholder="#123ABC" {...form.color} />
+
+						<TextField.Root type="color" id="meal_color" placeholder="#123ABC" {...form.color} />
 					</label>
 
 					<label htmlFor="meal_consumed_at">
 						<Text size="2" mb="1" weight="bold">
 							Time
 						</Text>
-						<TextField.Input id="meal_consumed_at" type="time" {...form.consumed_at} />
+						<TextField.Root id="meal_consumed_at" type="time" {...form.consumed_at} />
 					</label>
 				</Grid>
 
@@ -168,21 +171,21 @@ const AddMeal = () => {
 						<Text size="2" mb="1" weight="bold">
 							Proteins
 						</Text>
-						<TextField.Input id="proteins" type="number" placeholder="50" {...form.proteins} />
+						<TextField.Root id="proteins" type="number" placeholder="50" {...form.proteins} />
 					</label>
 
 					<label htmlFor="fats">
 						<Text size="2" mb="1" weight="bold">
 							Fats
 						</Text>
-						<TextField.Input id="fats" type="number" placeholder="50" {...form.fats} />
+						<TextField.Root id="fats" type="number" placeholder="50" {...form.fats} />
 					</label>
 
 					<label htmlFor="carbs">
 						<Text size="2" mb="1" weight="bold">
 							Carbs
 						</Text>
-						<TextField.Input id="carbs" type="number" placeholder="100" {...form.carbs} />
+						<TextField.Root id="carbs" type="number" placeholder="100" {...form.carbs} />
 					</label>
 				</Grid>
 
@@ -191,14 +194,14 @@ const AddMeal = () => {
 						<Text size="2" mb="1" weight="bold">
 							Portion Weight
 						</Text>
-						<TextField.Input id="weight" type="number" placeholder="500" {...form.weight} />
+						<TextField.Root id="weight" type="number" placeholder="500" {...form.weight} />
 					</label>
 
 					<label htmlFor="calories">
 						<Text size="2" mb="1" weight="bold">
 							Calories
 						</Text>
-						<TextField.Input id="calories" type="number" placeholder="900" {...form.calories} />
+						<TextField.Root id="calories" type="number" placeholder="900" {...form.calories} />
 					</label>
 				</Grid>
 			</Grid>

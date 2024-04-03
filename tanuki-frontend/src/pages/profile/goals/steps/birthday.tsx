@@ -26,7 +26,7 @@ const Birthday = () => {
 			<Heading>When were you born?</Heading>
 
 			{/* <WheelPicker dataList={days} /> */}
-			<WheelPicker dataList={months} defaultValue={months[5]} />
+			<WheelPicker dataList={months} defaultValueIdx={5} />
 			{/* <WheelPicker dataList={years} /> */}
 		</Grid>
 	);

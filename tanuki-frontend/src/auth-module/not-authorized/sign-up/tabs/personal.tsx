@@ -14,9 +14,15 @@ const PersonalTab = ({ form }: SharedProps) => {
 					Name
 				</Text>
 
-				<TextField.Root color={form.errors.name && 'ruby'}>
-					<TextField.Input id="name" required placeholder="Keira" {...form.name} radius="small" size="3" />
-
+				<TextField.Root
+					color={form.errors.name && 'ruby'}
+					id="name"
+					required
+					placeholder="Keira"
+					{...form.name}
+					radius="small"
+					size="3"
+				>
 					{form.errors.name && (
 						<TextField.Slot>
 							<Tooltip content={<>{form.errors.name.message}</>}>
@@ -34,18 +40,17 @@ const PersonalTab = ({ form }: SharedProps) => {
 					E_Mail
 				</Text>
 
-				<TextField.Root color={form.errors.email && 'ruby'}>
-					<TextField.Input
-						id="email"
-						type="email"
-						required
-						placeholder="example@foo.bar"
-						autoComplete="email"
-						{...form.email}
-						radius="small"
-						size="3"
-					/>
-
+				<TextField.Root
+					color={form.errors.email && 'ruby'}
+					id="email"
+					type="email"
+					required
+					placeholder="example@foo.bar"
+					autoComplete="email"
+					{...form.email}
+					radius="small"
+					size="3"
+				>
 					{form.errors.email && (
 						<TextField.Slot>
 							<Tooltip content={<>{form.errors.email.message}</>}>
@@ -63,18 +68,17 @@ const PersonalTab = ({ form }: SharedProps) => {
 					Password
 				</Text>
 
-				<TextField.Root color={form.errors.password && 'ruby'}>
-					<TextField.Input
-						id="password"
-						type="password"
-						required
-						placeholder="••••••"
-						autoComplete="password"
-						{...form.password}
-						radius="small"
-						size="3"
-					/>
-
+				<TextField.Root
+					color={form.errors.password && 'ruby'}
+					id="password"
+					type="password"
+					required
+					placeholder="••••••"
+					autoComplete="password"
+					{...form.password}
+					radius="small"
+					size="3"
+				>
 					{form.errors.password && (
 						<TextField.Slot>
 							<Tooltip content={<>{form.errors.password.message}</>}>
