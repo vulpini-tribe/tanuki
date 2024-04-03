@@ -12,10 +12,10 @@ pub struct UserToRegister {
     pub password: String,
 }
 
-#[derive(Insertable, Queryable, Selectable, Serialize, Deserialize, Debug)]
-#[diesel(table_name = user_profile)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct UserProfile {
     pub id: uuid::Uuid,
+    pub avatar_url: Option<String>,
     pub nickname: Option<String>,
     pub theme: Option<String>,
     pub language: Option<String>,
@@ -25,11 +25,12 @@ pub struct UserProfile {
 impl UserProfile {
     pub fn from_row(row: &PgRow) -> Self {
         Self {
-            id: row.get("id"),
+            id: row.get("user_id"),
             theme: row.get("theme"),
             language: row.get("language"),
             units: row.get("units"),
             nickname: row.get("nickname"),
+            avatar_url: row.get("avatar_url"),
         }
     }
 }

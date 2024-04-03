@@ -3,7 +3,7 @@ import { createEvent, createStore } from 'effector';
 type ProfileStore = {
 	id: string;
 	// email: string;
-	// avatar_url: string;
+	avatar_url: string;
 	nickname: string;
 	units: 'metric' | 'retarded';
 	language: string;
@@ -13,7 +13,7 @@ type ProfileStore = {
 const defaultProfile: ProfileStore = {
 	id: '',
 	// email: '',
-	// avatar_url: '',
+	avatar_url: '',
 	nickname: '',
 	units: 'metric',
 	language: 'en-US',

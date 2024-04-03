@@ -3,7 +3,7 @@
 
 -- user | start
 INSERT INTO users ("id", "email", "password", "is_active", "is_staff", "is_superuser", "with_full_access", "date_joined") VALUES ('87a1bd29-7953-493e-a3bf-10aafa648278', 'mail@alena.red', '$argon2id$v=19$m=19456,t=2,p=1$ahbTDXjRsUvSRF6pk1roiQ$hDHdoG6v065wOUnnBqIVpY2YxHayrZX18nOFuo+hZDg', true, true, true, true, '2020-03-09 22:08:03.000101+00') ON CONFLICT DO NOTHING;
-INSERT INTO user_profile ("id", "user_id", "theme", "language", "units", "nickname") VALUES ('1adbf411-68d0-49a6-9cdb-b437f4b2c75f', '87a1bd29-7953-493e-a3bf-10aafa648278', 'system', 'en', 'metric', 'Keira') ON CONFLICT DO NOTHING;
+INSERT INTO user_profile ("id", "user_id", "theme", "language", "units", "nickname", "avatar_url") VALUES ('1adbf411-68d0-49a6-9cdb-b437f4b2c75f', '87a1bd29-7953-493e-a3bf-10aafa648278', 'system', 'en', 'metric', 'Keira', 'https://i.pravatar.cc/300') ON CONFLICT DO NOTHING;
 
 INSERT INTO users ("id", "email", "password", "is_active", "is_staff", "is_superuser", "with_full_access", "date_joined") VALUES ('00000000-0000-0000-0000-000000000000', 'mail@tanuki.health', '$argon2id$v=19$m=19456,t=2,p=1$ahbTDXjRsUvSRF6pk1roiQ$hDHdoG6v065wOUnnBqIVpY2YxHayrZX18nOFuo+hZDg', true, true, true, true, '2020-03-09 22:08:03.000101+00') ON CONFLICT DO NOTHING;
 INSERT INTO user_profile ("id", "user_id", "theme", "language", "units", "nickname") VALUES ('00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000', 'system', 'en', 'metric', 'System') ON CONFLICT DO NOTHING;
