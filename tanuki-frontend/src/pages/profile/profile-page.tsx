@@ -2,11 +2,11 @@ import React from 'react';
 
 import Logout from './logout';
 import { Text, Heading } from '@radix-ui/themes';
-import { Header, Content, Footer } from './profile-page.styles';
+import Root, { Header, Content, Footer } from './profile-page.styles';
 
 const ProfilePage = () => {
 	return (
-		<>
+		<Root>
 			<Header>
 				<Heading>Profile</Heading>
 			</Header>
@@ -18,7 +18,7 @@ const ProfilePage = () => {
 			<Footer>
 				<Logout />
 			</Footer>
-		</>
+		</Root>
 	);
 };
 

@@ -15,7 +15,7 @@ const Logout = () => {
 	};
 
 	return (
-		<Button size="3" variant="soft" onClick={logoutHd}>
+		<Button size="3" variant="soft" onClick={logoutHd} style={{ width: '100%' }}>
 			<ExitIcon width={22} height={22} />
 			Logout
 		</Button>
