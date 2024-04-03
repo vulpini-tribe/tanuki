@@ -12,9 +12,9 @@ export const Step = styled.div<{ $isCompleted: boolean; $isActive: boolean }>`
 	border-radius: var(--radius-1);
 `;
 
-export default styled.div<{ totalSteps: number }>`
+export default styled.div<{ $totalSteps: number }>`
 	display: grid;
-	grid-template-columns: repeat(${({ totalSteps }) => totalSteps}, 1fr);
+	grid-template-columns: repeat(${({ $totalSteps }) => $totalSteps}, 1fr);
 	gap: var(--space-2);
 	width: 100%;
 `;

@@ -7,7 +7,7 @@ import Root, { Step } from './stepper.styles';
 
 const Stepper = ({ step, totalSteps, onChangeStep }: Props) => {
 	return (
-		<Root totalSteps={totalSteps}>
+		<Root $totalSteps={totalSteps}>
 			{Array.from({ length: totalSteps }, (_, index) => {
 				const currentStep = index + 1;
 				const isActive = currentStep === step;
