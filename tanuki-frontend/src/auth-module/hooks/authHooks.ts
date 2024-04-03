@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 import axios, { getErrCode } from '@axios';
 import { toggleAuth } from '../store';
-import { setProfile, clearProfile } from '@src/content-module/navbar/store';
+import { setProfile, clearProfile } from '@src/pages/profile/store';
 
 type LoginCreds = {
 	email: string;
@@ -24,16 +24,7 @@ const fetchUserRequest = async () => {
 		if (request.status === 200) {
 			toggleAuth(true);
 
-			setProfile({
-				id: 'a4075817-f4da-4780-8241-bf22b881e9b3',
-				email: 'mail@alena.red',
-				avatar_url: 'https://lh3.googleusercontent.com/ogw/AF2bZyhyrF9zZEDVaKiizjQIhIFNpYuJEDDXd_sIqYi8Bw=s64-c-mo',
-				nickname: 'Keira',
-				units: 'metric',
-				language: 'en-US',
-				theme: 'light',
-				mode: 'loss'
-			});
+			setProfile(request.data.data);
 		}
 
 		return request;

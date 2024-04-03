@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Logout from './logout';
-import { Text, Heading } from '@radix-ui/themes';
+import Measurements from './measurements';
+import { Heading } from '@radix-ui/themes';
 import Root, { Header, Content, Footer } from './profile-page.styles';
 
 const ProfilePage = () => {
@@ -12,7 +13,7 @@ const ProfilePage = () => {
 			</Header>
 
 			<Content>
-				<Text>Content</Text>
+				<Measurements />
 			</Content>
 
 			<Footer>

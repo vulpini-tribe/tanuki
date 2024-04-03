@@ -135,7 +135,7 @@ pub async fn register(
         user.email.clone(),
         "verification_email".to_string(),
         user_id,
-        dp.redis.clone(),
+        dp.redis.clone(), 
     )
     .await
     .map_err(|_| {
