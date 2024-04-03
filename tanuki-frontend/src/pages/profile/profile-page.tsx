@@ -1,19 +1,27 @@
 import React from 'react';
+import { useUnit } from 'effector-react';
+
+import { $profileStore } from './store';
 
 import Logout from './logout';
-import Measurements from './measurements';
-import { Heading } from '@radix-ui/themes';
+// import Goals from './goals';
+import { Heading, Avatar } from '@radix-ui/themes';
 import Root, { Header, Content, Footer } from './profile-page.styles';
 
 const ProfilePage = () => {
+	const profileStore = useUnit($profileStore);
+
 	return (
 		<Root>
 			<Header>
-				<Heading>Profile</Heading>
+				<Avatar size="6" src={profileStore.avatar_url} fallback={profileStore.nickname[0] || '?'} />
+				<Heading>{profileStore.nickname}</Heading>
 			</Header>
 
 			<Content>
-				<Measurements />
+				<Heading>Goals</Heading>
+				<Heading>Weight</Heading>
+				<Heading>Measurements</Heading>
 			</Content>
 
 			<Footer>
