@@ -18,8 +18,8 @@ const ROUTES = {
 	},
 	PROFILE: {
 		ROOT: PROFILE,
-		EDIT: `${PROFILE}/edit`,
-		SETTINGS: `${PROFILE}/settings`
+		GOALS: `${PROFILE}/goals`,
+		WEIGHT: `${PROFILE}/weight`
 	},
 	UTILS: {
 		ROOT: UTILS

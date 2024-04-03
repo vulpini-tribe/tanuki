@@ -13,6 +13,9 @@ const ProfilePage = React.lazy(() => import('@pages/profile'));
 const FeedPage = React.lazy(() => import('@pages/feed'));
 const UtilsPage = React.lazy(() => import('@pages/utils'));
 
+const Goals = React.lazy(() => import('@pages/profile/goals'));
+import ProfileRoot from '@pages/profile/root';
+
 const ContentModule = () => {
 	return (
 		<div>
@@ -24,7 +27,13 @@ const ContentModule = () => {
 					<Route path={ROUTES.CONTENT.FOOD} element={<Food />} />
 
 					<Route path={ROUTES.UTILS.ROOT} element={<UtilsPage />} />
-					<Route path={ROUTES.PROFILE.ROOT} element={<ProfilePage />} />
+
+					<Route path={ROUTES.PROFILE.ROOT} element={<ProfilePage />}>
+						<Route path={ROUTES.PROFILE.GOALS} element={<Goals />} />
+						<Route path={ROUTES.PROFILE.ROOT} element={<ProfileRoot />} />
+
+						<Route path="*" element={<Navigate to={ROUTES.PROFILE.ROOT} replace />} />
+					</Route>
 
 					<Route index path="*" element={<Navigate to={ROUTES.CONTENT.ROOT} replace />} />
 				</Routes>
