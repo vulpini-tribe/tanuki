@@ -1,33 +1,15 @@
 import React from 'react';
 
-import { WheelPicker } from '@ui';
-import { Grid, Heading } from '@radix-ui/themes';
-
-// const years = Array.from({ length: 100 }, (_, i) => i + 1900);
-const months = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December'
-];
-// const days = Array.from({ length: 31 }, (_, i) => i + 1);
+import { Grid, Box, Heading, TextField } from '@radix-ui/themes';
 
 const Birthday = () => {
 	return (
 		<Grid mt="5">
 			<Heading>When were you born?</Heading>
 
-			{/* <WheelPicker dataList={days} /> */}
-			<WheelPicker dataList={months} defaultValueIdx={5} />
-			{/* <WheelPicker dataList={years} /> */}
+			<Box mt="5">
+				<TextField.Root size="3" type="date" />
+			</Box>
 		</Grid>
 	);
 };
